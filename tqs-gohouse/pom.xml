@@ -37,6 +37,24 @@
    </dependencyManagement>
 
    <dependencies>
+       <!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces</artifactId>
+    <version>6.0</version>
+</dependency>
+      <dependency>
+         <groupId>org.json</groupId>
+         <artifactId>json</artifactId>
+         <version>20080701</version>
+         <type>jar</type>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpclient</artifactId>
+         <version>4.5.1</version>
+         <type>jar</type>
+      </dependency>
       <dependency>
          <groupId>javax</groupId>
          <artifactId>javaee-api</artifactId>
