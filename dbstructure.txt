@@ -1,0 +1,36 @@
+Existirão utilizadores, que podem ser moderadores (apenas nomeados para verificar se as ofertas colocadas por outros utilizadores que não eles próprios são fidedignas), senhorios, arrendatários e delegados de uma universidade. Cada utilizador terá uma lista de propriedades possuídas (em ORM é possível de fazer sem mexer mesmo na bd) e uma lista de propriedades alugadas (porque um utilizador pode ter várias alugadas, como no caso da universidade). Uma propriedade pode ser um apartamento ou uma casa e pode ser arrendada por qqr pesssoa. Um quarto faz parte de uma propriedade arrendada por uma universidade.
+    
+USER (se usarmos google login n precisamos de password):
+    
+    - id: int/long - primary key;
+    - email;
+    - name;
+    - age;
+    - rentedProperties: ArrayList<Properties>;
+    - ownedProperties: ArrayList<Properties>;
+    - isCollegeStudent: boolean;
+    - userRating(média): pode ser null;
+    - isModerator: boolean;
+    - isDelegate: boolean;
+    - universityId: se for delegado, id da universidade. se não for, 0;
+    
+PROPERTY (pode ser apartamento ou casa):
+    
+    - id - primary key;
+    - rooms (se for alugado por uma universidade): ArrayList<Rooms>;
+    - rent;
+    - owner (id);
+    - renter (id - se for uma universidade será o id da universidade, senão, será o id do user);
+    - occupied: boolean;
+    - address;
+    - type - apartamento ou casa;
+    - block (apenas para apartamentos);
+    - floor (apenas para apartamentos);
+    
+ROOM (possuído por uma universidade para ser alugado):
+    
+    - id - primary key;
+    - propertyId (id do apartamento/casa a que pertence);
+    - occupied: boolean;
+    - renter (id);
+    - rent;
