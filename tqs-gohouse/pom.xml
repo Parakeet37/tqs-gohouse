@@ -7,6 +7,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+<<<<<<< HEAD
     <name>tqs-gohouse</name>
 
     <properties>
@@ -15,12 +16,22 @@
     </properties>
     
     <dependencies>
+=======
+   <properties>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+   <dependencies>
+       <!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
+>>>>>>> 74d27f35c9bdbfd2d3d45aee9f2d8e31b704a701
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>6.0</version>
         </dependency>
         <dependency>
+<<<<<<< HEAD
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20080701</version>
@@ -31,6 +42,18 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.1</version>
             <type>jar</type>
+=======
+           <groupId>org.json</groupId>
+           <artifactId>json</artifactId>
+           <version>20080701</version>
+           <type>jar</type>
+        </dependency>
+        <dependency>
+           <groupId>org.apache.httpcomponents</groupId>
+           <artifactId>httpclient</artifactId>
+           <version>4.5.1</version>
+           <type>jar</type>
+>>>>>>> 74d27f35c9bdbfd2d3d45aee9f2d8e31b704a701
         </dependency>
         <dependency>
             <groupId>javax</groupId>
@@ -39,6 +62,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+<<<<<<< HEAD
             <groupId>net.bootsfaces</groupId>
             <artifactId>bootsfaces</artifactId>
             <version>1.2.0</version>
@@ -46,6 +70,22 @@
     </dependencies>
 
     <build>
+=======
+           <groupId>org.eclipse.persistence</groupId>
+           <artifactId>org.eclipse.persistence.jpa</artifactId>
+           <version>2.7.1</version>
+           <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+   </dependencies>
+
+   <build>
+>>>>>>> 74d27f35c9bdbfd2d3d45aee9f2d8e31b704a701
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -94,5 +134,8 @@
             </plugin>
         </plugins>
     </build>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 74d27f35c9bdbfd2d3d45aee9f2d8e31b704a701
 </project>
