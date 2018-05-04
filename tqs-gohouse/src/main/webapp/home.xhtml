@@ -9,13 +9,31 @@ and open the template in the editor.
    xmlns = "http://www.w3.org/1999/xhtml" 
    xmlns:h = "http://java.sun.com/jsf/html"
    xmlns:p = "http://primefaces.org/ui"
-   xmlns:f="http://xmlns.jcp.org/jsf/core">
+   xmlns:f="http://xmlns.jcp.org/jsf/core"
+   xmlns:b="http://bootsfaces.net/ui">
     <h:head>
-        <title>Currency Converter</title>
+        <title>goHome</title>
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    <h:body>
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <!--Navigation bar -->
+        <b:navBar brand="Brand" brandHref="#" inverse="true" fixed="top">
+            <b:navbarLinks>
+                <b:navLink value="Link" href="#"></b:navLink>
+                <b:navLink value="Link" href="#"></b:navLink>
+                <b:dropMenu value="Dropdown">
+                    <b:navLink value="Action" href="#"></b:navLink>
+                    <b:navLink value="Another action" href="#"></b:navLink>
+                    <b:navLink value="Something else here" href="#"></b:navLink>
+                    <b:navLink></b:navLink>
+                    <b:navLink header="Nav header"></b:navLink>
+                    <b:navLink value="Separated link" href="#"></b:navLink>
+                    <b:navLink value="One more separated link" href="#"></b:navLink>
+                </b:dropMenu>
+            </b:navbarLinks>
+        </b:navBar>
+        
         <div align="center">            
             <h1>Hello World!</h1>            
         </div>
