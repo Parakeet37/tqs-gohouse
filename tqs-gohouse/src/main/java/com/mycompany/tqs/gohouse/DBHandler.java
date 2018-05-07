@@ -22,8 +22,11 @@ public class DBHandler {
     
     private final String PERSISTENCE_UNIT;
     
+    private final double MIN_USERS;
+    
     public DBHandler(String unit) {
         PERSISTENCE_UNIT = unit;
+        MIN_USERS = 10.0;
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
         this.em = emf.createEntityManager();
     }
@@ -52,22 +55,6 @@ public class DBHandler {
             user = null;
         }
         return user;
-    }
-    
-    /**
-     * 
-     * @param email email of the user we want to verify
-     * @return true if the user exists and false if the user does not exist
-     */
-    public boolean login(String email) {
-        try {
-            Query query = em.createQuery("SELECT u FROM PlatformUser AS u WHERE u.email = :email");
-            query.setParameter("email", email);
-            query.getSingleResult();
-            return true;
-        } catch (NoResultException e) {
-            return false;
-        } 
     }
     
     /**
@@ -162,7 +149,8 @@ public class DBHandler {
      * changes if a user is a student or not
      * @param email email of the user
      * @param isStudent boolean to update
-     * @param university University entity
+     * @param univName Name of the university
+     * @param univAddress Address of the university
      * @return true if success, false otherwise
      */
     public boolean changeIfStudent(String email, boolean isStudent, String univName, String univAddress){
@@ -208,8 +196,68 @@ public class DBHandler {
         try {
             PlatformUser user = (PlatformUser) query.getSingleResult();
             em.getTransaction().begin();
-            if (user.getUserRating() != -1) user.setUserRating((rating+user.getUserRating())/2);
+            if (user.getUserRating() != 0) user.setUserRating((rating+user.getUserRating())/2);
             else user.setUserRating(rating);
+            user.setNVotes(user.getNVotes()+1);
+            user.setWeightedRanking((user.getNVotes()/(user.getNVotes()+MIN_USERS))*user.getUserRating());
+            em.getTransaction().commit();
+        } catch (NoResultException | RollbackException e) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * get for the user with better user rating
+     * @return platform user with the best rating
+     */
+    public PlatformUser getMostPopularUser(){
+        Query query = em.createQuery("Select u from PlatformUser as u order by u.weightedRating desc");
+        return (PlatformUser) query.getResultList().get(0);
+    }
+    
+    /**
+     * get for the n most popular users
+     * @param n number of users to return
+     * @return list with the most popular users, ordered by user rating
+     */
+    public List getNMostPopularUsers(int n){
+        Query query = em.createQuery("Select u from PlatformUser as u order by u.weightedRating desc");
+        return query.setMaxResults(n).getResultList();
+    }
+    
+    /**
+     * changes if the user is moderator or not
+     * @param email email of the user we want to change privileges
+     * @param name parameter to update
+     * @return true if success, false otherwise
+     */
+    public boolean changeName(String email, String name) {
+        Query query = em.createQuery("Select u from PlatformUser as u where u.email= :email");
+        query.setParameter("email", email);
+        try {
+            PlatformUser user = (PlatformUser) query.getSingleResult();
+            em.getTransaction().begin();
+            user.setName(name);
+            em.getTransaction().commit();
+        } catch (NoResultException | RollbackException e) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * changes if the user is moderator or not
+     * @param email email of the user we want to change privileges
+     * @param age parameter to update
+     * @return true if success, false otherwise
+     */
+    public boolean changeBirthday(String email, LocalDate age) {
+        Query query = em.createQuery("Select u from PlatformUser as u where u.email= :email");
+        query.setParameter("email", email);
+        try {
+            PlatformUser user = (PlatformUser) query.getSingleResult();
+            em.getTransaction().begin();
+            user.setAge(age);
             em.getTransaction().commit();
         } catch (NoResultException | RollbackException e) {
             return false;

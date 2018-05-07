@@ -33,6 +33,8 @@ public class PlatformUser implements Serializable {
     
     private boolean isCollegeStudent;
     private double userRating;
+    private int nVotes;
+    private double weightedRating;
     private boolean isModerator;
     private boolean isDelegate;
     
@@ -52,7 +54,9 @@ public class PlatformUser implements Serializable {
         this.university = null;
         this.rentedProperties = new ArrayList<>();
         this.ownedProperties = new ArrayList<>();
-        this.userRating = -1;
+        this.userRating = 0;
+        this.nVotes = 0;
+        this.weightedRating = 0;
     }
 
     public Long getId() {
@@ -73,6 +77,22 @@ public class PlatformUser implements Serializable {
 
     public String getName() {
         return name;
+    }
+    
+    public void setNVotes(int nVotes) {
+        this.nVotes = nVotes;
+    }
+
+    public int getNVotes() {
+        return nVotes;
+    }
+    
+    public double getWeightedRating(){
+        return weightedRating;
+    }
+    
+    public void setWeightedRanking(double weightedRating){
+        this.weightedRating = weightedRating;
     }
 
     public void setName(String name) {
