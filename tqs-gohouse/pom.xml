@@ -6,7 +6,28 @@
     <artifactId>tqs-gohouse</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
+   <properties>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
+    <repositories>
+        <repository>
+            <id>objectdb</id>
+            <name>ObjectDB Repository</name>
+            <url>http://m2.objectdb.com</url>
+        </repository>
+    </repositories>
+
+   <dependencies>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.14.2.0</version>
+            <scope>test</scope>
+        </dependency>
+
+       <!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
     <name>tqs-gohouse</name>
 
     <properties>
@@ -21,6 +42,29 @@
             <version>6.0</version>
         </dependency>
         <dependency>
+           <groupId>org.json</groupId>
+           <artifactId>json</artifactId>
+           <version>20080701</version>
+           <type>jar</type>
+        </dependency>
+      <dependency>
+         <groupId>org.eclipse.persistence</groupId>
+         <artifactId>eclipselink</artifactId>
+         <version>2.5.2</version>
+      </dependency>
+      <dependency>
+         <groupId>org.eclipse.persistence</groupId>
+         <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
+         <version>2.5.2</version>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+            <groupId>com.objectdb</groupId>
+            <artifactId>objectdb</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+       
+      <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20080701</version>
@@ -39,6 +83,23 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+           <groupId>org.eclipse.persistence</groupId>
+           <artifactId>org.eclipse.persistence.jpa</artifactId>
+           <version>2.7.1</version>
+           <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>javax.persistence</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+         <dependency>
             <groupId>net.bootsfaces</groupId>
             <artifactId>bootsfaces</artifactId>
             <version>1.2.0</version>
@@ -94,5 +155,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
