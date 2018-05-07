@@ -1,41 +1,55 @@
 package dbClasses;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class PlatformUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
     private String email;
     private String name;
-    private int age;
-    private ArrayList<Long> rentedProperties;
-    private ArrayList<Long> ownedProperties;
+    private LocalDate age;
+    
+    @OneToMany (targetEntity = Property.class)
+    private List rentedProperties;
+    
+    @OneToMany (targetEntity = Property.class)
+    private List ownedProperties;
+    
     private boolean isCollegeStudent;
-    private int userRating;
+    private double userRating;
     private boolean isModerator;
     private boolean isDelegate;
-    private int universityId;
+    
+    @ManyToOne
+    private University university;
 
     public PlatformUser() {
     }
 
-    public PlatformUser(String email, String name, int age, boolean isCollegeStudent, boolean isModerator, boolean isDelegate, int universityId) {
+    public PlatformUser(String email, String name, LocalDate age, boolean isCollegeStudent, boolean isDelegate) {
         this.email = email;
         this.name = name;
         this.age = age;
         this.isCollegeStudent = isCollegeStudent;
-        this.isModerator = isModerator;
+        this.isModerator = false;
         this.isDelegate = isDelegate;
-        this.universityId = universityId;
+        this.university = null;
         this.rentedProperties = new ArrayList<>();
         this.ownedProperties = new ArrayList<>();
         this.userRating = -1;
@@ -65,30 +79,46 @@ public class PlatformUser implements Serializable {
         this.name = name;
     }
 
-    public int getAge() {
+    public LocalDate getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(LocalDate age) {
         this.age = age;
     }
 
-    public ArrayList<Long> getRentedProperties() {
+    public List getRentedProperties() {
         return rentedProperties;
     }
 
-    public void setRentedProperties(ArrayList<Long> rentedProperties) {
+    public void setRentedProperties(ArrayList rentedProperties) {
         this.rentedProperties = rentedProperties;
     }
 
-    public ArrayList<Long> getOwnedProperties() {
+    public void addRentedProperty(Property property) {
+        rentedProperties.add(property);
+    }
+    
+    public void removeRentedProperty(Property property) {
+        rentedProperties.remove(property);
+    }
+    
+    public List getOwnedProperties() {
         return ownedProperties;
     }
 
-    public void setOwnedProperties(ArrayList<Long> ownedProperties) {
+    public void setOwnedProperties(List ownedProperties) {
         this.ownedProperties = ownedProperties;
     }
 
+    public void addOwnedProperty(Property property) {
+        ownedProperties.add(property);
+    }
+    
+    public void removeOwnedProperty(Property property) {
+        ownedProperties.remove(property);
+    }
+    
     public boolean isIsCollegeStudent() {
         return isCollegeStudent;
     }
@@ -97,11 +127,11 @@ public class PlatformUser implements Serializable {
         this.isCollegeStudent = isCollegeStudent;
     }
 
-    public int getUserRating() {
+    public double getUserRating() {
         return userRating;
     }
 
-    public void setUserRating(int userRating) {
+    public void setUserRating(double userRating) {
         this.userRating = userRating;
     }
 
@@ -121,37 +151,70 @@ public class PlatformUser implements Serializable {
         this.isDelegate = isDelegate;
     }
 
-    public int getUniversityId() {
-        return universityId;
+    public University getUniversity() {
+        return university;
     }
 
-    public void setUniversityId(int universityId) {
-        this.universityId = universityId;
+    public void setUniversity(University university) {
+        this.university = university;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PlatformUser)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        PlatformUser other = (PlatformUser) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        return true;
+        final PlatformUser other = (PlatformUser) obj;
+        if (this.isCollegeStudent != other.isCollegeStudent) {
+            return false;
+        }
+        if (this.userRating != other.userRating) {
+            return false;
+        }
+        if (this.isModerator != other.isModerator) {
+            return false;
+        }
+        if (this.isDelegate != other.isDelegate) {
+            return false;
+        }
+        if (this.university != other.university) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.age, other.age)) {
+            return false;
+        }
+        if (!Objects.equals(this.rentedProperties, other.rentedProperties)) {
+            return false;
+        }
+        return Objects.equals(this.ownedProperties, other.ownedProperties);
     }
 
     @Override
     public String toString() {
-        return "dbClasses.User[ id=" + id + " ]";
+        return "PlatformUser{" + "id=" + id + ", email=" + email + ", name=" + name + ", age=" + age + ", rentedProperties=" + rentedProperties + ", ownedProperties=" + ownedProperties + ", isCollegeStudent=" + isCollegeStudent + ", userRating=" + userRating + ", isModerator=" + isModerator + ", isDelegate=" + isDelegate + ", universityId=" + university + '}';
     }
+
     
 }

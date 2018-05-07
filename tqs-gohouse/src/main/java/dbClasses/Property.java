@@ -2,10 +2,12 @@ package dbClasses;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Property implements Serializable {
@@ -14,10 +16,11 @@ public class Property implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private ArrayList<Long> rooms;
+    
+    @OneToMany(targetEntity=Room.class)
+    private List rooms;
+    
     private int rent;
-    private long owner;
-    private long renter;
     private boolean occupied;
     private String address;
     private String type;
@@ -27,23 +30,13 @@ public class Property implements Serializable {
     public Property() {
     }
 
-    public Property(int rent, long owner, String address, String type, char block, int floor) {
+    public Property(int rent, String address, String type, char block, int floor, ArrayList rooms) {
         this.rent = rent;
-        this.owner = owner;
         this.address = address;
         this.type = type;
         this.block = block;
         this.floor = floor;
         this.occupied = false;
-        this.rooms = new ArrayList<>();
-        this.renter = 0;
-    }
-
-    public ArrayList<Long> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(ArrayList<Long> rooms) {
         this.rooms = rooms;
     }
 
@@ -53,22 +46,6 @@ public class Property implements Serializable {
 
     public void setRent(int rent) {
         this.rent = rent;
-    }
-
-    public long getOwner() {
-        return owner;
-    }
-
-    public void setOwner(long owner) {
-        this.owner = owner;
-    }
-
-    public long getRenter() {
-        return renter;
-    }
-
-    public void setRenter(long renter) {
-        this.renter = renter;
     }
 
     public boolean isOccupied() {
@@ -119,6 +96,22 @@ public class Property implements Serializable {
         this.id = id;
     }
 
+    public List getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List rooms) {
+        this.rooms = rooms;
+    }
+    
+    public void addRoom(Room room){
+        rooms.add(room);
+    }
+    
+    public void removeRoom(Room room){
+        rooms.remove(room);
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -133,10 +126,7 @@ public class Property implements Serializable {
             return false;
         }
         Property other = (Property) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override

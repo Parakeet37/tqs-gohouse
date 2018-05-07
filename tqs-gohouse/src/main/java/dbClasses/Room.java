@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Room implements Serializable {
@@ -14,17 +15,21 @@ public class Room implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private int rent;
-    private long owner;
-    private long renter;
+
+    @ManyToOne
+    private University owner;
+    @ManyToOne
+    private PlatformUser renter;
+
     private boolean occupied;
 
     public Room() {
     }
 
-    public Room(int rent, long owner) {
+    public Room(int rent, University owner) {
         this.rent = rent;
         this.owner = owner;
-        this.renter = 0;
+        this.renter = null;
         this.occupied = false;
     }
     
@@ -36,19 +41,19 @@ public class Room implements Serializable {
         this.rent = rent;
     }
 
-    public long getOwner() {
+    public University getOwner() {
         return owner;
     }
 
-    public void setOwner(long owner) {
+    public void setOwner(University owner) {
         this.owner = owner;
     }
 
-    public long getRenter() {
+    public PlatformUser getRenter() {
         return renter;
     }
 
-    public void setRenter(long renter) {
+    public void setRenter(PlatformUser renter) {
         this.renter = renter;
     }
 

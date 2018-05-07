@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Mon May 07 16:15:41 WEST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0163-3b2c-2fef-00000549f950 
+on database directory /home/parakeet/Documents/TQS/tqs-project/tqs-gohouse/target/derbydb2 with class loader sun.misc.Launcher$AppClassLoader@135fbaa4 
+Loaded from file:/root/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_162-8u162-b12-0ubuntu0.17.10.2-b12
+user.dir=/home/parakeet/Documents/TQS/tqs-project/tqs-gohouse
+os.name=Linux
+os.arch=amd64
+os.version=4.13.0-39-generic
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
