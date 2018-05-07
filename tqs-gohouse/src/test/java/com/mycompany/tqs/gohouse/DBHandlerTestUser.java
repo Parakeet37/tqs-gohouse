@@ -253,6 +253,11 @@ public class DBHandlerTestUser {
         assertEquals(expResult, result);
         PlatformUser newuser = instance.getSingleUser(email);
         assertNotEquals("Users are equals... No changes were saved", user.getUserRating(), newuser.getUserRating());
+        assertEquals("User rating not updated correctly", 5, newuser.getUserRating(), 0.0);
+        result = instance.updateUserRating(email, 4);
+        assertEquals(expResult, result);
+        newuser=instance.getSingleUser(email);
+        assertEquals(4.5, newuser.getUserRating(), 0.0);
     }
     
     /**
