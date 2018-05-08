@@ -38,16 +38,18 @@ and open the template in the editor.
             <b:jumbotron>
             <div align="center">
                 <p><h2>Fill out this form please:</h2></p>
-                <p><p:outputLabel value="Username:" style="width:120px; text-align: right"/><p:inputText/></p>
-                <p><p:outputLabel value="Password:" style="width:120px; text-align: right"/><p:inputText/></p>
-                <p><p:outputLabel value="Email:" style="width:120px; text-align: right"/><p:inputText/></p>
-                <p><p:outputLabel value="Username:" style="width:120px; text-align: right"/><p:inputText/></p>
-                <p><p:outputLabel value="Email:" style="width:120px; text-align: right"/><p:inputText/></p>
+                <p><p:outputLabel value="Username:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputUName}"/></p>
+                <p><p:outputLabel value="Password:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputPassword}"/></p>
+                <p><p:outputLabel value="Name:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputName}"/></p>
+                <p><p:outputLabel value="Email:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputEmail}"/></p>
+                <p><p:outputLabel value="Student? " style="width:120px; text-align: right"/><p:selectBooleanCheckbox value="#{registerBean.isStudent}"/></p>
             </div>
-                <div align="right">
-                <a href="./registerAccount.xhtml">Sign up! </a>
+            <div align="right">
                 <p:button value="Login "/>
-               </div>
+            </div>
+            <div>
+                <p:outputLabel style="color: crimson" value="#{registerBean.errorPrompt}"/>
+            </div>
                 
             </b:jumbotron>
         </b:container>

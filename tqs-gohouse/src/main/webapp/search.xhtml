@@ -35,7 +35,9 @@ and open the template in the editor.
         </b:navBar>
                 <h2>Resultados da pesquisa por "Something":</h2>
                 <h:form>
-                    <p:dataScroller value="#{dataScrollerView.cars}" var="car" chunkSize="10">
+                    <p:inputText value="#{searchBean.searchValue}"/> <p:commandButton value="Search!" action="#{searchBean.searchProperties}"/>
+                    
+                        <p:dataScroller value="#{searchBean.searchResults}" var="prop" chunkSize="10">
                         <f:facet name="header">
                             Scroll Down to Load More Cars
                         </f:facet>
@@ -45,13 +47,11 @@ and open the template in the editor.
                             <p:outputPanel>
                                 <h:panelGrid columns="2" cellpadding="5">
                                     <h:outputText value="Id:" />
-                                    <h:outputText value="#{car}" style="font-weight: bold"/>
+                                    <h:outputText value="#{prop.address}" style="font-weight: bold"/>
 
                                     <h:outputText value="Year:" />
-                                    <h:outputText value="#{car}" style="font-weight: bold"/>
-
-                                    <h:outputText value="Color:" />
-                                    <h:outputText value="#{car}" style="font-weight: bold"/>
+                                    <h:outputText value="#{prop.type}" style="font-weight: bold"/>
+                                    <p/>
                                 </h:panelGrid>
                             </p:outputPanel>
                         </h:panelGrid>
