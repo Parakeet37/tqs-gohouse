@@ -6,18 +6,65 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html 
-   xmlns = "http://www.w3.org/1999/xhtml" 
-   xmlns:h = "http://java.sun.com/jsf/html"
-   xmlns:p = "http://primefaces.org/ui"
-   xmlns:f="http://xmlns.jcp.org/jsf/core">
+    xmlns = "http://www.w3.org/1999/xhtml" 
+    xmlns:h = "http://java.sun.com/jsf/html"
+    xmlns:p = "http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Currency Converter</title>
-        
+        <title>goHome</title>
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    <h:body>
-        <div align="center">            
-            <h1>Hello World!</h1>            
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <!--Navigation bar -->
+        <b:navBar brand="Home" brandHref="#" inverse="true" fixed="top">
+            <b:navbarLinks>
+                <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
+                <b:navLink value="SignUp" href="faces/registerAccount.xhtml"></b:navLink>
+                <form class="navbar-form navbar-left hidden-md hidden-sm hidden-xs" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search"/>
+                    </div>
+                    <button type="submit" class="btn btn-default">Search</button>
+                </form>
+            </b:navbarLinks>
+        </b:navBar>
+
+
+
+        <!-- Start the list of all properties as a list  -->
+        <div>            
+
+            <ui:repeat value="#{homeBean.propriedades}" var="TempPropriadade">
+
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="well well-sm">
+                        <div class="row">                       
+                            <div class="col-sm-6 col-md-4">
+                                <img src="#{TempPropriadade.url_imagem}" alt="Property Photo" class="img-rounded img-responsive" />
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <h3><b>#{TempPropriadade.title}</b></h3>
+                                <h4><b>Description: #{TempPropriadade.smallDesc}</b></h4>
+                                <h4><b>Price: </b> #{TempPropriadade.price}€</h4>
+                                <h4><b>Local: </b> #{TempPropriadade.location}</h4>
+                                <h5><b>Type: </b> #{TempPropriadade.tipo}</h5>
+
+                            </div>
+                        </div>
+
+                        <br></br>
+                        <br></br>
+                    </div>
+                </div>
+            </ui:repeat>
+            <!-- End Lista de Animais associados ao Utilizador -->
+
         </div>
+
+
+
     </h:body>
 </html>
