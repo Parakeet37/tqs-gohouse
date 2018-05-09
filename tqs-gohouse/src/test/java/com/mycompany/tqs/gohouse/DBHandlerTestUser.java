@@ -6,6 +6,7 @@
 package com.mycompany.tqs.gohouse;
 
 import dbClasses.PlatformUser;
+import dbClasses.University;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -22,9 +23,9 @@ import static org.junit.Assert.*;
 public class DBHandlerTestUser {
     
     private EntityManager em;
-    private int USER_RATING;
     private final String PERSISTENCE_UNIT = "tests";
     private final int NUMBER_OF_USERS = 10;
+    private University univ;
     
     public DBHandlerTestUser() {
     }
@@ -44,13 +45,20 @@ public class DBHandlerTestUser {
         em.getTransaction().begin();
         Query query = em.createQuery("DELETE FROM PlatformUser");
         query.executeUpdate();
+        query = em.createQuery("DELETE FROM University");
+        query.executeUpdate();
         em.getTransaction().commit();
         em.getTransaction().begin();
         int i = NUMBER_OF_USERS;
         while (i>1){
             em.persist(new PlatformUser("testemail"+i+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
             i--;
+            em.getTransaction().commit();
+            em.getTransaction().begin();
         }
+        univ = new University("UA", "adress");
+        em.persist(univ);
+
         em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
         em.getTransaction().commit();
     }
@@ -80,30 +88,7 @@ public class DBHandlerTestUser {
         PlatformUser user = instance.getSingleUser("testemail@gmail.com");
         assertNotEquals(user, null);
     }
-    
-    /**
-     * Test login of an existent user.
-     */
-    @Test
-    public void testLogin() {
-        System.out.println("login existant user");
-        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        boolean expResult = true;
-        boolean result = instance.login("testemail@gmail.com");
-        assertEquals(expResult, result);
-    }
-    
-    /**
-     * Test login failure.
-     */
-    @Test
-    public void testLoginFail() {
-        System.out.println("login non existant user");
-        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        boolean expResult = false;
-        boolean result = instance.login("noemail@gmail.com");
-        assertEquals(expResult, result);
-    }
+
 
     /**
      * Test register a new user .
@@ -118,24 +103,8 @@ public class DBHandlerTestUser {
         boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
-        boolean result = instance.registerUser(email, name, age, isCollegeStudent, isDelegate);
-        assertEquals(expResult, result);
-    }
-    
-    /**
-     * Test register an existent user.
-     */
-    @Test
-    public void testRegisterExitentUser() {
-        System.out.println("register an existent user");
-        String email = "testemail@gmail.com";
-        String name = "New user";
-        LocalDate age = LocalDate.of(1997, 10, 20);
-        boolean isCollegeStudent = false;
-        boolean isDelegate = false;
-        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        boolean expResult = false;
-        boolean result = instance.registerUser(email, name, age, isCollegeStudent, isDelegate);
+        boolean result = instance.registerUser(email, name, age, isCollegeStudent, isDelegate, univ);
+
         assertEquals(expResult, result);
     }
     
@@ -158,18 +127,7 @@ public class DBHandlerTestUser {
         PlatformUser newuser = instance.getSingleUser(email);
         assertNotEquals("Users are equals... No changes were saved", user.isIsModerator(), newuser.isIsModerator());
     }
-    
-    /**
-     * Test make a non existent user a moderator.
-     */
-    @Test
-    public void testMakeNonExistentUserModeratorFailure() {
-        System.out.println("new moderator failure");
-        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        boolean expResult = false;
-        boolean result = instance.changePrivileges("newemail1@gmail.com", true);
-        assertEquals(expResult, result);
-    }
+
  
     /**
      * Test make a user delegate of an university.
@@ -192,18 +150,7 @@ public class DBHandlerTestUser {
     }
     
     /**
-     * Test register an existent user.
-     */
-    @Test
-    public void testMakeNonExistentUserDelegate() {
-        System.out.println("new delegate failure");
-        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        boolean expResult = false;
-        boolean result = instance.changeDelegation("newemail1@gmail.com", true, "UA", "rua");
-        assertEquals(expResult, result);
-    }
-    
-    /**
+
      * Test make a user student of an university.
      */
     @Test
@@ -224,18 +171,6 @@ public class DBHandlerTestUser {
     }
     
     /**
-     * Test make a non existent user a student.
-     */
-    @Test
-    public void testMakeNonExistentUserStudent() {
-        System.out.println("new student failure");
-        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        boolean expResult = false;
-        boolean result = instance.changeIfStudent("newemail1@gmail.com", true, "UA", "rua");
-        assertEquals(expResult, result);
-    }
-    
-    /**
      * Test give rating to a user.
      */
     @Test
@@ -253,19 +188,86 @@ public class DBHandlerTestUser {
         assertEquals(expResult, result);
         PlatformUser newuser = instance.getSingleUser(email);
         assertNotEquals("Users are equals... No changes were saved", user.getUserRating(), newuser.getUserRating());
+        assertEquals("User rating not updated correctly", 5, newuser.getUserRating(), 0.0);
+        result = instance.updateUserRating(email, 4);
+        assertEquals(expResult, result);
+        newuser=instance.getSingleUser(email);
+        assertEquals(4.5, newuser.getUserRating(), 0.0);
+    }
+    
+    @Test
+    public void testGetMostPopularUser(){
+        System.out.println("get the most popular user");
+        PlatformUser popuser = new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false);
+        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
+        instance.updateUserRating("testemail@gmail.com", 5);
+        instance.updateUserRating("testemail@gmail.com", 5);
+        instance.updateUserRating("testemail@gmail.com", 5);
+        instance.updateUserRating("testemail@gmail.com", 4);
+        instance.updateUserRating("testemail2@gmail.com", 5);
+        PlatformUser result = instance.getMostPopularUser();
+        assertEquals("Users are not equal... Order by not working correctly", popuser.getEmail(), result.getEmail());
+    }
+    
+    @Test
+    public void testGetNMostPopularUsers(){
+        System.out.println("get the 5 most popular users");
+        PlatformUser popuser = new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false);
+        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
+        instance.updateUserRating("testemail@gmail.com", 5);
+        instance.updateUserRating("testemail@gmail.com", 5);
+        instance.updateUserRating("testemail@gmail.com", 5);
+        instance.updateUserRating("testemail@gmail.com", 4);
+        instance.updateUserRating("testemail2@gmail.com", 5);
+        instance.updateUserRating("testemail2@gmail.com", 2);
+        instance.updateUserRating("testemail3@gmail.com", 5);
+        instance.updateUserRating("testemail3@gmail.com", 3);
+        instance.updateUserRating("testemail4@gmail.com", 5);
+        instance.updateUserRating("testemail4@gmail.com", 4);
+        instance.updateUserRating("testemail4@gmail.com", 5);
+        instance.updateUserRating("testemail5@gmail.com", 2);
+        List result = instance.getNMostPopularUsers(5);
+        assertEquals(result.size(), 5);
+        assertEquals(popuser.getEmail(), ((PlatformUser)result.get(0)).getEmail());
     }
     
     /**
-     * Test make a non existent user a student.
+     * Test make a user moderator.
      */
     @Test
-    public void testGiveNonExistentUserRating() {
-        System.out.println("new student failure");
-        String testemail = "newemail1@gmail.com";
+    public void testMakeChangeUserName() {
+        System.out.println("new moderator");
+        String email = "testemail@gmail.com";
+        String name = "TestUser";
+        LocalDate age = LocalDate.of(1997, 10, 20);
+        boolean isCollegeStudent = false;
+        boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        boolean expResult = false;
-        boolean result = instance.updateUserRating(testemail, USER_RATING);
+        boolean expResult = true;
+        PlatformUser user = new PlatformUser(email, name, age, isCollegeStudent, isDelegate);
+        boolean result = instance.changeName(email, "NewName");
         assertEquals(expResult, result);
+        PlatformUser newuser = instance.getSingleUser(email);
+        assertNotEquals("Users are equals... No changes were saved", user.getName(), newuser.getName());
     }
     
+    /**
+     * Test make a user moderator.
+     */
+    @Test
+    public void testChangeUserBirthday() {
+        System.out.println("new moderator");
+        String email = "testemail@gmail.com";
+        String name = "TestUser";
+        LocalDate age = LocalDate.of(1997, 10, 20);
+        boolean isCollegeStudent = false;
+        boolean isDelegate = false;
+        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
+        boolean expResult = true;
+        PlatformUser user = new PlatformUser(email, name, age, isCollegeStudent, isDelegate);
+        boolean result = instance.changeBirthday(email, LocalDate.of(1997, 10, 10));
+        assertEquals(expResult, result);
+        PlatformUser newuser = instance.getSingleUser(email);
+        assertNotEquals("Users are equals... No changes were saved", user.getAge(), newuser.getAge());
+    }
 }
