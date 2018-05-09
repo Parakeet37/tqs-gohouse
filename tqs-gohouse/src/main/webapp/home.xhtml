@@ -34,18 +34,15 @@ and open the template in the editor.
 
 
 
-        <!-- Start the list of all properties as a list  -->
+        <!-- Start the list of all properties  -->
         <div>            
 
             <ui:repeat value="#{homeBean.propriedades}" var="TempPropriadade">
-
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="well well-sm">
-                        <div class="row">                       
-                            <div class="col-sm-6 col-md-4">
-                                <img src="#{TempPropriadade.url_imagem}" alt="Property Photo" class="img-rounded img-responsive" />
-                            </div>
-                            <div class="col-sm-6 col-md-4">
+                <b:panel class="col-xs-12 col-sm-12 col-md-4 col-lg-4" >
+                   
+                    <div class="panelStyle">
+                            <div>
+                                
                                 <h3><b>#{TempPropriadade.title}</b></h3>
                                 <h4><b>Description: #{TempPropriadade.smallDesc}</b></h4>
                                 <h4><b>Price: </b> #{TempPropriadade.price}€</h4>
@@ -53,14 +50,11 @@ and open the template in the editor.
                                 <h5><b>Type: </b> #{TempPropriadade.tipo}</h5>
 
                             </div>
-                        </div>
-
-                        <br></br>
-                        <br></br>
                     </div>
-                </div>
+                    
+                </b:panel>
             </ui:repeat>
-            <!-- End Lista de Animais associados ao Utilizador -->
+            <!-- End Lista de Propriedades -->
 
         </div>
 
