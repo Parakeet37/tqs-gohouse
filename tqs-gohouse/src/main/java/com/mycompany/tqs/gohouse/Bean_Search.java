@@ -11,6 +11,7 @@ package com.mycompany.tqs.gohouse;
  */
 
 import dbClasses.Property;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,9 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 @ManagedBean(name = "searchBean", eager = true)
 @SessionScoped
@@ -63,7 +67,7 @@ public class Bean_Search implements Serializable{
     
     
 
-    public String searchProperties(){
+    public String searchProperties() throws IOException{
         System.out.println("I got here!");
         searchResults.clear();
         List<Property> temp = new ArrayList<>();
@@ -75,6 +79,8 @@ public class Bean_Search implements Serializable{
             }
         }
         setSearchResults(temp);
-        return "home.xhtml";
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+    ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+        return "search.xhtml";
     }
 }
