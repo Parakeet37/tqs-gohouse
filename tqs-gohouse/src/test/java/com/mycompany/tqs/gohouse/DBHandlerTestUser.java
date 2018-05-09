@@ -58,6 +58,7 @@ public class DBHandlerTestUser {
         }
         univ = new University("UA", "adress");
         em.persist(univ);
+
         em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
         em.getTransaction().commit();
     }
@@ -88,6 +89,7 @@ public class DBHandlerTestUser {
         assertNotEquals(user, null);
     }
 
+
     /**
      * Test register a new user .
      */
@@ -102,6 +104,7 @@ public class DBHandlerTestUser {
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
         boolean result = instance.registerUser(email, name, age, isCollegeStudent, isDelegate, univ);
+
         assertEquals(expResult, result);
     }
     
@@ -124,6 +127,7 @@ public class DBHandlerTestUser {
         PlatformUser newuser = instance.getSingleUser(email);
         assertNotEquals("Users are equals... No changes were saved", user.isIsModerator(), newuser.isIsModerator());
     }
+
  
     /**
      * Test make a user delegate of an university.
@@ -146,6 +150,7 @@ public class DBHandlerTestUser {
     }
     
     /**
+
      * Test make a user student of an university.
      */
     @Test
