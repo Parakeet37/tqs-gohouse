@@ -6,8 +6,8 @@
 package com.mycompany.tqs.gohouse;
 
 import dbClasses.PlatformUser;
+import dbClasses.University;
 import java.time.LocalDate;
-import java.time.Month;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -25,6 +25,7 @@ public class DBHandlerTestUserFailures {
     private int USER_RATING;
     private final String PERSISTENCE_UNIT = "tests";
     private final int NUMBER_OF_USERS = 10;
+    private University univ;
     
     public DBHandlerTestUserFailures() {
     }
@@ -44,13 +45,19 @@ public class DBHandlerTestUserFailures {
         em.getTransaction().begin();
         Query query = em.createQuery("DELETE FROM PlatformUser");
         query.executeUpdate();
+        query = em.createQuery("DELETE FROM University");
+        query.executeUpdate();
         em.getTransaction().commit();
         em.getTransaction().begin();
         int i = NUMBER_OF_USERS;
         while (i>1){
             em.persist(new PlatformUser("testemail"+i+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
             i--;
+            em.getTransaction().commit();
+            em.getTransaction().begin();
         }
+        univ = new University("UA", "adress");
+        em.persist(univ);
         em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
         em.getTransaction().commit();
     }
@@ -72,7 +79,7 @@ public class DBHandlerTestUserFailures {
         boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
-        boolean result = instance.registerUser(email, name, age, isCollegeStudent, isDelegate);
+        boolean result = instance.registerUser(email, name, age, isCollegeStudent, isDelegate, univ);
         assertEquals(expResult, result);
     }
     

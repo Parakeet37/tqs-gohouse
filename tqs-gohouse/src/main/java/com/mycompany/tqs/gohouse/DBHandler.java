@@ -6,9 +6,12 @@
 package com.mycompany.tqs.gohouse;
 
 import dbClasses.PlatformUser;
+import dbClasses.Property;
+import dbClasses.Room;
 import dbClasses.University;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -64,9 +67,10 @@ public class DBHandler {
      * @param age age of the user
      * @param isCollegeStudent false if the user is not a college student and true otherwise
      * @param isDelegate false if the user is not a delegate of a university
+     * @param univ university of the user. if the user does not have anything to do with any university, this is empty 
      * @return false if the user already exists, true otherwise
      */
-    public boolean registerUser(String email, String name, LocalDate age, boolean isCollegeStudent, boolean isDelegate) {
+    public boolean registerUser(String email, String name, LocalDate age, boolean isCollegeStudent, boolean isDelegate, University univ) {
         Query query = em.createQuery("SELECT u FROM PlatformUser AS u WHERE u.email= :email");
         query.setParameter("email", email);
         try {
@@ -264,4 +268,38 @@ public class DBHandler {
         }
         return true;
     }
+    
+    public boolean addNewProperty(PlatformUser owner, int rent, String address, String type, char block, int floor, Set<Room> rooms){
+        Property property = new Property(owner, rent, address, type, block, floor, rooms);
+        em.getTransaction().begin();
+        if (owner.addOwnedProperty(property)) {
+            em.persist(property);
+            em.getTransaction().commit();
+        } else {
+            em.getTransaction().commit();
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean removeProperty(PlatformUser owner, Property property){
+        em.getTransaction().begin();
+        if (owner.removeOwnedProperty(property)){
+            Query query = em.createQuery("DELETE from Property u where u.id=:id");
+            query.setParameter("id", property.getId());
+            query.executeUpdate();
+            em.getTransaction().commit();
+            return true;
+        } else {
+            em.getTransaction().commit();
+            return false;
+        }
+    }
+    
+    public PlatformUser getOwner(Property property){
+        Query query = em.createQuery("Select p.owner from Property p where p.id=:id");
+        query.setParameter("id", property.getId());
+        return (PlatformUser) query.getSingleResult();  
+    }
+    
 }

@@ -2,69 +2,68 @@ package dbClasses;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class PlatformUser implements Serializable {
+public class PlatformUser extends GeneralEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
+    @Column(nullable = false)
     private String email;
-    private String name;
+    
+    @Column(nullable = false)
     private LocalDate age;
     
-    @OneToMany (targetEntity = Property.class)
-    private List rentedProperties;
+    @OneToMany (targetEntity = Room.class, mappedBy="renter")
+    @JoinColumn(nullable=false)
+    private Set<Room> rentedRooms;
     
-    @OneToMany (targetEntity = Property.class)
-    private List ownedProperties;
+    @OneToMany (targetEntity = Property.class, mappedBy="owner")
+    @JoinColumn(nullable=false)
+    private Set<Property> ownedProperties;
     
+    @Column(nullable = false)
     private boolean isCollegeStudent;
-    private double userRating;
-    private int nVotes;
-    private double weightedRating;
+    
+    @Column(nullable = false)
     private boolean isModerator;
+    
+    @Column(nullable = false)
     private boolean isDelegate;
     
     @ManyToOne
+    @JoinColumn(nullable = true)
     private University university;
 
     public PlatformUser() {
+        super();
     }
 
     public PlatformUser(String email, String name, LocalDate age, boolean isCollegeStudent, boolean isDelegate) {
+        super(name);
         this.email = email;
-        this.name = name;
         this.age = age;
         this.isCollegeStudent = isCollegeStudent;
         this.isModerator = false;
         this.isDelegate = isDelegate;
-        this.university = null;
-        this.rentedProperties = new ArrayList<>();
-        this.ownedProperties = new ArrayList<>();
-        this.userRating = 0;
-        this.nVotes = 0;
-        this.weightedRating = 0;
+        this.ownedProperties = new TreeSet<>();
+        
     }
 
-    public Long getId() {
-        return id;
+    public Set<Room> getRentedRooms() {
+        return rentedRooms;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRentedRooms(Set<Room> rentedRooms) {
+        this.rentedRooms = rentedRooms;
     }
 
     public String getEmail() {
@@ -73,10 +72,6 @@ public class PlatformUser implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getName() {
-        return name;
     }
     
     public void setNVotes(int nVotes) {
@@ -95,10 +90,6 @@ public class PlatformUser implements Serializable {
         this.weightedRating = weightedRating;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LocalDate getAge() {
         return age;
     }
@@ -106,37 +97,21 @@ public class PlatformUser implements Serializable {
     public void setAge(LocalDate age) {
         this.age = age;
     }
-
-    public List getRentedProperties() {
-        return rentedProperties;
-    }
-
-    public void setRentedProperties(ArrayList rentedProperties) {
-        this.rentedProperties = rentedProperties;
-    }
-
-    public void addRentedProperty(Property property) {
-        rentedProperties.add(property);
-    }
     
-    public void removeRentedProperty(Property property) {
-        rentedProperties.remove(property);
-    }
-    
-    public List getOwnedProperties() {
+    public Set<Property> getOwnedProperties() {
         return ownedProperties;
     }
 
-    public void setOwnedProperties(List ownedProperties) {
+    public void setOwnedProperties(Set<Property> ownedProperties) {
         this.ownedProperties = ownedProperties;
     }
 
-    public void addOwnedProperty(Property property) {
-        ownedProperties.add(property);
+    public boolean addOwnedProperty(Property property) {
+        return ownedProperties.add(property);
     }
     
-    public void removeOwnedProperty(Property property) {
-        ownedProperties.remove(property);
+    public boolean removeOwnedProperty(Property property) {
+        return ownedProperties.remove(property);
     }
     
     public boolean isIsCollegeStudent() {
@@ -198,38 +173,13 @@ public class PlatformUser implements Serializable {
             return false;
         }
         final PlatformUser other = (PlatformUser) obj;
-        if (this.isCollegeStudent != other.isCollegeStudent) {
-            return false;
-        }
-        if (this.userRating != other.userRating) {
-            return false;
-        }
-        if (this.isModerator != other.isModerator) {
-            return false;
-        }
-        if (this.isDelegate != other.isDelegate) {
-            return false;
-        }
-        if (this.university != other.university) {
-            return false;
-        }
-        if (!Objects.equals(this.email, other.email)) {
-            return false;
-        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.age, other.age)) {
-            return false;
-        }
-        if (!Objects.equals(this.rentedProperties, other.rentedProperties)) {
-            return false;
-        }
-        return Objects.equals(this.ownedProperties, other.ownedProperties);
+        return Objects.equals(this.email, other.email);
     }
+    
+    
 
     @Override
     public String toString() {

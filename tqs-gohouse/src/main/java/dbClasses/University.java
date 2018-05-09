@@ -6,52 +6,39 @@
 package dbClasses;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
-public class University implements Serializable {
+public class University extends GeneralEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    private String name;
-    private String address;
     
-    @OneToMany (targetEntity = Property.class)
-    private List rentedProperties;
+    @Column(nullable = false)
+    private String address;
 
+    @OneToMany (targetEntity = PlatformUser.class, mappedBy="university")
+    @JoinColumn(nullable = false)
+    private Set<PlatformUser> students;
+    
+    @OneToMany (targetEntity = PlatformUser.class, mappedBy="university")
+    @JoinColumn(nullable = false)
+    private Set<PlatformUser> delegates;
+    
     public University() {
+        super();
     }
 
     public University(String name, String address) {
-        this.name = name;
+        super(name);
         this.address = address;
-        rentedProperties = new ArrayList();
-    }
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        students = new TreeSet<>();
+        delegates = new TreeSet<>();
     }
 
     public String getAddress() {
@@ -61,27 +48,43 @@ public class University implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public List getRentedProperties() {
-        return rentedProperties;
+    
+    public Set<PlatformUser> getStudents() {
+        return students;
     }
 
-    public void setRentedProperties(List rentedProperties) {
-        this.rentedProperties = rentedProperties;
+    public void setStudents(Set<PlatformUser> students) {
+        this.students = students;
     }
  
-    public void addRentedProperty(Property property) {
-        rentedProperties.add(property);
+    public boolean addStudent(PlatformUser student) {
+        return students.add(student);
     }
     
-    public void removeRentedProperty(Property property) {
-        rentedProperties.remove(property);
+    public boolean removeStudent(PlatformUser student) {
+        return students.remove(student);
+    }
+    
+    public Set<PlatformUser> getDelegates() {
+        return delegates;
+    }
+
+    public void setDelegates(Set<PlatformUser> delegates) {
+        this.delegates = delegates;
+    }
+ 
+    public boolean addDelegate(PlatformUser delegate) {
+        return delegates.add(delegate);
+    }
+    
+    public boolean removeDelegate(PlatformUser delegate) {
+        return delegates.remove(delegate);
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + Objects.hashCode(this.id);
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -100,18 +103,7 @@ public class University implements Serializable {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.address, other.address)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return Objects.equals(this.rentedProperties, other.rentedProperties);
-    }
-
-    @Override
-    public String toString() {
-        return "University{" + "id=" + id + ", name=" + name + ", address=" + address + ", rentedProperties=" + rentedProperties + '}';
+        return Objects.equals(this.id, other.id);
     }
     
     

@@ -6,6 +6,7 @@
 package com.mycompany.tqs.gohouse;
 
 import dbClasses.PlatformUser;
+import dbClasses.University;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -24,6 +25,7 @@ public class DBHandlerTestUser {
     private EntityManager em;
     private final String PERSISTENCE_UNIT = "tests";
     private final int NUMBER_OF_USERS = 10;
+    private University univ;
     
     public DBHandlerTestUser() {
     }
@@ -43,13 +45,19 @@ public class DBHandlerTestUser {
         em.getTransaction().begin();
         Query query = em.createQuery("DELETE FROM PlatformUser");
         query.executeUpdate();
+        query = em.createQuery("DELETE FROM University");
+        query.executeUpdate();
         em.getTransaction().commit();
         em.getTransaction().begin();
         int i = NUMBER_OF_USERS;
         while (i>1){
             em.persist(new PlatformUser("testemail"+i+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
             i--;
+            em.getTransaction().commit();
+            em.getTransaction().begin();
         }
+        univ = new University("UA", "adress");
+        em.persist(univ);
         em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
         em.getTransaction().commit();
     }
@@ -93,7 +101,7 @@ public class DBHandlerTestUser {
         boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
-        boolean result = instance.registerUser(email, name, age, isCollegeStudent, isDelegate);
+        boolean result = instance.registerUser(email, name, age, isCollegeStudent, isDelegate, univ);
         assertEquals(expResult, result);
     }
     

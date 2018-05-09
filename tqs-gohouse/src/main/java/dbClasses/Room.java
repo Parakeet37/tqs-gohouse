@@ -1,10 +1,12 @@
 package dbClasses;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -14,11 +16,18 @@ public class Room implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    @Column(nullable = false)
     private int rent;
 
+    private String description;
+    
     @ManyToOne
-    private University owner;
+    @JoinColumn(nullable=false)
+    private Property property;
+    
     @ManyToOne
+    @JoinColumn()
     private PlatformUser renter;
 
     private boolean occupied;
@@ -28,9 +37,24 @@ public class Room implements Serializable {
 
     public Room(int rent, University owner) {
         this.rent = rent;
-        this.owner = owner;
         this.renter = null;
         this.occupied = false;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Property getProperty() {
+        return property;
+    }
+
+    public void setProperty(Property property) {
+        this.property = property;
     }
     
     public int getRent() {
@@ -39,14 +63,6 @@ public class Room implements Serializable {
 
     public void setRent(int rent) {
         this.rent = rent;
-    }
-
-    public University getOwner() {
-        return owner;
-    }
-
-    public void setOwner(University owner) {
-        this.owner = owner;
     }
 
     public PlatformUser getRenter() {

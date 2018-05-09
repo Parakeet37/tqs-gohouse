@@ -1,12 +1,14 @@
 package dbClasses;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -17,20 +19,41 @@ public class Property implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @OneToMany(targetEntity=Room.class)
-    private List rooms;
+    @OneToMany(targetEntity=Room.class, mappedBy="property")
+    @JoinColumn(nullable = false)
+    private Set<Room> rooms;
     
+    @ManyToOne
+    @JoinColumn
+    private GeneralEntity renter;
+    
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private PlatformUser owner;
+    
+    @Column(nullable = false)
     private int rent;
+    
+    @Column(nullable = false)
     private boolean occupied;
+    
+    @Column(nullable = false)
     private String address;
+    
+    @Column(nullable = false)
     private String type;
+    
+    @Column(nullable = false)
     private char block;
+    
+    @Column(nullable = false)
     private int floor;
 
     public Property() {
     }
 
-    public Property(int rent, String address, String type, char block, int floor, ArrayList rooms) {
+    public Property(PlatformUser owner, int rent, String address, String type, char block, int floor, Set<Room> rooms) {
+        this.owner = owner;
         this.rent = rent;
         this.address = address;
         this.type = type;
@@ -38,6 +61,22 @@ public class Property implements Serializable {
         this.floor = floor;
         this.occupied = false;
         this.rooms = rooms;
+    }
+
+    public GeneralEntity getRenterUser() {
+        return renter;
+    }
+
+    public void setRenterUser(GeneralEntity renter) {
+        this.renter = renter;
+    }
+
+    public PlatformUser getOwner() {
+        return owner;
+    }
+
+    public void setOwner(PlatformUser owner) {
+        this.owner = owner;
     }
 
     public int getRent() {
@@ -96,11 +135,11 @@ public class Property implements Serializable {
         this.id = id;
     }
 
-    public List getRooms() {
+    public Set<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(List rooms) {
+    public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
     }
     
