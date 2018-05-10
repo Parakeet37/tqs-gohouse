@@ -33,7 +33,7 @@ public class Bean_Register implements Serializable{
    
    @PostConstruct
    public void construct(){
-        setInputUName("I am here now");
+        setInputUName("");
         setInputPassword("");
         setInputName("");
         setInputEmail("");

@@ -64,7 +64,6 @@ public class Bean_Search implements Serializable{
     
 
     public String searchProperties() throws IOException{
-        System.out.println("I got here!");
         searchResults.clear();
         List<Property> temp = new ArrayList<>();
     
