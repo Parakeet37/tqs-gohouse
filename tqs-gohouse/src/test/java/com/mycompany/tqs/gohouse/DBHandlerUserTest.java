@@ -20,14 +20,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class DBHandlerTestUser {
+public class DBHandlerUserTest {
     
     private EntityManager em;
     private final String PERSISTENCE_UNIT = "tests";
     private final int NUMBER_OF_USERS = 10;
     private University univ;
     
-    public DBHandlerTestUser() {
+    public DBHandlerUserTest() {
     }
     
     @BeforeClass

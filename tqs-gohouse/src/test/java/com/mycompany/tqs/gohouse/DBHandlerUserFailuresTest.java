@@ -19,7 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class DBHandlerTestUserFailures {
+public class DBHandlerUserFailuresTest {
     
     private EntityManager em;
     private int USER_RATING;
@@ -27,7 +27,7 @@ public class DBHandlerTestUserFailures {
     private final int NUMBER_OF_USERS = 10;
     private University univ;
     
-    public DBHandlerTestUserFailures() {
+    public DBHandlerUserFailuresTest() {
     }
     
     @BeforeClass

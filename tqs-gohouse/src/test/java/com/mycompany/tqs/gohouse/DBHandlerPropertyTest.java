@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class DBHandlerTestProperty {
+public class DBHandlerPropertyTest {
  
     private EntityManager em;
     private final String PERSISTENCE_UNIT = "tests";
