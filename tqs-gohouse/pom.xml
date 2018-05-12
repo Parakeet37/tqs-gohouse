@@ -22,11 +22,11 @@
     </repositories>
 
    <dependencies>
+        <!-- https://mvnrepository.com/artifact/net.bootsfaces/bootsfaces -->
         <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <version>10.14.2.0</version>
-            <scope>test</scope>
+            <groupId>net.bootsfaces</groupId>
+            <artifactId>bootsfaces</artifactId>
+            <version>1.1.1</version>
         </dependency>
 
        <!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
@@ -49,17 +49,6 @@
            <version>4.5.1</version>
            <type>jar</type>
         </dependency>
-      <dependency>
-         <groupId>org.eclipse.persistence</groupId>
-         <artifactId>eclipselink</artifactId>
-         <version>2.5.2</version>
-      </dependency>
-      <dependency>
-         <groupId>org.eclipse.persistence</groupId>
-         <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
-         <version>2.5.2</version>
-         <scope>provided</scope>
-      </dependency>
       <dependency>
             <groupId>com.objectdb</groupId>
             <artifactId>objectdb</artifactId>
@@ -86,10 +75,22 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+          <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>javax.persistence</artifactId>
             <version>2.1.0</version>
+            <scope>provided</scope>
+          </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.31</version>
+          </dependency>
+          <dependency>
+           <groupId>org.eclipse.persistence</groupId>
+           <artifactId>org.eclipse.persistence.jpa</artifactId>
+           <version>2.7.1</version>
+           <scope>compile</scope>
         </dependency>
    <dependency>
             <groupId>net.bootsfaces</groupId>

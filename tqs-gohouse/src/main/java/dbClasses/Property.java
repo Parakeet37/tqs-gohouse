@@ -16,7 +16,7 @@ public class Property implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     
     @OneToMany(targetEntity=Room.class, mappedBy="property")
@@ -63,11 +63,11 @@ public class Property implements Serializable {
         this.rooms = rooms;
     }
 
-    public GeneralEntity getRenterUser() {
+    public GeneralEntity getRenter() {
         return renter;
     }
 
-    public void setRenterUser(GeneralEntity renter) {
+    public void setRenter(GeneralEntity renter) {
         this.renter = renter;
     }
 

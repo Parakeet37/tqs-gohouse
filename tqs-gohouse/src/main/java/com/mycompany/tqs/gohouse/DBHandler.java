@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tqs.gohouse;
 
+import dbClasses.GeneralEntity;
 import dbClasses.PlatformUser;
 import dbClasses.Property;
 import dbClasses.Room;
@@ -12,6 +8,8 @@ import dbClasses.University;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.EntityExistsException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -33,6 +31,9 @@ public class DBHandler {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
         this.em = emf.createEntityManager();
     }
+    
+//-------------------------------------USER QUERIES-------------------------------------
+ 
     /**
      * if no users are found, an empty list is returned
      * @return all the users in the database
@@ -71,40 +72,11 @@ public class DBHandler {
      * @return false if the user already exists, true otherwise
      */
     public boolean registerUser(String email, String name, LocalDate age, boolean isCollegeStudent, boolean isDelegate, University univ) {
-        Query query = em.createQuery("SELECT u FROM PlatformUser AS u WHERE u.email= :email");
-        query.setParameter("email", email);
         try {
-            query.getSingleResult();
-            System.out.println("found user");
-        } catch (NoResultException e) {
-            //there are no users with that email, we can proceed...
-            try {
-                em.getTransaction().begin();
-                em.persist(new PlatformUser(email, name, age, isCollegeStudent, isDelegate));
-                em.getTransaction().commit();
-            } catch (RollbackException ex) {
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-    
-    /**
-     * changes if the user is moderator or not
-     * @param email email of the user we want to change privileges
-     * @param isModerator boolean to update
-     * @return true if success, false otherwise
-     */
-    public boolean changePrivileges(String email, boolean isModerator) {
-        Query query = em.createQuery("Select u from PlatformUser as u where u.email= :email");
-        query.setParameter("email", email);
-        try {
-            PlatformUser user = (PlatformUser) query.getSingleResult();
             em.getTransaction().begin();
-            user.setIsModerator(isModerator);
+            em.persist(new PlatformUser(email, name, age, isCollegeStudent, isDelegate));
             em.getTransaction().commit();
-        } catch (NoResultException | RollbackException e) {
+        } catch (EntityExistsException ex) {
             return false;
         }
         return true;
@@ -112,23 +84,23 @@ public class DBHandler {
     
     /**
      * changes if a user is delegate of a university or not
-     * @param email email of the user
+
+     * @param id id of the user
+
      * @param isDelegate boolean to update
      * @param univName name of the university
      * @param univAddress address o the university
      * @return true if success, false otherwise
      */
-    public boolean changeDelegation(String email, boolean isDelegate, String univName, String univAddress) {
-        Query query = em.createQuery("Select u from PlatformUser as u where u.email= :email");
-        query.setParameter("email", email);
-        Query query_univ = em.createQuery("Select u from University as u where u.name=:name");
-        query_univ.setParameter("name", univName);
+    public boolean changeDelegation(long id, boolean isDelegate, String univName, String univAddress) {
+        Query query  = em.createQuery("Select u from University as u where u.name=:name");
+        query.setParameter("name", univName);
         try {
-            PlatformUser user = (PlatformUser) query.getSingleResult();
+            PlatformUser user = em.find(PlatformUser.class, id);
             if (!user.isIsCollegeStudent() || !isDelegate){
                 University univ;
                 try {
-                    univ = (University) query_univ.getSingleResult();                    
+                    univ = (University) query.getSingleResult();                    
                 } catch (NoResultException | RollbackException x){
                     //University does not exist in the database... Needs to be created
                     univ = new University(univName, univAddress);
@@ -143,7 +115,7 @@ public class DBHandler {
             } else {
                 return false;
             }
-        } catch (NoResultException | RollbackException e) {
+        } catch (NullPointerException e) {
             return false;
         }
         return true;
@@ -151,23 +123,21 @@ public class DBHandler {
     
     /**
      * changes if a user is a student or not
-     * @param email email of the user
+     * @param id id of the user
      * @param isStudent boolean to update
      * @param univName Name of the university
      * @param univAddress Address of the university
      * @return true if success, false otherwise
      */
-    public boolean changeIfStudent(String email, boolean isStudent, String univName, String univAddress){
-        Query query = em.createQuery("Select u from PlatformUser as u where u.email= :email");
-        query.setParameter("email", email);
-        Query query_univ = em.createQuery("Select u from University as u where u.name=:name");
-        query_univ.setParameter("name", univName);
+    public boolean changeIfStudent(long id, boolean isStudent, String univName, String univAddress){
+        Query query = em.createQuery("Select u from University as u where u.name=:name");
+        query.setParameter("name", univName);
         try {
-            PlatformUser user = (PlatformUser) query.getSingleResult();
+            PlatformUser user = em.find(PlatformUser.class, id);
             if (!user.isIsCollegeStudent() || !isStudent){
                 University univ;
                 try {
-                    univ = (University) query_univ.getSingleResult();                    
+                    univ = (University) query.getSingleResult();                    
                 } catch (NoResultException | RollbackException x){
                     //University does not exist in the database... Needs to be created
                     univ = new University(univName, univAddress);
@@ -182,7 +152,7 @@ public class DBHandler {
             } else {
                 return false;
             }
-        } catch (NoResultException | RollbackException e) {
+        } catch (NullPointerException e) {
             return false;
         }
         return true;
@@ -190,22 +160,21 @@ public class DBHandler {
     
     /**
      * updates the rating of the user, making the average between the existent rating and the rating another user gives
-     * @param email email of the user
+     * @param id id of the user
      * @param rating rating to be added
      * @return true if success, false otherwise
      */
-    public boolean updateUserRating(String email, int rating){
-        Query query = em.createQuery("Select u from PlatformUser as u where u.email= :email");
-        query.setParameter("email", email);
+    public boolean updateUserRating(long id, int rating){
         try {
-            PlatformUser user = (PlatformUser) query.getSingleResult();
+            PlatformUser user = em.find(PlatformUser.class, id);
             em.getTransaction().begin();
             if (user.getUserRating() != 0) user.setUserRating((rating+user.getUserRating())/2);
             else user.setUserRating(rating);
             user.setNVotes(user.getNVotes()+1);
             user.setWeightedRanking((user.getNVotes()/(user.getNVotes()+MIN_USERS))*user.getUserRating());
             em.getTransaction().commit();
-        } catch (NoResultException | RollbackException e) {
+
+        } catch (NullPointerException e) {
             return false;
         }
         return true;
@@ -231,19 +200,17 @@ public class DBHandler {
     
     /**
      * changes if the user is moderator or not
-     * @param email email of the user we want to change privileges
+     * @param id id of the user we want to change privileges
      * @param name parameter to update
      * @return true if success, false otherwise
      */
-    public boolean changeName(String email, String name) {
-        Query query = em.createQuery("Select u from PlatformUser as u where u.email= :email");
-        query.setParameter("email", email);
+    public boolean changeName(long id, String name) {
         try {
-            PlatformUser user = (PlatformUser) query.getSingleResult();
+            PlatformUser user = em.find(PlatformUser.class, id);
             em.getTransaction().begin();
             user.setName(name);
             em.getTransaction().commit();
-        } catch (NoResultException | RollbackException e) {
+        } catch (NullPointerException e) {
             return false;
         }
         return true;
@@ -251,26 +218,41 @@ public class DBHandler {
     
     /**
      * changes if the user is moderator or not
-     * @param email email of the user we want to change privileges
+     * @param id id of the user we want to change privileges
      * @param age parameter to update
      * @return true if success, false otherwise
      */
-    public boolean changeBirthday(String email, LocalDate age) {
-        Query query = em.createQuery("Select u from PlatformUser as u where u.email= :email");
-        query.setParameter("email", email);
+    public boolean changeBirthday(long id, LocalDate age) {
         try {
-            PlatformUser user = (PlatformUser) query.getSingleResult();
+            PlatformUser user = em.find(PlatformUser.class, id);
             em.getTransaction().begin();
             user.setAge(age);
             em.getTransaction().commit();
-        } catch (NoResultException | RollbackException e) {
+        } catch (NullPointerException e) {
             return false;
         }
         return true;
     }
+
+//-------------------------------------PROPERTY QUERIES-------------------------------------
     
-    public boolean addNewProperty(PlatformUser owner, int rent, String address, String type, char block, int floor, Set<Room> rooms){
-        Property property = new Property(owner, rent, address, type, block, floor, rooms);
+    /**
+     * puts a property in the database and establishes the connection between the property and it's owner
+     * @param id id of the owner of the property
+     * @param rent price per month
+     * @param address address of the property
+     * @param type type of the property (HOUSE or APARTMENT)
+     * @param block block of the building in which the property is located 
+     * @param floor floor in which the property is located
+     * @param rooms list of the rooms of the property
+     * @return true if the property was added with success
+     */
+    public boolean addNewProperty(long id, int rent, String address, String type, char block, int floor, Set<Room> rooms){
+        PlatformUser owner;
+        Property property;
+        owner = em.find(PlatformUser.class, id);
+        if (owner == null) return false;
+        property = new Property(owner, rent, address, type, block, floor, rooms);
         em.getTransaction().begin();
         if (owner.addOwnedProperty(property)) {
             em.persist(property);
@@ -282,24 +264,37 @@ public class DBHandler {
         return true;
     }
     
-    public boolean removeProperty(PlatformUser owner, Property property){
-        em.getTransaction().begin();
+
+    /**
+     * removes a property from the database
+     * @param ownerID id of the owner of the property
+     * @param propertyID id of the property itself
+     * @return true if the property was added with success
+     */
+    public boolean removeProperty(long ownerID, long propertyID){
+        PlatformUser owner = em.find(PlatformUser.class, ownerID);
+        Property property = em.find(Property.class, propertyID);
+        if (owner == null || property == null) return false;
         if (owner.removeOwnedProperty(property)){
-            Query query = em.createQuery("DELETE from Property u where u.id=:id");
-            query.setParameter("id", property.getId());
-            query.executeUpdate();
-            em.getTransaction().commit();
+            em.remove(property);
             return true;
         } else {
-            em.getTransaction().commit();
             return false;
         }
     }
+
+    public PlatformUser getOwner(long id){
+        return em.find(Property.class, id).getOwner();  
+    }
     
-    public PlatformUser getOwner(Property property){
-        Query query = em.createQuery("Select p.owner from Property p where p.id=:id");
-        query.setParameter("id", property.getId());
-        return (PlatformUser) query.getSingleResult();  
+    public GeneralEntity getRenter(long id) {
+        GeneralEntity entity = em.find(Property.class, id).getRenter();
+        if (entity instanceof PlatformUser){
+            return (PlatformUser) entity;
+        } else {
+            return (University) entity;
+        }
+
     }
     
 }
