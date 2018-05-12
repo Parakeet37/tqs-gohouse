@@ -22,9 +22,6 @@ public abstract class GeneralEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
-
-    @Column(nullable = false)
-    protected String name;
     
     @Column(nullable = false)
     protected double userRating;
@@ -38,9 +35,6 @@ public abstract class GeneralEntity implements Serializable {
     @OneToMany (targetEntity = Property.class, mappedBy="renter")
     @JoinColumn(nullable = false)
     protected Set<Property> rentedProperties;
-
-    public GeneralEntity() {
-    }
     
     public Long getId() {
         return id;
@@ -50,8 +44,7 @@ public abstract class GeneralEntity implements Serializable {
         this.id = id;
     }
 
-    public GeneralEntity(String name) {
-        this.name = name;
+    public GeneralEntity() {
         this.rentedProperties = new TreeSet<>();
         this.userRating = 0;
         this.nVotes = 0;
@@ -72,14 +65,6 @@ public abstract class GeneralEntity implements Serializable {
     
     public boolean removeRentedProperty(Property property) {
         return rentedProperties.remove(property);
-    }
-    
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
@@ -108,6 +93,6 @@ public abstract class GeneralEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "GeneralEntity{" + "id=" + id + ", name=" + name + ", rentedProperties=" + rentedProperties + '}';
+        return "GeneralEntity{" + "id=" + id + ", rentedProperties=" + rentedProperties + '}';
     }
 }

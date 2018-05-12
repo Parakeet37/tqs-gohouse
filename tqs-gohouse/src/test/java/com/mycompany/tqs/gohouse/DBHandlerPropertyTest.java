@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class DBHandlerTestProperty {
+public class DBHandlerPropertyTest {
  
     private EntityManager em;
     private final String PERSISTENCE_UNIT = "tests";
@@ -37,6 +37,14 @@ public class DBHandlerTestProperty {
         query.executeUpdate();
         em.getTransaction().commit();
         em.getTransaction().begin();
+        query = em.createQuery("DELETE FROM Property");
+        query.executeUpdate();
+        em.getTransaction().commit();
+        em.getTransaction().begin();
+        query = em.createQuery("DELETE FROM University");
+        query.executeUpdate();
+        em.getTransaction().commit();
+        em.getTransaction().begin();
         em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
         em.getTransaction().commit();
     }
@@ -51,7 +59,7 @@ public class DBHandlerTestProperty {
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
         boolean expResult = true;
-        boolean result = instance.addNewProperty(user, 100, "Street", "house", 'A', 1, new HashSet<Room>());
+        boolean result = instance.addNewProperty(user.getId(), 100, "Street", "house", 'A', 1, new HashSet<Room>());
         assertEquals(expResult, result);
     }
     

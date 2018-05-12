@@ -19,7 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class DBHandlerTestUserFailures {
+public class DBHandlerUserFailuresTest {
     
     private EntityManager em;
     private int USER_RATING;
@@ -27,7 +27,7 @@ public class DBHandlerTestUserFailures {
     private final int NUMBER_OF_USERS = 10;
     private University univ;
     
-    public DBHandlerTestUserFailures() {
+    public DBHandlerUserFailuresTest() {
     }
     
     @BeforeClass
@@ -84,18 +84,6 @@ public class DBHandlerTestUserFailures {
     }
     
     /**
-     * Test make a non existent user a moderator.
-     */
-    @Test
-    public void testMakeNonExistentUserModeratorFailure() {
-        System.out.println("new moderator failure");
-        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        boolean expResult = false;
-        boolean result = instance.changePrivileges("newemail1@gmail.com", true);
-        assertEquals(expResult, result);
-    }
-    
-    /**
      * Test make a non existent user delegate.
      */
     @Test
@@ -103,7 +91,7 @@ public class DBHandlerTestUserFailures {
         System.out.println("new delegate failure");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
-        boolean result = instance.changeDelegation("newemail1@gmail.com", true, "UA", "rua");
+        boolean result = instance.changeDelegation(0, true, "UA", "rua");
         assertEquals(expResult, result);
     }
     
@@ -115,7 +103,7 @@ public class DBHandlerTestUserFailures {
         System.out.println("new student failure");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
-        boolean result = instance.changeIfStudent("newemail1@gmail.com", true, "UA", "rua");
+        boolean result = instance.changeIfStudent(0, true, "UA", "rua");
         assertEquals(expResult, result);
     }
     
@@ -125,10 +113,9 @@ public class DBHandlerTestUserFailures {
     @Test
     public void testGiveNonExistentUserRating() {
         System.out.println("new student failure");
-        String testemail = "newemail1@gmail.com";
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
-        boolean result = instance.updateUserRating(testemail, USER_RATING);
+        boolean result = instance.updateUserRating(0, USER_RATING);
         assertEquals(expResult, result);
     }
     
@@ -140,7 +127,7 @@ public class DBHandlerTestUserFailures {
         System.out.println("new student failure");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
-        boolean result = instance.changeName("newemail1@gmail.com", "NewName");
+        boolean result = instance.changeName(0, "NewName");
         assertEquals(expResult, result);
     }
     
@@ -150,10 +137,9 @@ public class DBHandlerTestUserFailures {
     @Test
     public void testChangeNonExistentUserBirthday() {
         System.out.println("new student failure");
-        String testemail = "newemail1@gmail.com";
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
-        boolean result = instance.changeBirthday(testemail, LocalDate.of(1997, 10, 10));
+        boolean result = instance.changeBirthday(0, LocalDate.of(1997, 10, 10));
         assertEquals(expResult, result);
     }
     
