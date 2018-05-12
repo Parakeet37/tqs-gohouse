@@ -20,13 +20,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+
 public class DBHandlerUserTest{
-    
+  
     private EntityManager em;
     private final String PERSISTENCE_UNIT = "tests";
     private final int NUMBER_OF_USERS = 10;
     private long USER_ID_TEST;
     private long USER2_ID_TEST;
+
     private University univ;
     
     public DBHandlerUserTest() {
@@ -60,6 +62,7 @@ public class DBHandlerUserTest{
             em.getTransaction().commit();
             em.getTransaction().begin();
         }
+
         em.persist(new PlatformUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
         em.getTransaction().commit();
         em.getTransaction().begin();
@@ -94,7 +97,6 @@ public class DBHandlerUserTest{
         PlatformUser user = instance.getSingleUser("testemail@gmail.com");
         assertNotEquals(user, null);
     }
-
     /**
      * Test register a new user .
      */

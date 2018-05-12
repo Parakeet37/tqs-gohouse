@@ -21,7 +21,7 @@ public class University extends GeneralEntity implements Serializable {
     
     @Column(nullable = false, unique=true)
     protected String name;
-    
+
     @Column(nullable = false)
     private String address;
 
@@ -52,7 +52,7 @@ public class University extends GeneralEntity implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getAddress() {
         return address;
     }

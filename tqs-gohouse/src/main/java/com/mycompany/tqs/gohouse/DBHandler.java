@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityExistsException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -32,7 +33,7 @@ public class DBHandler {
     }
     
 //-------------------------------------USER QUERIES-------------------------------------
-    
+ 
     /**
      * if no users are found, an empty list is returned
      * @return all the users in the database
@@ -83,7 +84,9 @@ public class DBHandler {
     
     /**
      * changes if a user is delegate of a university or not
+
      * @param id id of the user
+
      * @param isDelegate boolean to update
      * @param univName name of the university
      * @param univAddress address o the university
@@ -170,6 +173,7 @@ public class DBHandler {
             user.setNVotes(user.getNVotes()+1);
             user.setWeightedRanking((user.getNVotes()/(user.getNVotes()+MIN_USERS))*user.getUserRating());
             em.getTransaction().commit();
+
         } catch (NullPointerException e) {
             return false;
         }
@@ -229,7 +233,7 @@ public class DBHandler {
         }
         return true;
     }
-    
+
 //-------------------------------------PROPERTY QUERIES-------------------------------------
     
     /**
@@ -260,6 +264,7 @@ public class DBHandler {
         return true;
     }
     
+
     /**
      * removes a property from the database
      * @param ownerID id of the owner of the property
@@ -277,7 +282,7 @@ public class DBHandler {
             return false;
         }
     }
-    
+
     public PlatformUser getOwner(long id){
         return em.find(Property.class, id).getOwner();  
     }
@@ -289,6 +294,7 @@ public class DBHandler {
         } else {
             return (University) entity;
         }
+
     }
     
 }

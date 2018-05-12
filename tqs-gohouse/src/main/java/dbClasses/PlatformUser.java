@@ -53,6 +53,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
         this.email = email;
         this.age = age;
         this.isCollegeStudent = isCollegeStudent;
+
         this.isDelegate = isDelegate;
         this.ownedProperties = new TreeSet<>();
         
@@ -65,7 +66,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public Set<Room> getRentedRooms() {
         return rentedRooms;
     }
