@@ -11,6 +11,11 @@
    <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <!-- Sonar -->
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+<!--    <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>-->
     </properties>
 
     <repositories>
@@ -22,12 +27,6 @@
     </repositories>
 
    <dependencies>
-        <!-- https://mvnrepository.com/artifact/net.bootsfaces/bootsfaces -->
-        <dependency>
-            <groupId>net.bootsfaces</groupId>
-            <artifactId>bootsfaces</artifactId>
-            <version>1.1.1</version>
-        </dependency>
 
        <!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
 
@@ -86,13 +85,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.31</version>
           </dependency>
-          <dependency>
-           <groupId>org.eclipse.persistence</groupId>
-           <artifactId>org.eclipse.persistence.jpa</artifactId>
-           <version>2.7.1</version>
-           <scope>compile</scope>
-        </dependency>
-   <dependency>
+        <dependency>
             <groupId>net.bootsfaces</groupId>
             <artifactId>bootsfaces</artifactId>
             <version>1.2.0</version>
@@ -146,6 +139,23 @@
                     </execution>
                 </executions>
             </plugin>
+            
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <!--            <configuration>
+                    <destFile>${sonar.jacoco.reportPath}</destFile>
+                </configuration>-->
+            </plugin>
+            
         </plugins>
     </build>
 </project>
