@@ -19,6 +19,9 @@ public class University extends GeneralEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
+    @Column(nullable = false, unique=true)
+    protected String name;
+
     @Column(nullable = false)
     private String address;
 
@@ -35,10 +38,19 @@ public class University extends GeneralEntity implements Serializable {
     }
 
     public University(String name, String address) {
-        super(name);
+        super();
+        this.name = name;
         this.address = address;
         students = new TreeSet<>();
         delegates = new TreeSet<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {

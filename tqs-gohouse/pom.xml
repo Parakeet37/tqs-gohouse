@@ -11,6 +11,11 @@
    <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <!-- Sonar -->
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
     </properties>
 
     <repositories>
@@ -22,12 +27,6 @@
     </repositories>
 
    <dependencies>
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <version>10.14.2.0</version>
-            <scope>test</scope>
-        </dependency>
 
        <!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
 
@@ -49,17 +48,6 @@
            <version>4.5.1</version>
            <type>jar</type>
         </dependency>
-      <dependency>
-         <groupId>org.eclipse.persistence</groupId>
-         <artifactId>eclipselink</artifactId>
-         <version>2.5.2</version>
-      </dependency>
-      <dependency>
-         <groupId>org.eclipse.persistence</groupId>
-         <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
-         <version>2.5.2</version>
-         <scope>provided</scope>
-      </dependency>
       <dependency>
             <groupId>com.objectdb</groupId>
             <artifactId>objectdb</artifactId>
@@ -86,12 +74,18 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+          <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>javax.persistence</artifactId>
             <version>2.1.0</version>
-        </dependency>
-   <dependency>
+            <scope>provided</scope>
+          </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.31</version>
+          </dependency>
+        <dependency>
             <groupId>net.bootsfaces</groupId>
             <artifactId>bootsfaces</artifactId>
             <version>1.2.0</version>
@@ -145,6 +139,23 @@
                     </execution>
                 </executions>
             </plugin>
+            
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <destFile>${sonar.jacoco.reportPath}</destFile>
+                </configuration>
+            </plugin>
+            
         </plugins>
     </build>
 </project>

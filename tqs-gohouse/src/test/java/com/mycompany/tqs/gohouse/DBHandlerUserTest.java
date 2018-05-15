@@ -20,14 +20,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class DBHandlerTestUser {
-    
+
+public class DBHandlerUserTest{
+  
     private EntityManager em;
     private final String PERSISTENCE_UNIT = "tests";
     private final int NUMBER_OF_USERS = 10;
+    private long USER_ID_TEST;
+    private long USER2_ID_TEST;
+
     private University univ;
     
-    public DBHandlerTestUser() {
+    public DBHandlerUserTest() {
     }
     
     @BeforeClass
@@ -43,22 +47,27 @@ public class DBHandlerTestUser {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
         this.em = emf.createEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("DELETE FROM PlatformUser");
+        Query query = em.createQuery("DELETE FROM Property");
+        query.executeUpdate();
+        query = em.createQuery("DELETE FROM PlatformUser");
         query.executeUpdate();
         query = em.createQuery("DELETE FROM University");
         query.executeUpdate();
         em.getTransaction().commit();
         em.getTransaction().begin();
         int i = NUMBER_OF_USERS;
-        while (i>1){
-            em.persist(new PlatformUser("testemail"+i+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
+        while (i>2){
+            em.persist(new PlatformUser("testemail"+(i-1)+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
             i--;
             em.getTransaction().commit();
             em.getTransaction().begin();
         }
+
+        em.persist(new PlatformUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
+        em.getTransaction().commit();
+        em.getTransaction().begin();
         univ = new University("UA", "adress");
         em.persist(univ);
-
         em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
         em.getTransaction().commit();
     }
@@ -88,8 +97,6 @@ public class DBHandlerTestUser {
         PlatformUser user = instance.getSingleUser("testemail@gmail.com");
         assertNotEquals(user, null);
     }
-
-
     /**
      * Test register a new user .
      */
@@ -104,30 +111,8 @@ public class DBHandlerTestUser {
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
         boolean result = instance.registerUser(email, name, age, isCollegeStudent, isDelegate, univ);
-
         assertEquals(expResult, result);
     }
-    
-    /**
-     * Test make a user moderator.
-     */
-    @Test
-    public void testMakeUserModerator() {
-        System.out.println("new moderator");
-        String email = "testemail@gmail.com";
-        String name = "TestUser";
-        LocalDate age = LocalDate.of(1997, 10, 20);
-        boolean isCollegeStudent = false;
-        boolean isDelegate = false;
-        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        boolean expResult = true;
-        PlatformUser user = new PlatformUser(email, name, age, isCollegeStudent, isDelegate);
-        boolean result = instance.changePrivileges(email, true);
-        assertEquals(expResult, result);
-        PlatformUser newuser = instance.getSingleUser(email);
-        assertNotEquals("Users are equals... No changes were saved", user.isIsModerator(), newuser.isIsModerator());
-    }
-
  
     /**
      * Test make a user delegate of an university.
@@ -136,38 +121,29 @@ public class DBHandlerTestUser {
     public void testMakeUserDelegate() {
         System.out.println("new delegate");
         String email = "testemail@gmail.com";
-        String name = "TestUser";
-        LocalDate age = LocalDate.of(1997, 10, 20);
-        boolean isCollegeStudent = false;
-        boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
-        PlatformUser user = new PlatformUser(email, name, age, isCollegeStudent, isDelegate);
-        boolean result = instance.changeDelegation(email, true, "UA", "address");
+        PlatformUser user = instance.getSingleUser(email);
+        boolean result = instance.changeDelegation(user.getId(), true, "UA", "address");
         assertEquals(expResult, result);
         PlatformUser newuser = instance.getSingleUser(email);
-        assertNotEquals("Users are equals... No changes were saved", user.isIsDelegate(), newuser.isIsDelegate());
+        assertNotEquals("No changes were saved", false, newuser.isIsDelegate());
     }
     
     /**
-
      * Test make a user student of an university.
      */
     @Test
     public void testMakeUserStudent() {
         System.out.println("new student");
         String email = "testemail@gmail.com";
-        String name = "TestUser";
-        LocalDate age = LocalDate.of(1997, 10, 20);
-        boolean isCollegeStudent = false;
-        boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
-        PlatformUser user = new PlatformUser(email, name, age, isCollegeStudent, isDelegate);
-        boolean result = instance.changeIfStudent(email, true, "UA", "rua");
+        PlatformUser user = instance.getSingleUser(email);
+        boolean result = instance.changeIfStudent(user.getId(), true, "UA", "rua");
         assertEquals(expResult, result);
         PlatformUser newuser = instance.getSingleUser(email);
-        assertNotEquals("Users are equals... No changes were saved", user.isIsCollegeStudent(), newuser.isIsCollegeStudent());
+        assertNotEquals("No changes were saved", false, newuser.isIsCollegeStudent());
     }
     
     /**
@@ -177,19 +153,15 @@ public class DBHandlerTestUser {
     public void testGiveUserRating() {
         System.out.println("give user rating");
         String email = "testemail@gmail.com";
-        String name = "TestUser";
-        LocalDate age = LocalDate.of(1997, 10, 20);
-        boolean isCollegeStudent = false;
-        boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
-        PlatformUser user = new PlatformUser(email, name, age, isCollegeStudent, isDelegate);
-        boolean result = instance.updateUserRating(email, 5);
+        PlatformUser user = instance.getSingleUser(email);
+        boolean result = instance.updateUserRating(user.getId(), 5);
         assertEquals(expResult, result);
         PlatformUser newuser = instance.getSingleUser(email);
-        assertNotEquals("Users are equals... No changes were saved", user.getUserRating(), newuser.getUserRating());
+        assertNotEquals("Users are equals... No changes were saved", 0, newuser.getUserRating());
         assertEquals("User rating not updated correctly", 5, newuser.getUserRating(), 0.0);
-        result = instance.updateUserRating(email, 4);
+        result = instance.updateUserRating(user.getId(), 4);
         assertEquals(expResult, result);
         newuser=instance.getSingleUser(email);
         assertEquals(4.5, newuser.getUserRating(), 0.0);
@@ -198,13 +170,14 @@ public class DBHandlerTestUser {
     @Test
     public void testGetMostPopularUser(){
         System.out.println("get the most popular user");
-        PlatformUser popuser = new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false);
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.updateUserRating("testemail@gmail.com", 5);
-        instance.updateUserRating("testemail@gmail.com", 5);
-        instance.updateUserRating("testemail@gmail.com", 5);
-        instance.updateUserRating("testemail@gmail.com", 4);
-        instance.updateUserRating("testemail2@gmail.com", 5);
+        PlatformUser popuser = instance.getSingleUser("testemail@gmail.com");
+        PlatformUser user = instance.getSingleUser("testemail2@gmail.com");
+        instance.updateUserRating(popuser.getId(), 5);
+        instance.updateUserRating(popuser.getId(), 5);
+        instance.updateUserRating(popuser.getId(), 5);
+        instance.updateUserRating(popuser.getId(), 4);
+        instance.updateUserRating(user.getId(), 5);
         PlatformUser result = instance.getMostPopularUser();
         assertEquals("Users are not equal... Order by not working correctly", popuser.getEmail(), result.getEmail());
     }
@@ -212,20 +185,24 @@ public class DBHandlerTestUser {
     @Test
     public void testGetNMostPopularUsers(){
         System.out.println("get the 5 most popular users");
-        PlatformUser popuser = new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false);
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.updateUserRating("testemail@gmail.com", 5);
-        instance.updateUserRating("testemail@gmail.com", 5);
-        instance.updateUserRating("testemail@gmail.com", 5);
-        instance.updateUserRating("testemail@gmail.com", 4);
-        instance.updateUserRating("testemail2@gmail.com", 5);
-        instance.updateUserRating("testemail2@gmail.com", 2);
-        instance.updateUserRating("testemail3@gmail.com", 5);
-        instance.updateUserRating("testemail3@gmail.com", 3);
-        instance.updateUserRating("testemail4@gmail.com", 5);
-        instance.updateUserRating("testemail4@gmail.com", 4);
-        instance.updateUserRating("testemail4@gmail.com", 5);
-        instance.updateUserRating("testemail5@gmail.com", 2);
+        PlatformUser popuser = instance.getSingleUser("testemail@gmail.com");
+        PlatformUser user = instance.getSingleUser("testemail2@gmail.com");
+        PlatformUser third = instance.getSingleUser("testemail3@gmail.com");
+        PlatformUser fourth = instance.getSingleUser("testemail4@gmail.com");
+        PlatformUser fifth = instance.getSingleUser("testemail5@gmail.com");
+        instance.updateUserRating(popuser.getId(), 5);
+        instance.updateUserRating(popuser.getId(), 5);
+        instance.updateUserRating(popuser.getId(), 5);
+        instance.updateUserRating(popuser.getId(), 4);
+        instance.updateUserRating(user.getId(), 5);
+        instance.updateUserRating(user.getId(), 2);
+        instance.updateUserRating(third.getId(), 5);
+        instance.updateUserRating(third.getId(), 3);
+        instance.updateUserRating(fourth.getId(), 5);
+        instance.updateUserRating(fourth.getId(), 4);
+        instance.updateUserRating(fourth.getId(), 5);
+        instance.updateUserRating(fifth.getId(), 2);
         List result = instance.getNMostPopularUsers(5);
         assertEquals(result.size(), 5);
         assertEquals(popuser.getEmail(), ((PlatformUser)result.get(0)).getEmail());
@@ -238,36 +215,28 @@ public class DBHandlerTestUser {
     public void testMakeChangeUserName() {
         System.out.println("new moderator");
         String email = "testemail@gmail.com";
-        String name = "TestUser";
-        LocalDate age = LocalDate.of(1997, 10, 20);
-        boolean isCollegeStudent = false;
-        boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
-        PlatformUser user = new PlatformUser(email, name, age, isCollegeStudent, isDelegate);
-        boolean result = instance.changeName(email, "NewName");
+        PlatformUser user = instance.getSingleUser(email);
+        boolean result = instance.changeName(user.getId(), "NewName");
         assertEquals(expResult, result);
         PlatformUser newuser = instance.getSingleUser(email);
-        assertNotEquals("Users are equals... No changes were saved", user.getName(), newuser.getName());
+        assertNotEquals("Users are equals... No changes were saved", "TestUser", newuser.getName());
     }
     
     /**
-     * Test make a user moderator.
+     * Test changing the birthday of a user.
      */
     @Test
     public void testChangeUserBirthday() {
         System.out.println("new moderator");
         String email = "testemail@gmail.com";
-        String name = "TestUser";
-        LocalDate age = LocalDate.of(1997, 10, 20);
-        boolean isCollegeStudent = false;
-        boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
-        PlatformUser user = new PlatformUser(email, name, age, isCollegeStudent, isDelegate);
-        boolean result = instance.changeBirthday(email, LocalDate.of(1997, 10, 10));
+        PlatformUser user = instance.getSingleUser(email);
+        boolean result = instance.changeBirthday(user.getId(), LocalDate.of(1997, 10, 10));
         assertEquals(expResult, result);
         PlatformUser newuser = instance.getSingleUser(email);
-        assertNotEquals("Users are equals... No changes were saved", user.getAge(), newuser.getAge());
+        assertNotEquals("Users are equals... No changes were saved", LocalDate.of(1997, 10, 20), newuser.getAge());
     }
 }

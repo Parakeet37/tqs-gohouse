@@ -17,6 +17,9 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Column(nullable = false)
+    protected String name;
+    
+    @Column(nullable = false, unique=true)
     private String email;
     
     @Column(nullable = false)
@@ -34,9 +37,6 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     private boolean isCollegeStudent;
     
     @Column(nullable = false)
-    private boolean isModerator;
-    
-    @Column(nullable = false)
     private boolean isDelegate;
     
     @ManyToOne
@@ -48,14 +48,23 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     }
 
     public PlatformUser(String email, String name, LocalDate age, boolean isCollegeStudent, boolean isDelegate) {
-        super(name);
+        super();
+        this.name = name;
         this.email = email;
         this.age = age;
         this.isCollegeStudent = isCollegeStudent;
-        this.isModerator = false;
+
         this.isDelegate = isDelegate;
         this.ownedProperties = new TreeSet<>();
         
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Room> getRentedRooms() {
@@ -130,14 +139,6 @@ public class PlatformUser extends GeneralEntity implements Serializable {
         this.userRating = userRating;
     }
 
-    public boolean isIsModerator() {
-        return isModerator;
-    }
-
-    public void setIsModerator(boolean isModerator) {
-        this.isModerator = isModerator;
-    }
-
     public boolean isIsDelegate() {
         return isDelegate;
     }
@@ -183,7 +184,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "PlatformUser{" + "id=" + id + ", email=" + email + ", name=" + name + ", age=" + age + ", rentedProperties=" + rentedProperties + ", ownedProperties=" + ownedProperties + ", isCollegeStudent=" + isCollegeStudent + ", userRating=" + userRating + ", isModerator=" + isModerator + ", isDelegate=" + isDelegate + ", universityId=" + university + '}';
+        return "PlatformUser{" + "id=" + id + ", email=" + email + ", name=" + name + ", age=" + age + ", rentedProperties=" + rentedProperties + ", ownedProperties=" + ownedProperties + ", isCollegeStudent=" + isCollegeStudent + ", userRating=" + userRating + ", isDelegate=" + isDelegate + ", universityId=" + university + '}';
     }
 
     

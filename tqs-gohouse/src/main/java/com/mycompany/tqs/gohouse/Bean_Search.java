@@ -34,6 +34,10 @@ public class Bean_Search implements Serializable{
    public void construct(){
        setSearchValue("");
        List<Property> temp = new ArrayList<>();
+       /*temp.add(new Property(300, 1234, "Uma Rua Qalquer", "Apartamento", 'A', 2));
+        temp.add(new Property(123, 4321, "Uma Outra Rua", "Residência", 'C', 1));
+        temp.add(new Property(300, 1234, "Mais Uma", "???", 'F', 3));
+        temp.add(new Property(300, 1234, "Outra", "Garbage", 'J', 4));*/
         setAllProperties(temp);
    }
 
@@ -64,6 +68,7 @@ public class Bean_Search implements Serializable{
     
 
     public String searchProperties() throws IOException{
+        System.out.println("I got here!");
         searchResults.clear();
         List<Property> temp = new ArrayList<>();
     
