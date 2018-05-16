@@ -35,10 +35,11 @@ public class Room implements Serializable {
     public Room() {
     }
 
-    public Room(int rent, University owner) {
+    public Room(String description, int rent, Property property) {
         this.rent = rent;
-        this.renter = null;
+        this.description = description;
         this.occupied = false;
+        this.property = property;
     }
 
     public String getDescription() {
@@ -103,10 +104,7 @@ public class Room implements Serializable {
             return false;
         }
         Room other = (Room) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override

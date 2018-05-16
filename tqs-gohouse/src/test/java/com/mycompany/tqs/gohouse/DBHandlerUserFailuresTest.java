@@ -6,7 +6,6 @@
 package com.mycompany.tqs.gohouse;
 
 import dbClasses.PlatformUser;
-import dbClasses.University;
 import java.time.LocalDate;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -25,7 +24,6 @@ public class DBHandlerUserFailuresTest {
     private int USER_RATING;
     private final String PERSISTENCE_UNIT = "tests";
     private final int NUMBER_OF_USERS = 10;
-    private University univ;
     
     public DBHandlerUserFailuresTest() {
     }
@@ -51,14 +49,12 @@ public class DBHandlerUserFailuresTest {
         em.getTransaction().begin();
         int i = NUMBER_OF_USERS;
         while (i>1){
-            em.persist(new PlatformUser("testemail"+i+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
+            em.persist(new PlatformUser("testemail"+i+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
             i--;
             em.getTransaction().commit();
             em.getTransaction().begin();
         }
-        univ = new University("UA", "adress");
-        em.persist(univ);
-        em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false, false));
+        em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
         em.getTransaction().commit();
     }
     
@@ -66,77 +62,63 @@ public class DBHandlerUserFailuresTest {
     public void tearDown() {
     }
     
-    /**
-     * Test register an existent user.
-     */
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testGetAllUsersEmptyDB(){
+        System.out.println("testing getting all users from an empty database");
+        // emptying database...
+        em.getTransaction().begin();
+        Query query = em.createQuery("DELETE FROM PlatformUser");
+        query.executeUpdate();
+        query = em.createQuery("DELETE FROM University");
+        query.executeUpdate();
+        em.getTransaction().commit();
+        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
+        instance.getNMostPopularUsers(0);
+    }
+    
     @Test
     public void testRegisterExitentUser() {
-        System.out.println("register an existent user");
+        System.out.println("testing registration of an existent user");
         String email = "testemail@gmail.com";
         String name = "New user";
         LocalDate age = LocalDate.of(1997, 10, 20);
-        boolean isCollegeStudent = false;
         boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
-        boolean result = instance.registerUser(email, name, age, isCollegeStudent, isDelegate, univ);
+        boolean result = instance.registerUser(email, name, age, isDelegate);
         assertEquals(expResult, result);
     }
     
-    /**
-     * Test make a non existent user delegate.
-     */
     @Test
     public void testMakeNonExistentUserDelegate() {
-        System.out.println("new delegate failure");
+        System.out.println("testing the failure of making a non existent user delegate");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
         boolean result = instance.changeDelegation(0, true, "UA", "rua");
         assertEquals(expResult, result);
     }
     
-    /**
-     * Test make a non existent user a student.
-     */
-    @Test
-    public void testMakeNonExistentUserStudent() {
-        System.out.println("new student failure");
-        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        boolean expResult = false;
-        boolean result = instance.changeIfStudent(0, true, "UA", "rua");
-        assertEquals(expResult, result);
-    }
-    
-    /**
-     * Test give a non existent user rating.
-     */
     @Test
     public void testGiveNonExistentUserRating() {
-        System.out.println("new student failure");
+        System.out.println("testing the failure of giving rating to a non existent user");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
         boolean result = instance.updateUserRating(0, USER_RATING);
         assertEquals(expResult, result);
     }
     
-    /**
-     * Test change a non existent user's name.
-     */
     @Test
     public void testChangeNonExistentUserName() {
-        System.out.println("new student failure");
+        System.out.println("testing the failure of changing the name of a non existent user");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
         boolean result = instance.changeName(0, "NewName");
         assertEquals(expResult, result);
     }
     
-    /**
-     * Test change a non existent user's birthday.
-     */
     @Test
     public void testChangeNonExistentUserBirthday() {
-        System.out.println("new student failure");
+        System.out.println("testing the failure of changing the birthday of a non existent user");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
         boolean result = instance.changeBirthday(0, LocalDate.of(1997, 10, 10));
