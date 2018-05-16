@@ -34,9 +34,6 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     private Set<Property> ownedProperties;
     
     @Column(nullable = false)
-    private boolean isCollegeStudent;
-    
-    @Column(nullable = false)
     private boolean isDelegate;
     
     @ManyToOne
@@ -47,13 +44,11 @@ public class PlatformUser extends GeneralEntity implements Serializable {
         super();
     }
 
-    public PlatformUser(String email, String name, LocalDate age, boolean isCollegeStudent, boolean isDelegate) {
+    public PlatformUser(String email, String name, LocalDate age, boolean isDelegate) {
         super();
         this.name = name;
         this.email = email;
         this.age = age;
-        this.isCollegeStudent = isCollegeStudent;
-
         this.isDelegate = isDelegate;
         this.ownedProperties = new TreeSet<>();
         
@@ -122,14 +117,6 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     public boolean removeOwnedProperty(Property property) {
         return ownedProperties.remove(property);
     }
-    
-    public boolean isIsCollegeStudent() {
-        return isCollegeStudent;
-    }
-
-    public void setIsCollegeStudent(boolean isCollegeStudent) {
-        this.isCollegeStudent = isCollegeStudent;
-    }
 
     public double getUserRating() {
         return userRating;
@@ -184,7 +171,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "PlatformUser{" + "id=" + id + ", email=" + email + ", name=" + name + ", age=" + age + ", rentedProperties=" + rentedProperties + ", ownedProperties=" + ownedProperties + ", isCollegeStudent=" + isCollegeStudent + ", userRating=" + userRating + ", isDelegate=" + isDelegate + ", universityId=" + university + '}';
+        return "PlatformUser{" + "id=" + id + ", email=" + email + ", name=" + name + ", age=" + age + ", rentedProperties=" + rentedProperties + ", ownedProperties=" + ownedProperties + ", userRating=" + userRating + ", isDelegate=" + isDelegate + ", universityId=" + university + '}';
     }
 
     
