@@ -21,7 +21,6 @@
     </repositories>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
@@ -51,6 +50,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+
            <groupId>org.eclipse.persistence</groupId>
            <artifactId>org.eclipse.persistence.jpa</artifactId>
            <version>2.7.1</version>

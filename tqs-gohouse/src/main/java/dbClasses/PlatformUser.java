@@ -61,7 +61,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public Set<Room> getRentedRooms() {
         return rentedRooms;
     }

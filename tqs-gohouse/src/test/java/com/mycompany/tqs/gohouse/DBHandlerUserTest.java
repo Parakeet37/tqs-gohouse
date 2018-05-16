@@ -19,8 +19,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+
 public class DBHandlerUserTest{
-    
+  
     private EntityManager em;
     private final String PERSISTENCE_UNIT = "tests";
     private final int NUMBER_OF_USERS = 10;
@@ -84,7 +85,7 @@ public class DBHandlerUserTest{
         PlatformUser user = instance.getSingleUser("testemail@gmail.com");
         assertNotEquals(user, null);
     }
-
+    
     @Test
     public void testRegisterUser() {
         System.out.println("testing the registration of a new user");

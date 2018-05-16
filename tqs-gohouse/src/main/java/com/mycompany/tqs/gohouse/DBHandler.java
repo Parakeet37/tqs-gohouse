@@ -36,7 +36,7 @@ public class DBHandler {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(unit);
         this.em = emf.createEntityManager();
     }
-    
+
     @PostConstruct
     public void init(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(UNIT);
@@ -83,7 +83,9 @@ public class DBHandler {
     
     /**
      * changes if a user is delegate of a university or not
+
      * @param id id of the user
+
      * @param isDelegate boolean to update
      * @param univName name of the university
      * @param univAddress address o the university
@@ -135,6 +137,7 @@ public class DBHandler {
             user.setNVotes(user.getNVotes()+1);
             user.setWeightedRanking((user.getNVotes()/(user.getNVotes()+MIN_USERS))*user.getUserRating());
             em.getTransaction().commit();
+
         } catch (NullPointerException e) {
             return false;
         }
@@ -195,7 +198,7 @@ public class DBHandler {
         }
         return true;
     }
-    
+
 //-------------------------------------PROPERTY QUERIES-------------------------------------
     
     /**
@@ -228,6 +231,7 @@ public class DBHandler {
         return true;
     }
     
+
     /**
      * removes a property from the database
      * @param ownerID id of the owner of the property
@@ -366,6 +370,7 @@ public class DBHandler {
         } else {
             return false;
         }
+
     }
     
     public Property getCheaperProperty() throws IndexOutOfBoundsException{

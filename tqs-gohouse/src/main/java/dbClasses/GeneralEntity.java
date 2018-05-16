@@ -67,6 +67,7 @@ public abstract class GeneralEntity implements Serializable {
         return rentedProperties.remove(property);
     }
 
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -94,5 +95,6 @@ public abstract class GeneralEntity implements Serializable {
     @Override
     public String toString() {
         return "GeneralEntity{" + "id=" + id + ", rentedProperties=" + rentedProperties + '}';
+
     }
 }
