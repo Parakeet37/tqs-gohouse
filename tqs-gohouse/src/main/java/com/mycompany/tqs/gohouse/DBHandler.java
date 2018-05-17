@@ -96,7 +96,7 @@ public class DBHandler {
         query.setParameter("name", univName);
         try {
             PlatformUser user = em.find(PlatformUser.class, id);
-            if (!isDelegate){
+            if (isDelegate && !user.isIsDelegate()){
                 University univ;
                 try {
                     univ = (University) query.getSingleResult();                    
