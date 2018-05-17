@@ -62,7 +62,7 @@ public class DBHandlerUserFailuresTest {
     public void tearDown() {
     }
     
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void testGetAllUsersEmptyDB(){
         System.out.println("testing getting all users from an empty database");
         // emptying database...
@@ -73,7 +73,7 @@ public class DBHandlerUserFailuresTest {
         query.executeUpdate();
         em.getTransaction().commit();
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.getNMostPopularUsers(0);
+        assertEquals(instance.getNMostPopularUsers(0).size(), 0);
     }
     
     @Test
