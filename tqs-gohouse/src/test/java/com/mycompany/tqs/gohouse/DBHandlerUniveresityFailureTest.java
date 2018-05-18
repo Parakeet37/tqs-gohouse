@@ -14,7 +14,7 @@ import org.junit.BeforeClass;
 public class DBHandlerUniveresityFailureTest {
     
     private EntityManager em;
-    private final String PERSISTENCE_UNIT = "gohousedb";
+    private final String PERSISTENCE_UNIT = "tests";
     
     @BeforeClass
     public static void setUpClass() {
