@@ -12,14 +12,18 @@ and open the template in the editor.
     xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:b="http://bootsfaces.net/ui"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:outputStylesheet library="Css" name="styles.css"  />    
+
     <h:head>
-        <title>goHome</title>
+        <title>goHouse</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+    <h:body style="padding: 60px;">
+        <div></div>
         <!--Navigation bar -->
-        <b:navBar brand="Home" brandHref="#" inverse="true" fixed="top">
+        <b:navBar brand="Home" brandHref="faces/home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
                 <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
                 <b:navLink value="SignUp" href="faces/registerAccount.xhtml"></b:navLink>
@@ -32,39 +36,41 @@ and open the template in the editor.
             </b:navbarLinks>
         </b:navBar>
 
+        <!--Esta pagina tem de conter toda a informação do utilizador em que queremos ver a informação -->
 
-        <!-- Search Panel -->
-        <div>
+        <!--User name-->
+        <h3>#{userDetailsBean.email}</h3>
 
+        <!-- User information -->
+        <b:panel title="Name of the user" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
 
-        </div>
-
-
-
+            <div class="panelStyle">
+                <div>                                
+                    <h4><b>Nome:</b>  HASH </h4>
+                    <h4><b>Email: </b> MaEMAIL@Outlook.com</h4>
+                    <h4><b>Idade: </b> 100 years OLD</h4>
+                    <h4><b>Rating: </b> 9/??</h4>
+                </div>
+            </div>
+        </b:panel>
+        
+        <h3>Lista Propriedades</h3>
 
         <!-- Start the list of all properties  -->
         <div>            
 
-            <ui:repeat value="#{homeBean.propriedades}" var="TempPropriadade">
-                <b:panel title="#{TempPropriadade.title}" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                    <f:metadata>  
-                        <f:viewParam name="email" value="joao.serpa@ua.pt" />  
-                    </f:metadata> 
-
+            <ui:repeat value="#{userDetailsBean.listaDePropriedades}" var="property">
+                <b:panel title="#{property.title}" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="panelStyle">
                         <div>                                
-                            <h4><b>Description: #{TempPropriadade.smallDesc}</b></h4>
-                            <h4><b>Price: </b> #{TempPropriadade.price}€</h4>
-                            <h4><b>Local: </b> #{TempPropriadade.location}</h4>
-                            <h5><b>Type: </b> #{TempPropriadade.tipo}</h5>
-                            <h5><b>Owner: <a href="faces/userDetailsPage.xhtml?id=joao.serpa@ua.pt">#{TempPropriadade.owner}</a></b></h5>
+                            <h4><b>Description: #{property.smallDesc}</b></h4>
+                            <h4><b>Price: </b> #{property.price}€</h4>
+                            <h4><b>Local: </b> #{property.location}</h4>
+                            <h5><b>Type: </b> #{property.tipo}</h5>
                         </div>
                     </div>
-
                 </b:panel>
-            </ui:repeat>
-            <!-- End Lista de Propriedades -->
-
+            </ui:repeat>   
         </div>
 
 
