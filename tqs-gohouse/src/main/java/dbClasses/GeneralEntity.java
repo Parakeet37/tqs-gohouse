@@ -2,8 +2,6 @@ package dbClasses;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,10 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class GeneralEntity implements Serializable {
 
@@ -32,9 +30,7 @@ public abstract class GeneralEntity implements Serializable {
     @Column(nullable = false)
     protected double weightedRating;
     
-    @OneToMany (targetEntity = Property.class, mappedBy="renter")
-    @JoinColumn(nullable = false)
-    protected Set<Property> rentedProperties;
+    
     
     public Long getId() {
         return id;
@@ -43,31 +39,37 @@ public abstract class GeneralEntity implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    public void setNVotes(int nVotes) {
+        this.nVotes = nVotes;
+    }
 
+    public int getNVotes() {
+        return nVotes;
+    }
+    
+    public double getWeightedRating(){
+        return weightedRating;
+    }
+    
+    public void setWeightedRanking(double weightedRating){
+        this.weightedRating = weightedRating;
+    }
+    
+    public double getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(double userRating) {
+        this.userRating = userRating;
+    }
+    
     public GeneralEntity() {
-        this.rentedProperties = new TreeSet<>();
         this.userRating = 0;
         this.nVotes = 0;
         this.weightedRating = 0;
     }
     
-    public Set<Property> getRentedProperties() {
-        return rentedProperties;
-    }
-
-    public void setRentedProperties(Set<Property> rentedProperties) {
-        this.rentedProperties = rentedProperties;
-    }
- 
-    public boolean addRentedProperty(Property property) {
-        return rentedProperties.add(property);
-    }
-    
-    public boolean removeRentedProperty(Property property) {
-        return rentedProperties.remove(property);
-    }
-
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -94,7 +96,7 @@ public abstract class GeneralEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "GeneralEntity{" + "id=" + id + ", rentedProperties=" + rentedProperties + '}';
+        return "GeneralEntity{" + "id=" + id + ", rentedProperties=" + '}';
 
     }
 }
