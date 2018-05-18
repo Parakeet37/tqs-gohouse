@@ -1,6 +1,9 @@
 package dbClasses;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,9 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-public class Room implements Serializable {
+@XmlRootElement
+public class Room implements Serializable, Comparable<Room>{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -27,11 +32,18 @@ public class Room implements Serializable {
     private Property property;
     
     @ManyToOne
-    @JoinColumn()
+    @JoinColumn
+    private University university;
+    
+    @ManyToOne
+    @JoinColumn
     private PlatformUser renter;
 
     private boolean occupied;
 
+    @Column(nullable = false)
+    private Set<String> photos;
+    
     public Room() {
     }
 
@@ -40,8 +52,17 @@ public class Room implements Serializable {
         this.description = description;
         this.occupied = false;
         this.property = property;
+        this.photos = new TreeSet<>();
     }
 
+    public University getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(University university) {
+        this.university = university;
+    }
+    
     public String getDescription() {
         return description;
     }
@@ -92,24 +113,42 @@ public class Room implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Room)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Room other = (Room) object;
-        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Room other = (Room) obj;
+        return Objects.equals(this.id, other.id);
     }
+
+    
 
     @Override
     public String toString() {
         return "dbClasses.Room[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(Room other) {
+        if (this.rent > other.rent){
+            return 1;
+        } else if (this.rent < other.rent){
+            return -1;
+        } else {
+            return 0;
+        }
     }
     
 }

@@ -3,6 +3,7 @@ package dbClasses;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 public class Property implements Serializable, Comparable<Property> {
 
     private static final long serialVersionUID = 1L;
@@ -28,18 +31,11 @@ public class Property implements Serializable, Comparable<Property> {
     private float longitude;
     
     @Column(nullable = false)
-    private float latitude;
-    
-    @ManyToOne
-    @JoinColumn
-    private GeneralEntity renter;
+    private float latitude;;
     
     @ManyToOne
     @JoinColumn(nullable = false)
     private PlatformUser owner;
-    
-    @Column(nullable = false)
-    private int rent;
     
     @Column(nullable = false)
     private boolean occupied;
@@ -59,6 +55,10 @@ public class Property implements Serializable, Comparable<Property> {
     @Column(nullable = false)
     private boolean verified;
     
+    @ManyToOne
+    @JoinColumn()
+    private University verifiedBy;
+    
     @Column(nullable = false)
     private double moderatorRating;
     
@@ -71,12 +71,14 @@ public class Property implements Serializable, Comparable<Property> {
     @Column(nullable = false)
     private double weightedRating;
     
+    @Column(nullable = false)
+    private Set<String> photos;
+    
     public Property() {
     }
 
-    public Property(PlatformUser owner, float longitude, float latitude, int rent, String address, String type, char block, int floor, Set<Room> rooms) {
+    public Property(PlatformUser owner, float longitude, float latitude, String address, String type, char block, int floor, Set<Room> rooms) {
         this.owner = owner;
-        this.rent = rent;
         this.address = address;
         this.type = type;
         this.block = block;
@@ -90,7 +92,7 @@ public class Property implements Serializable, Comparable<Property> {
         this.userRating = 0;
         this.nVotes = 0;
         this.weightedRating = 0;
-        
+        this.photos = new TreeSet<>();
     }
 
     public float getLongitude() {
@@ -148,14 +150,6 @@ public class Property implements Serializable, Comparable<Property> {
     public void setVerified(boolean verified) {
         this.verified = verified;
     }
-    
-    public GeneralEntity getRenter() {
-        return renter;
-    }
-
-    public void setRenter(GeneralEntity renter) {
-        this.renter = renter;
-    }
 
     public PlatformUser getOwner() {
         return owner;
@@ -163,14 +157,6 @@ public class Property implements Serializable, Comparable<Property> {
 
     public void setOwner(PlatformUser owner) {
         this.owner = owner;
-    }
-
-    public int getRent() {
-        return rent;
-    }
-
-    public void setRent(int rent) {
-        this.rent = rent;
     }
 
     public boolean isOccupied() {
@@ -237,6 +223,14 @@ public class Property implements Serializable, Comparable<Property> {
         return rooms.remove(room);
     }
 
+    public University getVerifiedBy() {
+        return verifiedBy;
+    }
+
+    public void setVerifiedBy(University verifiedBy) {
+        this.verifiedBy = verifiedBy;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

@@ -13,8 +13,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 public class University extends GeneralEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -24,14 +26,18 @@ public class University extends GeneralEntity implements Serializable {
 
     @Column(nullable = false)
     private String address;
-
-    @OneToMany (targetEntity = PlatformUser.class, mappedBy="university")
+    
+    @OneToMany(targetEntity = Room.class, mappedBy = "university")
     @JoinColumn(nullable = false)
-    private Set<PlatformUser> students;
+    private Set<Room> rentedRooms;
     
     @OneToMany (targetEntity = PlatformUser.class, mappedBy="university")
     @JoinColumn(nullable = false)
     private Set<PlatformUser> delegates;
+    
+    @OneToMany (targetEntity = Property.class, mappedBy="verifiedBy")
+    @JoinColumn(nullable = false)
+    private Set<Property> verifiedProperties;
     
     public University() {
         super();
@@ -41,8 +47,24 @@ public class University extends GeneralEntity implements Serializable {
         super();
         this.name = name;
         this.address = address;
-        students = new TreeSet<>();
         delegates = new TreeSet<>();
+        rentedRooms = new TreeSet<>();
+    }
+
+    public Set<Room> getRentedRooms() {
+        return rentedRooms;
+    }
+
+    public void setRentedRooms(Set<Room> rentedRooms) {
+        this.rentedRooms = rentedRooms;
+    }
+    
+    public boolean addRentedRoom(Room room){
+        return rentedRooms.add(room);
+    }
+    
+    public boolean removeRentedRoom(Room room){
+        return rentedRooms.remove(room);
     }
 
     public String getName() {
@@ -61,22 +83,6 @@ public class University extends GeneralEntity implements Serializable {
         this.address = address;
     }
     
-    public Set<PlatformUser> getStudents() {
-        return students;
-    }
-
-    public void setStudents(Set<PlatformUser> students) {
-        this.students = students;
-    }
- 
-    public boolean addStudent(PlatformUser student) {
-        return students.add(student);
-    }
-    
-    public boolean removeStudent(PlatformUser student) {
-        return students.remove(student);
-    }
-    
     public Set<PlatformUser> getDelegates() {
         return delegates;
     }
@@ -91,6 +97,22 @@ public class University extends GeneralEntity implements Serializable {
     
     public boolean removeDelegate(PlatformUser delegate) {
         return delegates.remove(delegate);
+    }
+
+    public Set<Property> getVerifiedProperties() {
+        return verifiedProperties;
+    }
+
+    public void setVerifiedProperties(Set<Property> verifiedProperties) {
+        this.verifiedProperties = verifiedProperties;
+    }
+    
+    public boolean addVerifiedProperty(Property property){
+        return verifiedProperties.add(property);
+    }
+    
+    public boolean removeVerifiedProperty(Property property){
+        return verifiedProperties.remove(property);
     }
 
     @Override

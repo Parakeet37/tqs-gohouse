@@ -10,8 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 public class PlatformUser extends GeneralEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,10 +27,6 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     @Column(nullable = false)
     private LocalDate age;
     
-    @OneToMany (targetEntity = Room.class, mappedBy="renter")
-    @JoinColumn(nullable=false)
-    private Set<Room> rentedRooms;
-    
     @OneToMany (targetEntity = Property.class, mappedBy="owner")
     @JoinColumn(nullable=false)
     private Set<Property> ownedProperties;
@@ -36,8 +34,12 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     @Column(nullable = false)
     private boolean isDelegate;
     
+    @OneToMany (targetEntity = Room.class, mappedBy="renter")
+    @JoinColumn(nullable=false)
+    private Set<Room> rentedRooms;
+    
     @ManyToOne
-    @JoinColumn(nullable = true)
+    @JoinColumn()
     private University university;
 
     public PlatformUser() {
@@ -54,6 +56,22 @@ public class PlatformUser extends GeneralEntity implements Serializable {
         
     }
 
+    public Set<Room> getRentedRooms() {
+        return rentedRooms;
+    }
+
+    public void setRentedRooms(Set<Room> rentedRooms) {
+        this.rentedRooms = rentedRooms;
+    }
+    
+    public boolean addRentedRoom(Room room){
+        return rentedRooms.add(room);
+    }
+    
+    public boolean removeRentedRoom(Room room){
+        return rentedRooms.remove(room);
+    }
+    
     public String getName() {
         return name;
     }
@@ -62,36 +80,12 @@ public class PlatformUser extends GeneralEntity implements Serializable {
         this.name = name;
     }
 
-    public Set<Room> getRentedRooms() {
-        return rentedRooms;
-    }
-
-    public void setRentedRooms(Set<Room> rentedRooms) {
-        this.rentedRooms = rentedRooms;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-    
-    public void setNVotes(int nVotes) {
-        this.nVotes = nVotes;
-    }
-
-    public int getNVotes() {
-        return nVotes;
-    }
-    
-    public double getWeightedRating(){
-        return weightedRating;
-    }
-    
-    public void setWeightedRanking(double weightedRating){
-        this.weightedRating = weightedRating;
     }
 
     public LocalDate getAge() {
@@ -116,14 +110,6 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     
     public boolean removeOwnedProperty(Property property) {
         return ownedProperties.remove(property);
-    }
-
-    public double getUserRating() {
-        return userRating;
-    }
-
-    public void setUserRating(double userRating) {
-        this.userRating = userRating;
     }
 
     public boolean isIsDelegate() {
@@ -171,7 +157,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "PlatformUser{" + "id=" + id + ", email=" + email + ", name=" + name + ", age=" + age + ", rentedProperties=" + rentedProperties + ", ownedProperties=" + ownedProperties + ", userRating=" + userRating + ", isDelegate=" + isDelegate + ", universityId=" + university + '}';
+        return "PlatformUser{" + "id=" + id + ", email=" + email + ", name=" + name + ", age=" + age + ", ownedProperties=" + ownedProperties + ", userRating=" + userRating + ", isDelegate=" + isDelegate + ", universityId=" + university + '}';
     }
 
     

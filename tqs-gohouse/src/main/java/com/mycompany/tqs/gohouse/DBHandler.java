@@ -1,11 +1,11 @@
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.GeneralEntity;
 import dbClasses.PlatformUser;
 import dbClasses.Property;
 import dbClasses.Room;
 import dbClasses.University;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
@@ -24,7 +24,7 @@ public class DBHandler {
         
     private final double MIN_USERS = 10.0;
     
-    private final String UNIT = "goHouse";
+    private final String UNIT = "gohousedb";
 
     public DBHandler() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(UNIT);
@@ -76,6 +76,7 @@ public class DBHandler {
             em.persist(new PlatformUser(email, name, age, isDelegate));
             em.getTransaction().commit();
         } catch (RollbackException ex) {
+            em.getTransaction().commit();
             return false;
         }
         return true;
@@ -139,6 +140,7 @@ public class DBHandler {
             em.getTransaction().commit();
 
         } catch (NullPointerException e) {
+            em.getTransaction().commit();
             return false;
         }
         return true;
@@ -176,6 +178,7 @@ public class DBHandler {
             user.setName(name);
             em.getTransaction().commit();
         } catch (NullPointerException e) {
+            em.getTransaction().commit();
             return false;
         }
         return true;
@@ -194,6 +197,7 @@ public class DBHandler {
             user.setAge(age);
             em.getTransaction().commit();
         } catch (NullPointerException e) {
+            em.getTransaction().commit();
             return false;
         }
         return true;
@@ -206,7 +210,6 @@ public class DBHandler {
      * @param id id of the owner of the property
      * @param longitude longitude in which the property is located
      * @param latitude latitude in which the property is located
-     * @param rent price per month
      * @param address address of the property
      * @param type type of the property (HOUSE or APARTMENT)
      * @param block block of the building in which the property is located 
@@ -214,12 +217,12 @@ public class DBHandler {
      * @param rooms list of the rooms of the property
      * @return true if the property was added with success
      */
-    public boolean addNewProperty(long id, float longitude, float latitude, int rent, String address, String type, char block, int floor, Set<Room> rooms){
+    public boolean addNewProperty(long id, float longitude, float latitude, String address, String type, char block, int floor, Set<Room> rooms){
         PlatformUser owner;
         Property property;
         owner = em.find(PlatformUser.class, id);
         if (owner == null) return false;
-        property = new Property(owner, longitude, latitude, rent, address, type, block, floor, rooms);
+        property = new Property(owner, longitude, latitude, address, type, block, floor, rooms);
         em.getTransaction().begin();
         if (owner.addOwnedProperty(property)) {
             em.persist(property);
@@ -254,45 +257,12 @@ public class DBHandler {
     }
     
     /**
-     * gets all the property from any user that are inside the given cost range
-     * @param minRent minimum rent value
-     * @param maxRent maximum rent value
-     * @return the properties. if no properties are found, the list goes empty
-     */
-    public List<Property> getPropertiesInCostRange(int minRent, int maxRent) throws IllegalArgumentException {
-        if (minRent >= maxRent) throw new IllegalArgumentException("the second argument should be higher than the first");
-        Query query = em.createQuery("select u from Property AS u where u.rent between :minRent and :maxRent");
-        query.setParameter("minRent", minRent);
-        query.setParameter("maxRent", maxRent);
-        return query.getResultList();
-    }
-    
-    //not yet tested
-    /**
      * gets all the properties that are not occupied either by an university or a personal user
      * @return the properties. if no properties are found, the list goes empty
      */
     public List<Property> getAvailableProperties(){
         Query query = em.createQuery("select u from Property AS u where u.occupied = false");
         return query.getResultList();
-    }
-    
-    /**
-     * changes the rent for a certain property
-     * @param id id of the property
-     * @param rent new value to be applied
-     * @return true if success. false otherwise
-     */
-    public boolean changeRent(long id, int rent){
-        try {
-            Property prop = em.find(Property.class, id);
-            em.getTransaction().begin();
-            prop.setRent(rent);
-            em.getTransaction().commit();
-        } catch (NullPointerException e) {
-            return false;
-        }
-        return true;
     }
     
     /**
@@ -324,65 +294,99 @@ public class DBHandler {
         }
     }
     
-    //not yet finished
     /**
      * changes the renter of the property
      * @param propertyID id of the property
      * @param newRenterID id of the new renter
      * @return true if success. false otherwise
      */
-    public boolean rentProperty(long propertyID, long newRenterID){
+    public boolean rentPropertyToUser(long propertyID, long newRenterID){
         Property property = em.find(Property.class, propertyID);
-        GeneralEntity renter;
-        renter = em.find(PlatformUser.class, newRenterID);
-        if (renter == null){
-            renter = em.find(University.class, newRenterID);
+        PlatformUser renter = em.find(PlatformUser.class, newRenterID);
+        if (renter == null) return false;
+        if (property == null) return false;
+        Query query = em.createQuery("select u from Room AS u where "
+                    + "u.property = :property and u.occupied = false");
+        query.setParameter("property", property);
+        if (query.getResultList().size() != property.getRooms().size()) return false;
+        Iterator<Room> itr = property.getRooms().iterator();
+        while (itr.hasNext()){
+            rentRoomToUser(itr.next().getId(), renter.getId());
         }
-        if (renter == null || property == null) return false;
-        em.getTransaction().begin();
-        if (renter.addRentedProperty(property)){
-            property.setOccupied(true);
-            property.setRenter(renter);
-            em.getTransaction().commit();
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
     
-    //not yet finished
+    /**
+     * gives to the university the availability to rent the property. the property is not occupied
+     * @param propertyID id of the property
+     * @param newRenterID id of the new renter
+     * @return true if success. false otherwise
+     */
+    public boolean rentPropertyToUniversity(long propertyID, long newRenterID){
+        Property property = em.find(Property.class, propertyID);
+        University renter = em.find(University.class, newRenterID);
+        if (renter == null) return false;
+        if (property == null) return false;
+        Query query = em.createQuery("select u from Room AS u where "
+                    + "u.property = :property and u.occupied = false");
+        query.setParameter("property", property);
+        if (query.getResultList().size() != property.getRooms().size()) return false;
+        Iterator<Room> itr = property.getRooms().iterator();
+        while (itr.hasNext()){
+            rentRoomToUniversity(itr.next().getId(), renter.getId());
+        }
+        return true;
+    }
+    
     /**
      * changes the occupation of the property
      * @param propertyID id of the property
      * @return true if success, false otherwise
      */
-    public boolean changePropertyToFree(long propertyID){
+    public boolean removePropertyRoomOwnership(long propertyID){
         Property property = em.find(Property.class, propertyID);
         if (property == null) return false;
-        if (property.isOccupied()){
-            em.getTransaction().begin();
-            property.setOccupied(false);
-            GeneralEntity renter = property.getRenter();
-            renter.removeRentedProperty(property);
-            property.setRenter(null);
-            em.getTransaction().commit();
-            return true;
-        } else {
-            return false;
+        if (property.isOccupied()) return false;
+        Query query = em.createQuery("select u from Room AS u where "
+                    + "u.university = :university and u.property = :property");
+        query.setParameter("university", property.getRooms().iterator().next().getUniversity());
+        query.setParameter("property", property);
+        if (query.getResultList().size() != property.getRooms().size()) return false;
+        Iterator<Room> itr = property.getRooms().iterator();
+        while (itr.hasNext()){
+            Room room = itr.next();
+            if (!removeRoomOwnership(room.getId(), room.getUniversity().getId())) return false;
         }
-
+        return true;
     }
     
-    public Property getCheaperProperty() throws IndexOutOfBoundsException{
-        Query query = em.createQuery("Select u from Property as u order by u.rent");
-        return (Property) query.getResultList().get(0);
+    /**
+     * changes the occupation of the property
+     * @param propertyID id of the property
+     * @return true if success, false otherwise
+     */
+    public boolean checkoutProperty(long propertyID){
+        Property property = em.find(Property.class, propertyID);
+        if (property == null) return false;
+        if (!property.isOccupied()) return false;
+        Query query = em.createQuery("select u from Room AS u where "
+                    + "u.renter = :renter and u.property = :property");
+        query.setParameter("renter", property.getRooms().iterator().next().getRenter());
+        query.setParameter("property", property);
+        if (query.getResultList().size() != property.getRooms().size()) return false;
+        Iterator<Room> itr = property.getRooms().iterator();
+        while (itr.hasNext()){
+            if (!checkoutRoom(itr.next().getId())) return false;
+        }
+        return true;
     }
     
-    public Property getMostExpensiveProperty() throws IndexOutOfBoundsException{
-        Query query = em.createQuery("Select u from Property as u order by u.rent desc");
-        return (Property) query.getResultList().get(0);
-    }
-    
+    /**
+     * gives a rating to a property by a user. this rating is given when the user is leaving the property
+     * @param id id of the property
+     * @param rating rating the user gives
+     * @return true if success, false otherwise
+     */
     public boolean giveRatingToProperty(long id, int rating){
         try {
             Property property = em.find(Property.class, id);
@@ -398,23 +402,44 @@ public class DBHandler {
         return true;
     }
     
-    public boolean verifyProperty(long moderatorID, long propertyID, int rating){
-        PlatformUser moderator = em.find(PlatformUser.class, moderatorID);
+    /**
+     * called when a delegate of an university verifies if a property has conditions to receive people. each property can only be verified once
+     * @param delegateID id of the delegate of the university
+     * @param propertyID id of the property
+     * @param rating rating the delegate gives to the property
+     * @return true if success. false otherwise
+     */
+    public boolean verifyProperty(long delegateID, long propertyID, int rating){
+        PlatformUser delegate = em.find(PlatformUser.class, delegateID);
         Property property = em.find(Property.class, propertyID);
-        if (moderator == null || property == null) return false;
-        if (!moderator.isIsDelegate() || property.isVerified()) return false;
+        if (delegate == null || property == null) return false;
+        if (!delegate.isIsDelegate() || property.isVerified()) return false;
+        if (delegate.getId().equals(property.getOwner().getId())) return false; //a delegate cannot verify his own properties
         em.getTransaction().begin();
+        if (!delegate.getUniversity().addVerifiedProperty(property)){
+            em.getTransaction().commit();
+            return false;
+        }
+        property.setVerifiedBy(delegate.getUniversity());
         property.setModeratorRating(rating);
         property.setVerified(true);
         em.getTransaction().commit();
         return true;
     }
     
+    /**
+     * gets all the properties that have been already verified by a delegate
+     * @return the list of the properties. if there are no verified properties the list goes empty
+     */
     public List getVerifiedProperties(){
         Query query = em.createQuery("Select u from Property as u where u.verified = true");
         return query.getResultList();
     }
     
+    /**
+     * gets all the properties that have not been verified by a delegate
+     * @return the list of the properties. if there are no unverified properties the list goes empty
+     */
     public List getUnverifiedProperties(){
         Query query = em.createQuery("Select u from Property as u where u.verified = false");
         return query.getResultList();
@@ -422,19 +447,270 @@ public class DBHandler {
     
 //-------------------------------------ROOM QUERIES-------------------------------------
     
+    /**
+     * Adds a room to the platform
+     * @param description Description of the room
+     * @param rent Monthly cost
+     * @param propertyID Id of the property the room is in
+     * @return true if success, false otherwise
+     */
     public boolean addRoom(String description, int rent, long propertyID){
         Property property = em.find(Property.class, propertyID);
-        if (property == null){
-            return false;
-        }
+        if (property == null) return false;
         Room room = new Room(description, rent, property);
         em.getTransaction().begin();
         if (property.addRoom(room)){
             em.persist(room);
             em.getTransaction().commit();
             return true;
-        } else {
+        }
+        em.getTransaction().commit();
+        return false;
+    }
+    
+    /**
+     * Removes a room from the platform
+     * @param roomID id of the room to remove
+     * @return true if success, false otherwise
+     */
+    public boolean removeRoom(long roomID){
+        Room room = em.find(Room.class, roomID);
+        if (room == null) return false;
+        if (room.isOccupied()) return false;
+        Property property = room.getProperty();
+        em.getTransaction().begin();
+        if (property.removeRoom(room)){
+            em.remove(room);
+            em.getTransaction().commit();
+            return true;
+        }
+        em.getTransaction().commit();
+        return false;
+    }
+    
+    /**
+     * rent a room to a user
+     * @param roomID id of the room to be rented
+     * @param renterID id of the platform user that will rent the room
+     * @return true if success, false otherwise
+     */
+    public boolean rentRoomToUser(long roomID, long renterID){
+        Room room = em.find(Room.class, roomID);
+        PlatformUser renter = em.find(PlatformUser.class, renterID);
+        if (room == null || renter == null) return false;
+        if (room.isOccupied()) return false;
+        em.getTransaction().begin();
+        if (renter.addRentedRoom(room)){
+            room.setRenter(renter);
+            room.setOccupied(true);
+            Query query = em.createQuery("select u from Room AS u where "
+                    + "u.property = :property and u.occupied = true");
+            query.setParameter("property", room.getProperty());
+            if (query.getResultList().size() == room.getProperty().getRooms().size()) 
+                room.getProperty().setOccupied(true);
+            em.getTransaction().commit();
+            return true;
+        }
+        em.getTransaction().commit();
+        return false;
+    }
+    
+    /**
+     * rent a room to a university, for it to be rented to users
+     * @param roomID id of the room to be rented by the platform
+     * @param renterID id of the university
+     * @return true if success, false otherwise
+     */
+    public boolean rentRoomToUniversity(long roomID, long renterID){
+        Room room = em.find(Room.class, roomID);
+        University renter = em.find(University.class, renterID);
+        if (room == null || renter == null) return false;
+        if (room.isOccupied()) return false;
+        em.getTransaction().begin();
+        if (renter.addRentedRoom(room)){
+            room.setUniversity(renter);
+            em.getTransaction().commit();
+            return true;
+        }
+        em.getTransaction().commit();
+        return false;
+    }
+    
+    /**
+     * removes the ownership of a room by a university 
+     * @param roomID id of the room
+     * @param universityID id of the university the room is rented too
+     * @return true if success, false otherwise
+     */
+    public boolean removeRoomOwnership(long roomID, long universityID){
+        Room room = em.find(Room.class, roomID);
+        if (room == null) return false;
+        if (room.isOccupied()) return false;
+        University renter = room.getUniversity();
+        em.getTransaction().begin();
+        if (renter.removeRentedRoom(room)){
+            room.setUniversity(null);
+            em.getTransaction().commit();
+            return true;
+        }
+        em.getTransaction().commit();
+        return false;
+    }
+    
+    /**
+     * checks out the room. the user that is renting the room is no more
+     * @param roomID id of the room
+     * @return true if success, false otherwise
+     */
+    public boolean checkoutRoom(long roomID){
+        Room room = em.find(Room.class, roomID);
+        if (room == null) return false;
+        if (!room.isOccupied()) return false;
+        PlatformUser renter = room.getRenter();
+        em.getTransaction().begin();
+        if (renter.removeRentedRoom(room)){
+            room.setRenter(null);
+            room.setOccupied(false);
+            room.getProperty().setOccupied(false);
+            em.getTransaction().commit();
+            return true;
+        }
+        em.getTransaction().commit();
+        return false;
+    }
+    
+    /**
+     * gets the 10 cheepest rooms of the platform
+     * @return the list of the cheepest rooms, ordered
+     */
+    public List<Room> getCheaperRooms(){
+        Query query = em.createQuery("Select u from Room as u where u.occupied=false order by u.rent");
+        return query.setMaxResults(10).getResultList();
+    }
+    
+    /**
+     * gets the 10 most expensive rooms of the platform
+     * @return the list of the most expensive rooms, ordered
+     */
+    public List<Room> getMostExpensiveRooms(){
+        Query query = em.createQuery("Select u from Room as u where u.occupied=false order by u.rent desc");
+        return query.setMaxResults(10).getResultList();
+    }
+    
+    /**
+     * gets all the rooms from any user that are inside the given cost range
+     * @param minRent minimum rent value
+     * @param maxRent maximum rent value
+     * @return the rooms. if no rooms are found, the list goes empty
+     */
+    public List<Property> getRoomsInCostRange(int minRent, int maxRent) throws IllegalArgumentException {
+        if (minRent >= maxRent) throw new IllegalArgumentException("the second argument should be higher than the first");
+        Query query = em.createQuery("select u from Room AS u where u.rent between :minRent and :maxRent");
+        query.setParameter("minRent", minRent);
+        query.setParameter("maxRent", maxRent);
+        return query.getResultList();
+    }
+    
+    /**
+     * gets all the rooms that are not occupied
+     * @return the rooms. if no rooms are found, the list goes empty
+     */
+    public List<Room> getAvailableRooms(){
+        Query query = em.createQuery("select u from Room AS u where u.occupied = false");
+        return query.getResultList();
+    }
+    
+    /**
+     * changes the description of a room
+     * @param roomID id of the room
+     * @param description the new description
+     * @return true if success, false otherwise
+     */
+    public boolean changeDescription(long roomID, String description){
+        try {
+            Room room = em.find(Room.class, roomID);
+            em.getTransaction().begin();
+            room.setDescription(description);
+            em.getTransaction().commit();
+        } catch (NullPointerException e) {
+            em.getTransaction().commit();
             return false;
         }
+        return true;
+    }
+    
+    /**
+     * changes the rent of a room
+     * @param roomID id of the room
+     * @param rent the new rent
+     * @return true if success, false otherwise
+     */
+    public boolean changeRent(long roomID, int rent){
+        try {
+            Room room = em.find(Room.class, roomID);
+            em.getTransaction().begin();
+            room.setRent(rent);
+            em.getTransaction().commit();
+        } catch (NullPointerException e) {
+            em.getTransaction().commit();
+            return false;
+        }
+        return true;
+    }
+    
+//-------------------------------------UNIVERSITY QUERIES-------------------------------------
+    
+    public boolean addUniversity(String name, String address){
+        try {
+            em.getTransaction().begin();
+            em.persist(new University(name, address));
+            em.getTransaction().commit();
+        } catch (RollbackException ex) {
+            em.getTransaction().commit();
+            return false;
+        }
+        return true;
+    }
+    
+    public List<University> getNMostPopularUniversities(int n){
+        Query query = em.createQuery("Select u from University as u order by u.weightedRating desc");
+        return (n!=0 ? query.setMaxResults(n).getResultList() : query.getResultList());    
+    }
+    
+    public University getSingleUniversity(String name){
+        University user;
+        try {
+            Query query = em.createQuery("select u from University AS u where u.name = :name");
+            query.setParameter("name", name);
+            user = (University) query.getSingleResult();
+        } catch (NoResultException e) {
+            user = null;
+        }
+        return user;
+    }
+    
+    public boolean giveRatingToUniversity(long universityID, int rating){
+        try {
+            University univ = em.find(University.class, universityID);
+            em.getTransaction().begin();
+            if (univ.getUserRating() != 0) univ.setUserRating((rating+univ.getUserRating())/2);
+            else univ.setUserRating(rating);
+            univ.setNVotes(univ.getNVotes()+1);
+            univ.setWeightedRanking((univ.getNVotes()/(univ.getNVotes()+MIN_USERS))*univ.getUserRating());
+            em.getTransaction().commit();
+
+        } catch (NullPointerException e) {
+            em.getTransaction().commit();
+            return false;
+        }
+        return true;
+    }
+    
+    public List<Room> getRoomsFromUniversity(long universityID) throws NullPointerException{
+        University univ = em.find(University.class, universityID);
+        if (univ == null) throw new NullPointerException("University not found");
+        Query query = em.createQuery("select u from Room as u where u.university = :univ");
+        query.setParameter("univ", univ);
+        return query.getResultList();
     }
 }
