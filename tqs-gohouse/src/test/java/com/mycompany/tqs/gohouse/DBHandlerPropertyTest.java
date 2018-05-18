@@ -3,6 +3,7 @@ package com.mycompany.tqs.gohouse;
 import dbClasses.PlatformUser;
 import dbClasses.Property;
 import dbClasses.Room;
+import dbClasses.University;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -110,7 +111,23 @@ public class DBHandlerPropertyTest {
         assertEquals(instance.rentPropertyToUser(property.getId(), renter.getId()), true);
     }
 
-    //test for rent to university
+    @Test
+    public void testRentPropertyToUniversity(){
+        System.out.println("testing renting a property for a university");
+        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
+        PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
+        instance.addUniversity("UA", "adress");
+        University uni = instance.getSingleUniversity("UA");
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'A', 1, new HashSet<Room>());
+        Iterator<Property> itr = user.getOwnedProperties().iterator();
+        Property property = new Property();
+        while (itr.hasNext()){
+            property = itr.next();
+            break;
+        }
+        instance.addRoom("A nice room.", 100, property.getId());
+        assertEquals(instance.rentPropertyToUniversity(property.getId(), uni.getId()), true);
+    }
     
     @Test
     public void testCheckoutProperty(){
@@ -132,7 +149,24 @@ public class DBHandlerPropertyTest {
         assertEquals(instance.checkoutProperty(property.getId()), true);
     }
     
-    //test for remove university ownership
+    @Test
+    public void testRemoveUniversityOwnership(){
+        System.out.println("testing removing the renting of a property by an university");
+        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
+        PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'A', 1, new HashSet<Room>());
+        Iterator<Property> itr = user.getOwnedProperties().iterator();
+        instance.addUniversity("UA", "adress");
+        University uni = instance.getSingleUniversity("UA");
+        Property property = new Property();
+        while (itr.hasNext()){
+            property = itr.next();
+            break;
+        }
+        instance.addRoom("A nice room.", 100, property.getId());
+        instance.rentPropertyToUniversity(property.getId(), uni.getId());
+        assertEquals(instance.removePropertyRoomOwnership(property.getId()), true);
+    }
     
     @Test
     public void testChangeOwner(){

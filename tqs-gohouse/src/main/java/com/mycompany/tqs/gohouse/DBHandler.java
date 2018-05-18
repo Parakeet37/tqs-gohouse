@@ -346,7 +346,7 @@ public class DBHandler {
     public boolean removePropertyRoomOwnership(long propertyID){
         Property property = em.find(Property.class, propertyID);
         if (property == null) return false;
-        if (!property.isOccupied()) return false;
+        if (property.isOccupied()) return false;
         Query query = em.createQuery("select u from Room AS u where "
                     + "u.university = :university and u.property = :property");
         query.setParameter("university", property.getRooms().iterator().next().getUniversity());
@@ -545,13 +545,11 @@ public class DBHandler {
     public boolean removeRoomOwnership(long roomID, long universityID){
         Room room = em.find(Room.class, roomID);
         if (room == null) return false;
-        if (!room.isOccupied()) return false;
+        if (room.isOccupied()) return false;
         University renter = room.getUniversity();
         em.getTransaction().begin();
         if (renter.removeRentedRoom(room)){
-            room.setRenter(null);
-            room.setOccupied(false);
-            room.getProperty().setOccupied(false);
+            room.setUniversity(null);
             em.getTransaction().commit();
             return true;
         }
@@ -662,6 +660,57 @@ public class DBHandler {
     
 //-------------------------------------UNIVERSITY QUERIES-------------------------------------
     
+    public boolean addUniversity(String name, String address){
+        try {
+            em.getTransaction().begin();
+            em.persist(new University(name, address));
+            em.getTransaction().commit();
+        } catch (RollbackException ex) {
+            em.getTransaction().commit();
+            return false;
+        }
+        return true;
+    }
     
+    public List<University> getNMostPopularUniversities(int n){
+        Query query = em.createQuery("Select u from University as u order by u.weightedRating desc");
+        return (n!=0 ? query.setMaxResults(n).getResultList() : query.getResultList());    
+    }
     
+    public University getSingleUniversity(String name){
+        University user;
+        try {
+            Query query = em.createQuery("select u from University AS u where u.name = :name");
+            query.setParameter("name", name);
+            user = (University) query.getSingleResult();
+        } catch (NoResultException e) {
+            user = null;
+        }
+        return user;
+    }
+    
+    public boolean giveRatingToUniversity(long universityID, int rating){
+        try {
+            University univ = em.find(University.class, universityID);
+            em.getTransaction().begin();
+            if (univ.getUserRating() != 0) univ.setUserRating((rating+univ.getUserRating())/2);
+            else univ.setUserRating(rating);
+            univ.setNVotes(univ.getNVotes()+1);
+            univ.setWeightedRanking((univ.getNVotes()/(univ.getNVotes()+MIN_USERS))*univ.getUserRating());
+            em.getTransaction().commit();
+
+        } catch (NullPointerException e) {
+            em.getTransaction().commit();
+            return false;
+        }
+        return true;
+    }
+    
+    public List<Room> getRoomsFromUniversity(long universityID) throws NullPointerException{
+        University univ = em.find(University.class, universityID);
+        if (univ == null) throw new NullPointerException("University not found");
+        Query query = em.createQuery("select u from Room as u where u.university = :univ");
+        query.setParameter("univ", univ);
+        return query.getResultList();
+    }
 }
