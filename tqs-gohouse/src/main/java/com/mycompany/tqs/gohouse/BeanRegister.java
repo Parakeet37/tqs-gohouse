@@ -21,7 +21,7 @@ import javax.faces.bean.ManagedBean;
 
 @ManagedBean(name = "registerBean", eager = true)
 @SessionScoped
-public class Bean_Register implements Serializable{
+public class BeanRegister implements Serializable{
 
 
     private String inputUName;

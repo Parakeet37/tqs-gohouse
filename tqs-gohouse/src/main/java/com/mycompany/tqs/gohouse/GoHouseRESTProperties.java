@@ -10,7 +10,7 @@ import javax.ws.rs.Produces;
 
 @Path("properties")
 @RequestScoped
-public class GoHouseREST_Properties {
+public class GoHouseRESTProperties {
 
    @EJB
    DBHandler dbH;
@@ -21,7 +21,7 @@ public class GoHouseREST_Properties {
     */
    @GET
    @Produces({"application/json"})
-   public List<Property> listAllUsers() {
+   public List<Property> listAllProperties() {
        return dbH.getAvailableProperties();
    }
    

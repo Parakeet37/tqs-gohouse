@@ -13,7 +13,7 @@ import javax.ws.rs.Produces;
 
 @Path("users")
 @RequestScoped
-public class GoHouseREST_Users {
+public class GoHouseRESTUsers {
 
    @EJB
    DBHandler dbH;
@@ -38,7 +38,7 @@ public class GoHouseREST_Users {
    @GET
    @Path("{email}")
    @Produces({"application/json"})
-   public PlatformUser getOneUser(@PathParam("email") String email){
+   public PlatformUser getUserByEmail(@PathParam("email") String email){
     return dbH.getSingleUser(email);
    }
    
@@ -50,7 +50,7 @@ public class GoHouseREST_Users {
    @GET
    @Path("popular:{number}")
    @Produces({"application/json"})
-   public List<PlatformUser> listPopularUsers(@PathParam("number") int number) {
+   public List<PlatformUser> listNPopularUsers(@PathParam("number") int number) {
        return dbH.getNMostPopularUsers(number);
    }
    

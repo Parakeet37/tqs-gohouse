@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @ManagedBean(name = "searchBean", eager = true)
 @SessionScoped
-public class Bean_Search implements Serializable{
+public class BeanSearch implements Serializable{
     private String searchValue;
     private List<Property> allProperties = new ArrayList<>();
     private List<Property> searchResults = new ArrayList<>();
