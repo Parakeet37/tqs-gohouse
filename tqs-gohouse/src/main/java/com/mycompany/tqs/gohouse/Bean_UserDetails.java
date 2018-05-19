@@ -24,10 +24,14 @@ public class Bean_UserDetails {
     //email from the params
     private String email;
     //Database handler
-    private DBHandler dbHandler = new DBHandler();
+    private final DBHandler dbHandler = new DBHandler();
     //List of properties from the user
     private List<Property> listaDePropriedades;
     
+    /**
+     * When the bean is created;
+     * Get the parameter id which is the email of the user we are viewing.
+     */
     @PostConstruct
     public void init(){
         //Get the parameters from the url
@@ -35,7 +39,6 @@ public class Bean_UserDetails {
             Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             email = params.get("id");
             listaDePropriedades = new ArrayList<>();
-            
         }catch(Exception e){
             System.err.println("Could not retrieve the parametres");
         }
@@ -43,12 +46,22 @@ public class Bean_UserDetails {
     }
     
     
-    //Display's all of the user information
+    /**
+     * Displays all the user information.
+     * Goes to the database and checks the user by email
+     * and then all its properties.
+     */
     private void populateView(){
        
         this.userPlatform = dbHandler.getSingleUser(email);
-        if (userPlatform == null) {
-            System.out.println("YHEAAAAAAAAAAA");
+        if (userPlatform != null) {
+            List<Property> tempProp = dbHandler.getAvailableProperties();
+            for(int i = 0; i<tempProp.size();i++){
+                Property pr = tempProp.get(i);
+                if(pr.getOwner().equals(userPlatform)){
+                    listaDePropriedades.add(pr);
+                }
+            }
         }
         //System.out.println(this.userPlatform.getEmail());
     }

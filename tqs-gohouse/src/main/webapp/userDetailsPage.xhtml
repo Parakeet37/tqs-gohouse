@@ -42,14 +42,14 @@ and open the template in the editor.
         <h3>#{userDetailsBean.email}</h3>
 
         <!-- User information -->
-        <b:panel title="Name of the user" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
+        <b:panel title="#{userDetailsBean.userPlatform.name}" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
 
             <div class="panelStyle">
                 <div>                                
-                    <h4><b>Nome:</b>  HASH </h4>
-                    <h4><b>Email: </b> MaEMAIL@Outlook.com</h4>
-                    <h4><b>Idade: </b> 100 years OLD</h4>
-                    <h4><b>Rating: </b> 9/??</h4>
+                    <h4><b>Nome:</b>  #{userDetailsBean.userPlatform.name} </h4>
+                    <h4><b>Email: </b> #{userDetailsBean.userPlatform.email}</h4>
+                    <h4><b>Idade: </b>#{userDetailsBean.userPlatform.age}</h4>
+                    <h4><b>Rating: </b> #{userDetailsBean.userPlatform.userRating}</h4>
                 </div>
             </div>
         </b:panel>
