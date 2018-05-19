@@ -36,28 +36,24 @@ and open the template in the editor.
         <!-- Search Panel -->
         <div>
 
-
+            <b></b><h1>Quartos disponíveis</h1>
         </div>
-
-
-
-        
+      
         <!-- Start the list of all properties  -->
         <div>            
 
-            <ui:repeat value="#{homeBean.propriedades}" var="TempPropriadade">
-                <b:panel title="#{TempPropriadade.title}" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <ui:repeat value="#{homeBean.rooms}" var="rooms">
+                <b:panel title="#{rooms.id}" class="col-xs-12 col-sm-12 col-md-4 col-lg-4"  collapsible="false">
                     <f:metadata>  
-                        <f:viewParam name="email" value="joao.serpa@ua.pt" />  
+                        <f:viewParam name="email" value="#{rooms.property.owner.email}" />  
                     </f:metadata> 
 
                     <div class="panelStyle">
                         <div>                                
-                            <h4><b>Description: #{TempPropriadade.smallDesc}</b></h4>
-                            <h4><b>Price: </b> #{TempPropriadade.price}€</h4>
-                            <h4><b>Local: </b> #{TempPropriadade.location}</h4>
-                            <h5><b>Type: </b> #{TempPropriadade.tipo}</h5>
-                            <h5><b>Owner: <a href="faces/userDetailsPage.xhtml?id=joao.serpa@ua.pt">#{TempPropriadade.owner}</a></b></h5>
+                            <h4><b>Price: </b> #{rooms.rent}€</h4>
+                            <h4><b>Local: </b> #{rooms.property.address}</h4>
+                            <h5><b>Owner: <a href="faces/userDetailsPage.xhtml?id=#{rooms.property.owner.email}">#{rooms.property.owner.name}</a></b></h5>
+                            <b:button class="btn btn-default" value="Check details"></b:button>
                         </div>
                     </div>
 
