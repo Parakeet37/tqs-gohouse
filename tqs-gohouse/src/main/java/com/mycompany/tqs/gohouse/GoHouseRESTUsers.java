@@ -5,11 +5,15 @@ import java.time.LocalDate;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 @Path("users")
 @RequestScoped
@@ -25,8 +29,7 @@ public class GoHouseRESTUsers {
    @GET
    @Produces({"application/json"})
    public List<PlatformUser> listAllUsers() {
-       dbH.registerUser("aa", "MYNAME", LocalDate.now(), true);
-       return dbH.getNMostPopularUsers(3);
+       return dbH.getNMostPopularUsers(90);
    }
    
    
@@ -62,19 +65,27 @@ public class GoHouseRESTUsers {
     * @param isDelegate Sets if is delegate or not
     */
    @POST
-   public void registerUser(@PathParam("email") String email,
-           @PathParam("name") String name, 
-           @PathParam("isDelegate") boolean isDelegate) {
-       
+   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+   public void registerUser(@FormParam("email") String email,
+           @FormParam("name") String name,
+           @FormParam("isDelegate") boolean isDelegate) {
+        System.out.println("Creating " + name + "...");
         dbH.registerUser(email, name, LocalDate.now(), isDelegate);
    }
 
+   @PUT
+   public void putUser(@FormParam("email") String email,
+           @FormParam("name") String name,
+           @FormParam("isDelegate") boolean isDelegate) {
+      registerUser(email, name, isDelegate);
+   }
    /**
     * Sets a rating.
     * @param id The user's ID
     * @param rate The rate said user will attribute
     */
    @POST
+   @Path("rate")
    public void rateApartment(@PathParam("id") long id,
            @PathParam("rate") int rate) {
        
