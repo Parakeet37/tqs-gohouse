@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html 
+    xmlns = "http://www.w3.org/1999/xhtml" 
+    xmlns:h = "http://java.sun.com/jsf/html"
+    xmlns:p = "http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:outputStylesheet library="Css" name="styles.css"  />    
+
+    <h:head>
+        <title>goHouse</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body style="padding: 60px;">
+        <div></div>
+        <!--Navigation bar -->
+        <b:navBar brand="Home" brandHref="faces/home.xhtml" inverse="true" fixed="top">
+            <b:navbarLinks>
+                <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
+                <b:navLink value="SignUp" href="faces/registerAccount.xhtml"></b:navLink>
+                <form class="navbar-form navbar-left hidden-md hidden-sm hidden-xs" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search"/>
+                    </div>
+                    <button type="submit" class="btn btn-default">Search</button>
+                </form>
+            </b:navbarLinks>
+        </b:navBar>
+
+        <!--Esta pagina tem de conter toda a informação do utilizador em que queremos ver a informação -->
+
+        <!--User name-->
+        <h3>#{userDetailsBean.email}</h3>
+
+        <!-- User information -->
+        <b:panel title="#{userDetailsBean.userPlatform.name}" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
+
+            <div class="panelStyle">
+                <div>                                
+                    <h4><b>Nome:</b>  #{userDetailsBean.userPlatform.name} </h4>
+                    <h4><b>Email: </b> #{userDetailsBean.userPlatform.email}</h4>
+                    <h4><b>Idade: </b>#{userDetailsBean.userPlatform.age}</h4>
+                    <h4><b>Rating: </b> #{userDetailsBean.userPlatform.userRating}</h4>
+                </div>
+            </div>
+        </b:panel>
+        
+        <h3>Lista Propriedades</h3>
+
+        <!-- Start the list of all properties  -->
+        <div>            
+
+            <ui:repeat value="#{userDetailsBean.listaDePropriedades}" var="property">
+                <b:panel title="#{property.id}" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="panelStyle">
+                        <div>                                
+                            <h4><b>Local: </b> #{property.address}</h4>
+                            <h4><b>Ocupado: </b> #{property.occupied}</h4>
+                            <h4><b> <a href="faces/propertyDetailsPage.xhtml?propertyId=#{rooms.property.owner.email}">#{rooms.property.owner.name}</a> </b></h4>
+                        </div>
+                    </div>
+                </b:panel>
+            </ui:repeat>   
+        </div>
+
+
+
+    </h:body>
+</html>

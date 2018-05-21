@@ -2,6 +2,9 @@
 package com.mycompany.tqs.gohouse;
 
 
+import dbClasses.Property;
+import dbClasses.Room;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +12,7 @@ import java.util.List;
 import javax.ejb.Singleton;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -20,34 +24,32 @@ import javax.faces.bean.ManagedBean;
 public class HomeBean implements Serializable {
 
     //Variables
-    protected List<TempPropriadade> propriedades;
-
+    protected List<Room> rooms;
+    
+    //Database handler
+    private final DBHandler dBHandler = new DBHandler();
+    
     //Constructor
     public HomeBean() {
-        this.loadProperties();
+        this.loadRooms();
     }
 
     //Has to connect to the database and get all the information from Propriedades
-    private void loadProperties() {
-        this.propriedades = new ArrayList<>();
-        TempPropriadade t;
-        t = new TempPropriadade("Joao", "11", "Desc", 19.8f, "IDK", 0, "https://t-ec.bstatic.com/images/hotel/max1024x768/728/72898182.jpg");
-        propriedades.add(t);
-        TempPropriadade p;
-        p = new TempPropriadade("Joao121", "Titulo 2", "Descrips", 111111.8f, "Too Expensive", 1, "https://t-ec.bstatic.com/images/hotel/max1024x768/728/72898182.jpg");
-        propriedades.add(p);
-
+    private void loadRooms() {
+        rooms = dBHandler.getAvailableRooms();        
     }
 
-    public List<TempPropriadade> getPropriedades() {
-        return propriedades;
+    public List<Room> getRooms() {
+        return rooms;
     }
 
-    public void setPropriedades(List<TempPropriadade> propriedades) {
-        this.propriedades = propriedades;
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
+
 
     
+ 
     
 }
 
