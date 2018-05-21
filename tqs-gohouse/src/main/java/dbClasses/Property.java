@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,7 +46,8 @@ public class Property implements Serializable, Comparable<Property> {
     private String address;
     
     @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private PropertyType type;
     
     @Column(nullable = false)
     private char block;
@@ -77,7 +80,7 @@ public class Property implements Serializable, Comparable<Property> {
     public Property() {
     }
 
-    public Property(PlatformUser owner, float longitude, float latitude, String address, String type, char block, int floor, Set<Room> rooms) {
+    public Property(PlatformUser owner, float longitude, float latitude, String address, PropertyType type, char block, int floor, Set<Room> rooms) {
         this.owner = owner;
         this.address = address;
         this.type = type;
@@ -175,11 +178,11 @@ public class Property implements Serializable, Comparable<Property> {
         this.address = address;
     }
 
-    public String getType() {
+    public PropertyType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(PropertyType type) {
         this.type = type;
     }
 

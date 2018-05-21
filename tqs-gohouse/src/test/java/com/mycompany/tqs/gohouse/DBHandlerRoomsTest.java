@@ -7,6 +7,7 @@ package com.mycompany.tqs.gohouse;
 
 import dbClasses.PlatformUser;
 import dbClasses.Property;
+import dbClasses.PropertyType;
 import dbClasses.Room;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -61,8 +62,8 @@ public class DBHandlerRoomsTest {
         System.out.println("testing getting the properties in a certain rent value range");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'B', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
             Property property = itr.next();
@@ -83,8 +84,8 @@ public class DBHandlerRoomsTest {
         System.out.println("testing getting the most expensive rooms");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'B', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
             Property property = itr.next();
@@ -104,8 +105,8 @@ public class DBHandlerRoomsTest {
         System.out.println("testing getting the cheapest rooms");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'B', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
             Property property = itr.next();
@@ -125,8 +126,8 @@ public class DBHandlerRoomsTest {
         System.out.println("testing getting all the available rooms");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'B', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
             Property property = itr.next();

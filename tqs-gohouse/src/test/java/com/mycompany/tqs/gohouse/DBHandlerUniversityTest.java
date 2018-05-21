@@ -2,6 +2,7 @@ package com.mycompany.tqs.gohouse;
 
 import dbClasses.PlatformUser;
 import dbClasses.Property;
+import dbClasses.PropertyType;
 import dbClasses.Room;
 import dbClasses.University;
 import java.time.LocalDate;
@@ -92,7 +93,7 @@ public class DBHandlerUniversityTest {
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         University uni = instance.getSingleUniversity("UA");
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", "house", 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         Property property = new Property();
         while (itr.hasNext()){

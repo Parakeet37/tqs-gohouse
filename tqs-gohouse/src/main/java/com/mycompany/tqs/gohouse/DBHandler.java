@@ -2,6 +2,7 @@ package com.mycompany.tqs.gohouse;
 
 import dbClasses.PlatformUser;
 import dbClasses.Property;
+import dbClasses.PropertyType;
 import dbClasses.Room;
 import dbClasses.University;
 import java.time.LocalDate;
@@ -217,7 +218,7 @@ public class DBHandler {
      * @param rooms list of the rooms of the property
      * @return true if the property was added with success
      */
-    public boolean addNewProperty(long id, float longitude, float latitude, String address, String type, char block, int floor, Set<Room> rooms){
+    public boolean addNewProperty(long id, float longitude, float latitude, String address, PropertyType type, char block, int floor, Set<Room> rooms){
         PlatformUser owner;
         Property property;
         owner = em.find(PlatformUser.class, id);
@@ -442,6 +443,21 @@ public class DBHandler {
      */
     public List getUnverifiedProperties(){
         Query query = em.createQuery("Select u from Property as u where u.verified = false");
+        return query.getResultList();
+    }
+    
+    /**
+     * gets a single property
+     * @param id id of the property
+     * @return the property object. if no property is found, this returns null
+     */
+    public Property getPropertyByID(long id){
+        return em.find(Property.class, id);
+    }
+    
+    public List getPropertiesByType(PropertyType type) {
+        Query query = em.createQuery("select u from Property as u where u.type = :type");
+        query.setParameter("type", type);
         return query.getResultList();
     }
     
