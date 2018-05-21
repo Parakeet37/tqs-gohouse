@@ -85,6 +85,7 @@ public class GoHouseRESTUsers {
     * @param rate The rate said user will attribute
     */
    @POST
+   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    @Path("rate")
    public void rateApartment(@PathParam("id") long id,
            @PathParam("rate") int rate) {
