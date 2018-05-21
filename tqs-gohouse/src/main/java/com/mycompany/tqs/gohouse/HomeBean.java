@@ -22,35 +22,33 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 @Singleton
 public class HomeBean implements Serializable {
-
-    //Variables
-    protected List<Room> rooms;
     
     //Database handler
-    private final DBHandler dBHandler = new DBHandler();
+    private final DBHandler dbHandler;
+    private String nameSignIn;
+    private String mailSignIn;
     
     //Constructor
     public HomeBean() {
-        this.loadRooms();
+        dbHandler = new DBHandler();
     }
 
-    //Has to connect to the database and get all the information from Propriedades
-    private void loadRooms() {
-        rooms = dBHandler.getAvailableRooms();        
+    public String getNameSignIn() {
+        return nameSignIn;
     }
 
-    public List<Room> getRooms() {
-        return rooms;
+    public void setNameSignIn(String nameSignIn) {
+        this.nameSignIn = nameSignIn;
     }
 
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
+    public String getMailSignIn() {
+        return mailSignIn;
     }
 
+    public void setMailSignIn(String mailSignIn) {
+        this.mailSignIn = mailSignIn;
+    }
 
-    
- 
-    
 }
 
 
