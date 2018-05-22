@@ -12,13 +12,6 @@ and open the template in the editor.
     xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:b="http://bootsfaces.net/ui"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <!--function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-}-->
     <h:head>
         <title>goHouse</title>
         <meta name="google-signin-client_id" content="322822969069-f1kdb3kuhui8gg146298tu85hpueh2cf.apps.googleusercontent.com"/>
@@ -38,22 +31,31 @@ and open the template in the editor.
                     <button type="submit" class="btn btn-default">Search</button>
                 </form>
                 <script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
+                
                 <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                <p:inputText id="gName" rendered="false" value="#{homeBean.nameSignIn}" />
-                <p:inputText id="gMail" rendered="false" value="#{homeBean.mailSignIn}" onchange="#{homeBean.actuate}" />
-                
-                
+                <h:form>
+                    <p:remoteCommand name="myRemote" partialSubmit="true" process="@this"  action="#{loggingBean.listenerAction}"/>
+                </h:form>         
                 <script>
+                    var bigBoy;
+                    
+                    function getBigBoy(){
+                        return bigBoy;
+                    }
+                    
                     function onSignIn(googleUser) {
-                        var profile = googleUser.getBasicProfile();
-                        document.getElementById("gName").value = profile.getName().toString();
-                        document.getElementById("gMail").value = profile.getEmail().toString();
-                        
+                        var profile = googleUser.getBasicProfile();                        
+                        var bigBoy = googleUser;                        
                         console.log('Name: ' + profile.getName());
                         console.log('Image URL: ' + profile.getImageUrl());
                         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+                        myRemote([
+                            { name: 'email',  value: profile.getEmail() },
+                            { name: 'name', value: profile.getName() }
+                          ]);
                       }
                 </script>
+                
             </b:navbarLinks>
         </b:navBar>
 
