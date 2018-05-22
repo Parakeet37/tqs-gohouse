@@ -1,20 +1,12 @@
 
 package com.mycompany.tqs.gohouse;
 
-
-import dbClasses.Property;
-import dbClasses.Room;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import javax.ejb.Singleton;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -34,26 +26,32 @@ public class LoggingBean implements Serializable {
         dbHandler = new DBHandler();
     }
 
+    //userName getter
     public String getUserName() {
         return userName;
     }
 
+    //userName setter
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    //userMail getter
     public String getUserMail() {
         return userMail;
     }
 
+    //userMail setter
     public void setUserMail(String userMail) {
         this.userMail = userMail;
     }
 
     
-
-    public void listenerAction(){
-        System.out.println("Getting Login Values. (Google VERY LIKELY will remember if you logged in a previous time)");
+    /**
+     * Aquires user's name and email when user finishes signing in via Google SignIn
+     */
+    public void userSignIn(){
+        System.out.println("Getting Login Values. (NOTE: Google will remember if you logged in a previous time!)");
         
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
