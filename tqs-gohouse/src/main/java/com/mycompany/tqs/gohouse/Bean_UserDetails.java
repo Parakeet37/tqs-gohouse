@@ -63,9 +63,11 @@ public class Bean_UserDetails {
                 }
             }
         }
-        //System.out.println(this.userPlatform.getEmail());
     }
 
+    
+    
+    
     public String getEmail() {
         return email;
     }
