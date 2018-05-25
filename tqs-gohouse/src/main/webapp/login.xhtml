@@ -14,7 +14,7 @@ and open the template in the editor.
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>goHouse</title>
-        
+        <meta name="google-signin-client_id" content="322822969069-f1kdb3kuhui8gg146298tu85hpueh2cf.apps.googleusercontent.com"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body style="padding: 60px;">
@@ -30,22 +30,38 @@ and open the template in the editor.
                     </div>
                     <button type="submit" class="btn btn-default">Search</button>
                 </form>
+                
+                
             </b:navbarLinks>
         </b:navBar>
 
         <p></p>
         <b:container style="width:600px; ">
-            <b:jumbotron>
-            <div align="center">
-                <p><h2>Enter your credentials:</h2></p>
-                <p><p:outputLabel value="Login:" style="width:120px; text-align: right"/><p:inputText/></p>
-                <p><p:outputLabel value="Password:" style="width:120px; text-align: right"/><p:inputText/></p>
-            </div>
-                <div align="right">
-                <a href="./registerAccount.xhtml">Sign up! </a>
-                <p:button value="Login "/>
-               </div>
+            <b:jumbotron >
+                <script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
                 
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <h:form>
+                    <p:remoteCommand name="userInfo" partialSubmit="true" process="@this"  action="#{loggingBean.userSignIn()}"/>
+                </h:form>         
+                <script>
+                    var bigBoy;
+                    
+                    function getBigBoy(){
+                        return bigBoy;
+                    }
+                    
+                    function onSignIn(googleUser) {
+                        var profile = googleUser.getBasicProfile();       
+                        console.log('Name: ' + profile.getName());
+                        console.log('Image URL: ' + profile.getImageUrl());
+                        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+                        userInfo([
+                            { name: 'email',  value: profile.getEmail() },
+                            { name: 'name', value: profile.getName() }
+                          ]);
+                      }
+                </script>
             </b:jumbotron>
         </b:container>
         

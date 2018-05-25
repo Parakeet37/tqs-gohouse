@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 @Singleton
 public class HomeBean implements Serializable {
-
+ 
     //Variables
     protected List<Room> rooms;
     
@@ -47,10 +47,6 @@ public class HomeBean implements Serializable {
         this.rooms = rooms;
     }
 
-
-    
- 
-    
 }
 
 
