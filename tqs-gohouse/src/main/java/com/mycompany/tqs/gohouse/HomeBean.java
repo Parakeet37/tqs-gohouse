@@ -1,18 +1,12 @@
-
 package com.mycompany.tqs.gohouse;
 
-
-import dbClasses.Property;
 import dbClasses.Room;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 
-import javax.ejb.Singleton;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 
 /**
  *
@@ -20,15 +14,19 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean(name = "homeBean", eager = true)
 @SessionScoped
-@Singleton
 public class HomeBean implements Serializable {
  
     //Variables
     protected List<Room> rooms;
-    
+
     //Database handler
     private final DBHandler dBHandler = new DBHandler();
-    
+
+    @PostConstruct
+    public void init() {
+        loadRooms();
+    }
+
     //Constructor
     public HomeBean() {
         this.loadRooms();
@@ -36,7 +34,7 @@ public class HomeBean implements Serializable {
 
     //Has to connect to the database and get all the information from Propriedades
     private void loadRooms() {
-        rooms = dBHandler.getAvailableRooms();        
+        rooms = dBHandler.getAvailableRooms();
     }
 
     public List<Room> getRooms() {
@@ -48,6 +46,3 @@ public class HomeBean implements Serializable {
     }
 
 }
-
-
-
