@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns = "http://www.w3.org/1999/xhtml" 
+      xmlns:h = "http://java.sun.com/jsf/html"
+      xmlns:p = "http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>goHome</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <!--Navigation bar -->
+        <b:navBar brand="Home" brandHref="faces/home.xhtml" inverse="true" fixed="top">
+            <b:navbarLinks>
+                <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
+                <b:navLink value="SignUp" href="faces/registerAccount.xhtml"></b:navLink>
+
+            </b:navbarLinks>
+        </b:navBar>
+        <!-- Add property -->
+        <br></br>
+
+        <div class="col-md-12 col-lg-12 col-sm-12">
+
+            <b:panel title="Informações da Propriedade" collapsible="false">
+                <h:form>
+                    <p><h4>ID: </h4> <h:inputText value="#{beanAddPropriedade.ID}" required="true" ></h:inputText></p> 
+                    <p><h4>Latitude:  </h4> <h:inputText value="#{beanAddPropriedade.latitude}" required="true" ></h:inputText> </p> 
+                    <p><h4>Longitude:  </h4> <h:inputText value="#{beanAddPropriedade.longitude}" required="true" ></h:inputText> </p> 
+                    <p><h4>Endereço:   </h4><h:inputText value="#{beanAddPropriedade.endereço}" required="true" ></h:inputText> </p> 
+                    <p><h4>Tipo:  </h4><h:selectOneMenu value="#{beanAddPropriedade.tipoPropriedade}" required="true">
+                            <f:selectItem itemValue="#{null}" />
+                            <f:selectItem itemValue="Apartamento" />
+                            <f:selectItem itemValue="Casa" /> 
+                        </h:selectOneMenu>  </p> 
+                    <p><h4>Bloco:  </h4> <h:inputText value="#{beanAddPropriedade.bloco}" required="true" ></h:inputText></p> 
+                    <p><h4>Piso:  </h4><h:inputText value="#{beanAddPropriedade.piso}" required="true" ></h:inputText> </p> 
+
+                    <h:commandButton value="Completar" action="#{beanAddPropriedade.submitProperty()}" />
+                </h:form>
+            </b:panel>
+
+        </div>
+       
+    </h:body>
+
+
+</html>
