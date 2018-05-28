@@ -54,7 +54,7 @@ public class BeanPropertyPage {
     */
     private void populateView(){
         assert id >= 0;
-        //this.propriedade = dBHandler.getPropertyByID(id);
+        this.propriedade = dBHandler.getPropertyByID(id);
     }
 
     

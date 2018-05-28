@@ -14,45 +14,41 @@ and open the template in the editor.
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>goHouse</title>
-        
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body style="padding: 60px;">
         <div></div>
-        
-      <!--Navigation bar -->
+
+        <!--Navigation bar -->
         <b:navBar brand="Home" brandHref="faces/home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
                 <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
                 <b:navLink value="SignUp" href="#"></b:navLink>
-                <form class="navbar-form navbar-left hidden-md hidden-sm hidden-xs" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search"/>
-                    </div>
-                    <button type="submit" class="btn btn-default">Search</button>
-                </form>
+                <b:navLink value="Âdicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
+
             </b:navbarLinks>
         </b:navBar>
-      
-      
+
+
         <p></p>
         <b:container style="width:600px; ">
             <b:jumbotron>
-            <div align="center">
-                <p><h2>Fill out this form please:</h2></p>
-                <p><p:outputLabel value="Username:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputUName}"/></p>
-                <p><p:outputLabel value="Password:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputPassword}"/></p>
-                <p><p:outputLabel value="Name:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputName}"/></p>
-                <p><p:outputLabel value="Email:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputEmail}"/></p>
-                <p><p:outputLabel value="Student? " style="width:120px; text-align: right"/><p:selectBooleanCheckbox value="#{registerBean.isStudent}"/></p>
-            </div>
-            <div align="right">
-                <p:button value="Login "/>
-            </div>
-            <div>
-                <p:outputLabel style="color: crimson" value="#{registerBean.errorPrompt}"/>
-            </div>
-                
+                <div align="center">
+                    <p><h2>Fill out this form please:</h2></p>
+                    <p><p:outputLabel value="Username:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputUName}"/></p>
+                    <p><p:outputLabel value="Password:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputPassword}"/></p>
+                    <p><p:outputLabel value="Name:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputName}"/></p>
+                    <p><p:outputLabel value="Email:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputEmail}"/></p>
+                    <p><p:outputLabel value="Student? " style="width:120px; text-align: right"/><p:selectBooleanCheckbox value="#{registerBean.isStudent}"/></p>
+                </div>
+                <div align="right">
+                    <p:button value="Login "/>
+                </div>
+                <div>
+                    <p:outputLabel style="color: crimson" value="#{registerBean.errorPrompt}"/>
+                </div>
+
             </b:jumbotron>
         </b:container>
     </h:body>
