@@ -27,53 +27,24 @@
 
             <b:panel title="Informações da Propriedade" collapsible="false">
                 <h:form>
-                    <p><h4>ID: </h4> <h:inputText value="#{bean.text}" required="true" ></h:inputText></p> 
-                    <p><h4>Latitude:  </h4> <h:inputText value="#{bean.text}" required="true" ></h:inputText> </p> 
-                    <p><h4>Longitude:  </h4> <h:inputText value="#{bean.text}" required="true" ></h:inputText> </p> 
-                    <p><h4>Endereço:   </h4><h:inputText value="#{bean.text}" required="true" ></h:inputText> </p> 
-                    <p><h4>Tipo:  </h4><h:selectOneMenu value="#{bean.choice}" required="true">
+                    <p><h4>ID: </h4> <h:inputText value="#{beanAddPropriedade.ID}" required="true" ></h:inputText></p> 
+                    <p><h4>Latitude:  </h4> <h:inputText value="#{beanAddPropriedade.latitude}" required="true" ></h:inputText> </p> 
+                    <p><h4>Longitude:  </h4> <h:inputText value="#{beanAddPropriedade.longitude}" required="true" ></h:inputText> </p> 
+                    <p><h4>Endereço:   </h4><h:inputText value="#{beanAddPropriedade.endereço}" required="true" ></h:inputText> </p> 
+                    <p><h4>Tipo:  </h4><h:selectOneMenu value="#{beanAddPropriedade.tipoPropriedade}" required="true">
                             <f:selectItem itemValue="#{null}" />
                             <f:selectItem itemValue="Apartamento" />
                             <f:selectItem itemValue="Casa" /> 
                         </h:selectOneMenu>  </p> 
-                    <p><h4>Bloco:  </h4> <h:inputText value="#{bean.text}" required="true" ></h:inputText></p> 
-                    <p><h4>Piso:  </h4><h:inputText value="#{bean.text}" required="true" ></h:inputText> </p> 
-                    <p> <h5> <b>Numero de quartos: #{bean.numberRTooms}</b></h5> </p>
+                    <p><h4>Bloco:  </h4> <h:inputText value="#{beanAddPropriedade.bloco}" required="true" ></h:inputText></p> 
+                    <p><h4>Piso:  </h4><h:inputText value="#{beanAddPropriedade.piso}" required="true" ></h:inputText> </p> 
 
-                    <h:commandButton value="Completar" action="#{bean.submit}" />
+                    <h:commandButton value="Completar" action="#{beanAddPropriedade.submitProperty()}" />
                 </h:form>
             </b:panel>
 
-            <!-- Botao para adicionar quartos-->
-            <b:button value="Adicionar Quartos" class="btn" onclick="PF('dlg1').show();" ></b:button>
-
-
-
-            <p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="200" minWidth="200">
-                <p><h4>Descrição: </h4> <h:inputText value="#{bean.text}" required="true" ></h:inputText></p>
-                <p><h4>Renda:  </h4> <h:inputText value="#{bean.text}" required="true" ></h:inputText></p>
-                <b:button value="Adicionar" onclick="" ></b:button>
-            </p:dialog>
-            
-
         </div>
-        <!-- When a room is added put the room here -->
-        <div class="col-lg-12 col-md-12 col-sm-12 ">
-            
-             <ui:repeat value="#{bean.rooms}" var="rooms">
-                <b:panel title="Room" class="col-xs-12 col-sm-12 col-md-4 col-lg-4"  collapsible="false">
-                        <div>                                
-                            <h4><b>Preço: </b> #{bean.asdasd}€</h4>
-                            <h4><b>Descrição: </b> #{bewan.dasd}</h4>
-                            <b:button class="btn btn-default" value="Delete"></b:button>
-                        </div>
-                </b:panel>
-            </ui:repeat>
-            
-        </div>
-
-
-
+       
     </h:body>
 
 
