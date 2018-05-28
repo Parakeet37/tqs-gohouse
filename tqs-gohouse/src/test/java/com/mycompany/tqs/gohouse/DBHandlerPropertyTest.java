@@ -293,4 +293,16 @@ public class DBHandlerPropertyTest {
         }
         assertEquals(instance.getPropertiesByType(PropertyType.HOUSE).size(), 2);
     }
+    
+    @Test
+    public void testGetClosestProperties(){
+        System.out.println("testing getting the unverified properties in range");
+        DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
+        PlatformUser user = instance.getMostPopularUser();
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40.5), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(43), new Float(30), "Street", PropertyType.HOUSE, 'C', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40.000005), new Float(39.999999), "Street", PropertyType.HOUSE, 'D', 1, new HashSet<Room>());
+        assertEquals(instance.getUnverifiedPropertiesInRange(new Float(40), new Float (40), 10).size(), 2);
+    }
 }

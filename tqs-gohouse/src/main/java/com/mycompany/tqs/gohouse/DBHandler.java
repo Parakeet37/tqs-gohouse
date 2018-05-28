@@ -77,7 +77,6 @@ public class DBHandler {
             em.persist(new PlatformUser(email, name, age, isDelegate));
             em.getTransaction().commit();
         } catch (RollbackException ex) {
-            em.getTransaction().commit();
             return false;
         }
         return true;
@@ -458,6 +457,35 @@ public class DBHandler {
     public List getPropertiesByType(PropertyType type) {
         Query query = em.createQuery("select u from Property as u where u.type = :type");
         query.setParameter("type", type);
+        return query.getResultList();
+    }
+    
+    private float rad2deg(float rad) {
+        return (float) ((rad * 180) / (Math.PI));
+    }
+    private float deg2rad( float deg) {
+        return (float) ((deg * Math.PI) / (180));
+    }
+    
+    /**
+     * gets all the unverified properties in the range of 5 kilometers.
+     * @param lat latitude of the location of the user.
+     * @param lon longitude of the location of the user.
+     * @param distance maximum distance the properties should be
+     * @return a list of the properties in the range
+     */
+    public List getUnverifiedPropertiesInRange(float lat, float lon, double distance){
+        float radiuslat = (float) (distance/110.574); //1 degree is approximately equal to 110.574 km
+        float radiuslon = (float) ((Math.cos(deg2rad(radiuslat)))/111.320);
+        Query query = em.createQuery("select u from Property as u where "
+                + "(u.latitude between :minlat and :maxlat) and "
+                + "(u.longitude between :minlon and :maxlon) and "
+                + "u.verified = false");
+        System.out.println(radiuslat + " " + radiuslon);
+        query.setParameter("minlat", lat-radiuslat);
+        query.setParameter("maxlat", lat+radiuslat);
+        query.setParameter("minlon", lon-radiuslon);
+        query.setParameter("maxlon", lon+radiuslon);
         return query.getResultList();
     }
     
