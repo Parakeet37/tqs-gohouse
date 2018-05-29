@@ -1,8 +1,10 @@
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.PropertyType;
+import dbclasses.PropertyType;
+import java.time.LocalDate;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -12,114 +14,134 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class BeanAddPropriedade {
 
-    private String ID;
-    private String Latitude;
-    private String Longitude;
-    private String Endereço;
-    private String Bloco;
-    private String Piso;
-    private String TipoPropriedade;
+    private String id;
+    private String latitude;
+    private String longitude;
+    private String endereço;
+    private String bloco;
+    private String piso;
+    private String tipoPropriedade;
+    private String message;
 
     private final DBHandler dBHandler = new DBHandler();
 
-    /**
-     * Empty constructor
-     */
     public BeanAddPropriedade() {
+        this.message = "";
     }
 
     public void submitProperty() {
-        assert ID != null && Latitude != null && Longitude != null && Endereço != null && Bloco != null && Piso != null && TipoPropriedade != null;
-        assert ID != "" && Latitude != "" && Longitude != "" && Endereço != "" && Bloco != "" && Piso != "" && TipoPropriedade != "";
+        assert id != null && latitude != null && longitude != null && endereço != null && bloco != null && piso != null && tipoPropriedade != null;
+        assert id != "" && latitude != "" && longitude != "" && endereço != "" && bloco != "" && piso != "" && tipoPropriedade != "";
         try {
-            char bloc = Bloco.toCharArray()[0];
+            //dBHandler.registerUser("joao@outlook.com", "dhdhd", LocalDate.of(1997, 3, 3), true);
 
-            if ("Casa".equals(TipoPropriedade)) {
-
-                dBHandler.addNewProperty(Integer.parseInt(ID), Float.parseFloat(Longitude), Float.parseFloat(Latitude), Endereço, PropertyType.HOUSE, bloc, Integer.parseInt(Piso), null);
+            char bloc = bloco.toCharArray()[0];
+            boolean d = false;
+            if ("Casa".equals(tipoPropriedade)) {
+                d = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.HOUSE, bloc, Integer.parseInt(piso), null);
             } else {
-
-                dBHandler.addNewProperty(Integer.parseInt(ID), Float.parseFloat(Longitude), Float.parseFloat(Latitude), Endereço, PropertyType.APARTMENT, bloc, Integer.parseInt(Piso), null);
+                d = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.APARTMENT, bloc, Integer.parseInt(piso), null);
             }
-            
-            System.out.println("Added property with ID " + ID);
+
+            if (d == true) {
+                message = "Propriedade criada com sucesso!";
+
+            } else {
+                message = "Propriedade não criada!";
+            }
+            showDialog();
             //Clear all values
             clearVars();
 
         } catch (NumberFormatException e) {
+
+            message = "Erro na informação";
+            showDialog();
         }
 
     }
 
     /**
-     * Method that cleans all variables.
-     * USAGE: After the submit
+     * Method that cleans all variables. USAGE: After the submit
      */
     private void clearVars() {
-        ID = "";
-        Latitude = "";
-        Longitude = "";
-        Endereço = "";
-        Bloco = "";
-        Piso = "";
-        TipoPropriedade = "";
+        id = "";
+        latitude = "";
+        longitude = "";
+        endereço = "";
+        bloco = "";
+        piso = "";
+        tipoPropriedade = "";
+    }
+
+    private void showDialog() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dlg1').show();");
     }
 
     //Getters and setters
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getLatitude() {
-        return Latitude;
+        return latitude;
     }
 
-    public void setLatitude(String Latitude) {
-        this.Latitude = Latitude;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public String getLongitude() {
-        return Longitude;
+        return longitude;
     }
 
-    public void setLongitude(String Longitude) {
-        this.Longitude = Longitude;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getEndereço() {
-        return Endereço;
+        return endereço;
     }
 
-    public void setEndereço(String Endereço) {
-        this.Endereço = Endereço;
+    public void setEndereço(String endereço) {
+        this.endereço = endereço;
     }
 
     public String getBloco() {
-        return Bloco;
+        return bloco;
     }
 
-    public void setBloco(String Bloco) {
-        this.Bloco = Bloco;
-    }
-
-    public String getTipoPropriedade() {
-        return TipoPropriedade;
-    }
-
-    public void setTipoPropriedade(String TipoPropriedade) {
-        this.TipoPropriedade = TipoPropriedade;
+    public void setBloco(String bloco) {
+        this.bloco = bloco;
     }
 
     public String getPiso() {
-        return Piso;
+        return piso;
     }
 
-    public void setPiso(String Piso) {
-        this.Piso = Piso;
+    public void setPiso(String piso) {
+        this.piso = piso;
+    }
+
+    public String getTipoPropriedade() {
+        return tipoPropriedade;
+    }
+
+    public void setTipoPropriedade(String tipoPropriedade) {
+        this.tipoPropriedade = tipoPropriedade;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 }

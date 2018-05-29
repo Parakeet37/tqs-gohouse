@@ -17,7 +17,7 @@
             <b:navbarLinks>
                 <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
                 <b:navLink value="SignUp" href="faces/registerAccount.xhtml"></b:navLink>
-                <b:navLink value="Âdicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
+                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
 
             </b:navbarLinks>
         </b:navBar>
@@ -28,7 +28,7 @@
 
             <b:panel title="Informações da Propriedade" collapsible="false">
                 <h:form>
-                    <p><h4>ID: </h4> <h:inputText value="#{beanAddPropriedade.ID}" required="true" ></h:inputText></p> 
+                    <p><h4>ID: </h4> <h:inputText value="#{beanAddPropriedade.id}" required="true" ></h:inputText></p> 
                     <p><h4>Latitude:  </h4> <h:inputText value="#{beanAddPropriedade.latitude}" required="true" ></h:inputText> </p> 
                     <p><h4>Longitude:  </h4> <h:inputText value="#{beanAddPropriedade.longitude}" required="true" ></h:inputText> </p> 
                     <p><h4>Endereço:   </h4><h:inputText value="#{beanAddPropriedade.endereço}" required="true" ></h:inputText> </p> 
@@ -37,7 +37,7 @@
                             <f:selectItem itemValue="Apartamento" />
                             <f:selectItem itemValue="Casa" /> 
                         </h:selectOneMenu>  </p> 
-                    <p><h4>Bloco:  </h4> <h:inputText value="#{beanAddPropriedade.bloco}" required="true" ></h:inputText></p> 
+                    <p><h4>Bloco:  </h4> <h:inputText value="#{beanAddPropriedade.bloco}" maxlength="1" required="true" ></h:inputText></p> 
                     <p><h4>Piso:  </h4><h:inputText value="#{beanAddPropriedade.piso}" required="true" ></h:inputText> </p> 
 
                     <h:commandButton value="Completar" action="#{beanAddPropriedade.submitProperty()}" />
@@ -45,7 +45,12 @@
             </b:panel>
 
         </div>
-       
+
+        <p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="40">
+            <h:outputText value="#{beanAddPropriedade.message}" />
+        </p:dialog>
+        
+        
     </h:body>
 
 

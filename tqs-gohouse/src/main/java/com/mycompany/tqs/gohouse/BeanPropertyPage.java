@@ -5,7 +5,7 @@
  */
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.Property;
+import dbclasses.Property;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.annotation.PostConstruct;
