@@ -1,6 +1,6 @@
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.PlatformUser;
+import dbclasses.PlatformUser;
 import java.time.LocalDate;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

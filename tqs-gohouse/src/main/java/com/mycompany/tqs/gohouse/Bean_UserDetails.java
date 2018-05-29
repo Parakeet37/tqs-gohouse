@@ -1,7 +1,7 @@
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.PlatformUser;
-import dbClasses.Property;
+import dbclasses.PlatformUser;
+import dbclasses.Property;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

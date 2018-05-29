@@ -1,4 +1,4 @@
-package dbClasses;
+package dbclasses;
 
 public enum PropertyType {
     HOUSE,

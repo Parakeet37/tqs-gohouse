@@ -5,10 +5,10 @@
  */
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.PlatformUser;
-import dbClasses.Property;
-import dbClasses.PropertyType;
-import dbClasses.Room;
+import dbclasses.PlatformUser;
+import dbclasses.Property;
+import dbclasses.PropertyType;
+import dbclasses.Room;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Iterator;

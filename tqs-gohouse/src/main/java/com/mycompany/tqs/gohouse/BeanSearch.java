@@ -10,7 +10,7 @@ package com.mycompany.tqs.gohouse;
  * @author demo
  */
 
-import dbClasses.Property;
+import dbclasses.Property;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package dbClasses;
+package dbclasses;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -17,9 +17,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PlatformUser extends GeneralEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-    @Column(nullable = false)
-    protected String name;
     
     @Column(nullable = false, unique=true)
     private String email;
@@ -71,14 +68,6 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     public boolean removeRentedRoom(Room room){
         return rentedRooms.remove(room);
     }
-    
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getEmail() {
         return email;
@@ -127,33 +116,6 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     public void setUniversity(University university) {
         this.university = university;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 89 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PlatformUser other = (PlatformUser) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return Objects.equals(this.email, other.email);
-    }
-    
-    
 
     @Override
     public String toString() {

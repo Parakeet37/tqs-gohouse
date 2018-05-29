@@ -1,10 +1,12 @@
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.PlatformUser;
-import dbClasses.Property;
-import dbClasses.PropertyType;
-import dbClasses.Room;
-import dbClasses.University;
+import dbclasses.GeneralEntity;
+import dbclasses.PlatformUser;
+import dbclasses.Property;
+import dbclasses.PropertyType;
+import dbclasses.Room;
+import dbclasses.University;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
@@ -19,11 +21,11 @@ import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
 @Singleton
-public class DBHandler {
+public class DBHandler implements Serializable{
     
     private EntityManager em;
         
-    private final double MIN_USERS = 10.0;
+    private static final double MINUSERS = 10.0;
     
     private final String UNIT = "gohousedb";
 
@@ -77,7 +79,6 @@ public class DBHandler {
             em.persist(new PlatformUser(email, name, age, isDelegate));
             em.getTransaction().commit();
         } catch (RollbackException ex) {
-            em.getTransaction().commit();
             return false;
         }
         return true;
@@ -96,29 +97,26 @@ public class DBHandler {
     public boolean changeDelegation(long id, boolean isDelegate, String univName, String univAddress) {
         Query query  = em.createQuery("Select u from University as u where u.name=:name");
         query.setParameter("name", univName);
-        try {
-            PlatformUser user = em.find(PlatformUser.class, id);
-            if (isDelegate && !user.isIsDelegate()){
-                University univ;
-                try {
-                    univ = (University) query.getSingleResult();                    
-                } catch (NoResultException x){
-                    //University does not exist in the database... Needs to be created
-                    univ = new University(univName, univAddress);
-                    em.getTransaction().begin();
-                    em.persist(univ);
-                    em.getTransaction().commit();
-                } catch (RollbackException e){
-                    return false;
-                }
+        PlatformUser user = em.find(PlatformUser.class, id);
+        if (user == null) return false;
+        if (isDelegate && !user.isIsDelegate()){
+            University univ;
+            try {
+                univ = (University) query.getSingleResult();                    
+            } catch (NoResultException x){
+                //University does not exist in the database... Needs to be created
+                univ = new University(univName, univAddress);
                 em.getTransaction().begin();
-                user.setIsDelegate(isDelegate);
-                user.setUniversity(univ);
+                em.persist(univ);
                 em.getTransaction().commit();
-            } else {
+            } catch (RollbackException e){
                 return false;
             }
-        } catch (NullPointerException e) {
+            em.getTransaction().begin();
+            user.setIsDelegate(isDelegate);
+            user.setUniversity(univ);
+            em.getTransaction().commit();
+        } else {
             return false;
         }
         return true;
@@ -137,7 +135,7 @@ public class DBHandler {
             if (user.getUserRating() != 0) user.setUserRating((rating+user.getUserRating())/2);
             else user.setUserRating(rating);
             user.setNVotes(user.getNVotes()+1);
-            user.setWeightedRanking((user.getNVotes()/(user.getNVotes()+MIN_USERS))*user.getUserRating());
+            user.setWeightedRanking((user.getNVotes()/(user.getNVotes()+MINUSERS))*user.getUserRating());
             em.getTransaction().commit();
 
         } catch (NullPointerException e) {
@@ -151,7 +149,7 @@ public class DBHandler {
      * @throws IndexOutOfBoundsException if no results are found
      * @return platform user with the best rating
      */
-    public PlatformUser getMostPopularUser() throws IndexOutOfBoundsException{
+    public PlatformUser getMostPopularUser() {
         Query query = em.createQuery("Select u from PlatformUser as u order by u.weightedRating desc");
         return (PlatformUser) query.getResultList().get(0);
     }
@@ -301,44 +299,29 @@ public class DBHandler {
      * @param newRenterID id of the new renter
      * @return true if success. false otherwise
      */
-    public boolean rentPropertyToUser(long propertyID, long newRenterID){
+    public boolean rentProperty(long propertyID, long newRenterID){
         Property property = em.find(Property.class, propertyID);
-        PlatformUser renter = em.find(PlatformUser.class, newRenterID);
-        if (renter == null) return false;
         if (property == null) return false;
         Query query = em.createQuery("select u from Room AS u where "
                     + "u.property = :property and u.occupied = false");
         query.setParameter("property", property);
         if (query.getResultList().size() != property.getRooms().size()) return false;
+        GeneralEntity renter = em.find(PlatformUser.class, newRenterID);
         Iterator<Room> itr = property.getRooms().iterator();
+        if (renter == null){
+            renter = em.find(University.class, newRenterID);
+            if (renter == null) return false;
+            while (itr.hasNext()){
+            rentRoomToUniversity(itr.next().getId(), renter.getId());
+        }
+        return true;
+        }
         while (itr.hasNext()){
             rentRoomToUser(itr.next().getId(), renter.getId());
         }
         return true;
     }
-    
-    /**
-     * gives to the university the availability to rent the property. the property is not occupied
-     * @param propertyID id of the property
-     * @param newRenterID id of the new renter
-     * @return true if success. false otherwise
-     */
-    public boolean rentPropertyToUniversity(long propertyID, long newRenterID){
-        Property property = em.find(Property.class, propertyID);
-        University renter = em.find(University.class, newRenterID);
-        if (renter == null) return false;
-        if (property == null) return false;
-        Query query = em.createQuery("select u from Room AS u where "
-                    + "u.property = :property and u.occupied = false");
-        query.setParameter("property", property);
-        if (query.getResultList().size() != property.getRooms().size()) return false;
-        Iterator<Room> itr = property.getRooms().iterator();
-        while (itr.hasNext()){
-            rentRoomToUniversity(itr.next().getId(), renter.getId());
-        }
-        return true;
-    }
-    
+
     /**
      * changes the occupation of the property
      * @param propertyID id of the property
@@ -395,7 +378,7 @@ public class DBHandler {
             if (property.getUserRating() != 0) property.setUserRating((rating+property.getUserRating())/2);
             else property.setUserRating(rating);
             property.setnVotes(property.getnVotes()+1);
-            property.setWeightedRating((property.getnVotes()/(property.getnVotes()+MIN_USERS))*property.getUserRating());
+            property.setWeightedRating((property.getnVotes()/(property.getnVotes()+MINUSERS))*property.getUserRating());
             em.getTransaction().commit();
         } catch (NullPointerException e) {
             return false;
@@ -458,6 +441,34 @@ public class DBHandler {
     public List getPropertiesByType(PropertyType type) {
         Query query = em.createQuery("select u from Property as u where u.type = :type");
         query.setParameter("type", type);
+        return query.getResultList();
+    }
+    
+    private float rad2deg(float rad) {
+        return (float) ((rad * 180) / (Math.PI));
+    }
+    private float deg2rad( float deg) {
+        return (float) ((deg * Math.PI) / (180));
+    }
+    
+    /**
+     * gets all the unverified properties in the range of 5 kilometers.
+     * @param lat latitude of the location of the user.
+     * @param lon longitude of the location of the user.
+     * @param distance maximum distance the properties should be
+     * @return a list of the properties in the range
+     */
+    public List getUnverifiedPropertiesInRange(float lat, float lon, double distance){
+        float radiuslat = (float) (distance/110.574); //1 degree is approximately equal to 110.574 km
+        float radiuslon = (float) ((Math.cos(deg2rad(radiuslat)))/111.320);
+        Query query = em.createQuery("select u from Property as u where "
+                + "(u.latitude between :minlat and :maxlat) and "
+                + "(u.longitude between :minlon and :maxlon) and "
+                + "u.verified = false");
+        query.setParameter("minlat", lat-radiuslat);
+        query.setParameter("maxlat", lat+radiuslat);
+        query.setParameter("minlon", lon-radiuslon);
+        query.setParameter("maxlon", lon+radiuslon);
         return query.getResultList();
     }
     
@@ -619,7 +630,7 @@ public class DBHandler {
      * @param maxRent maximum rent value
      * @return the rooms. if no rooms are found, the list goes empty
      */
-    public List<Property> getRoomsInCostRange(int minRent, int maxRent) throws IllegalArgumentException {
+    public List<Property> getRoomsInCostRange(int minRent, int maxRent) {
         if (minRent >= maxRent) throw new IllegalArgumentException("the second argument should be higher than the first");
         Query query = em.createQuery("select u from Room AS u where u.rent between :minRent and :maxRent");
         query.setParameter("minRent", minRent);
@@ -712,7 +723,7 @@ public class DBHandler {
             if (univ.getUserRating() != 0) univ.setUserRating((rating+univ.getUserRating())/2);
             else univ.setUserRating(rating);
             univ.setNVotes(univ.getNVotes()+1);
-            univ.setWeightedRanking((univ.getNVotes()/(univ.getNVotes()+MIN_USERS))*univ.getUserRating());
+            univ.setWeightedRanking((univ.getNVotes()/(univ.getNVotes()+MINUSERS))*univ.getUserRating());
             em.getTransaction().commit();
 
         } catch (NullPointerException e) {
@@ -722,7 +733,7 @@ public class DBHandler {
         return true;
     }
     
-    public List<Room> getRoomsFromUniversity(long universityID) throws NullPointerException{
+    public List<Room> getRoomsFromUniversity(long universityID) {
         University univ = em.find(University.class, universityID);
         if (univ == null) throw new NullPointerException("University not found");
         Query query = em.createQuery("select u from Room as u where u.university = :univ");
