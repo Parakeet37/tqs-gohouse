@@ -4,6 +4,7 @@ import dbclasses.Property;
 import dbclasses.Room;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 
@@ -17,9 +18,9 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean(name = "homeBean", eager = true)
 @SessionScoped
 public class HomeBean implements Serializable {
- 
+
     //Variables
-    protected List<Room> rooms;
+    protected List<Room> rooms = new ArrayList<>();
 
     //Database handler
     private final DBHandler dBHandler = new DBHandler();
@@ -29,13 +30,16 @@ public class HomeBean implements Serializable {
         loadRooms();
     }
 
-    //Constructor
+    /**
+     * Empty constructor
+     */
     public HomeBean() {
-        this.loadRooms();
+
     }
 
     //Has to connect to the database and get all the information from Propriedades
     private void loadRooms() {
+
         rooms = dBHandler.getAvailableRooms();
     }
 

@@ -24,10 +24,10 @@ and open the template in the editor.
             <b:navbarLinks>
                 <b:navLink value="Login" href="#"></b:navLink>
                 <b:navLink value="SignUp" href="faces/registerAccount.xhtml"></b:navLink>
-               
-                                <b:navLink value="Âdicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
 
-                
+                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
+
+
             </b:navbarLinks>
         </b:navBar>
 
@@ -35,31 +35,31 @@ and open the template in the editor.
         <b:container style="width:600px; ">
             <b:jumbotron >
                 <script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
-                
+
                 <div class="g-signin2" data-onsuccess="onSignIn"></div>
                 <h:form>
                     <p:remoteCommand name="userInfo" partialSubmit="true" process="@this"  action="#{loggingBean.userSignIn()}"/>
                 </h:form>         
                 <script>
                     var bigBoy;
-                    
-                    function getBigBoy(){
+
+                    function getBigBoy() {
                         return bigBoy;
                     }
-                    
+
                     function onSignIn(googleUser) {
-                        var profile = googleUser.getBasicProfile();       
+                        var profile = googleUser.getBasicProfile();
                         console.log('Name: ' + profile.getName());
                         console.log('Image URL: ' + profile.getImageUrl());
                         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
                         userInfo([
-                            { name: 'email',  value: profile.getEmail() },
-                            { name: 'name', value: profile.getName() }
-                          ]);
-                      }
+                            {name: 'email', value: profile.getEmail()},
+                            {name: 'name', value: profile.getName()}
+                        ]);
+                    }
                 </script>
             </b:jumbotron>
         </b:container>
-        
+
     </h:body>
 </html>
