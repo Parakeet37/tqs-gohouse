@@ -1,9 +1,9 @@
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.PlatformUser;
-import dbClasses.Property;
-import dbClasses.PropertyType;
-import dbClasses.Room;
+import dbclasses.PlatformUser;
+import dbclasses.Property;
+import dbclasses.PropertyType;
+import dbclasses.Room;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -136,7 +136,7 @@ public class DBHandlerPropertyFailureTest {
             instance.rentRoomToUser(rooms.next().getId(), renter.getId());
             break;
         }
-        assertEquals(instance.rentPropertyToUser(property.getId(), renter.getId()), false);
+        assertEquals(instance.rentProperty(property.getId(), renter.getId()), false);
     }
     
     @Test
@@ -155,7 +155,7 @@ public class DBHandlerPropertyFailureTest {
         }
         instance.addRoom("A nice room.", 100, property.getId());
         instance.addRoom("A nice room.", 110, property.getId());
-        instance.rentPropertyToUser(property.getId(), renter.getId());
+        instance.rentProperty(property.getId(), renter.getId());
         Iterator<Room> rooms = property.getRooms().iterator();
         while (rooms.hasNext()){
             instance.checkoutRoom(rooms.next().getId());

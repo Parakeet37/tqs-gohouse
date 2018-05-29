@@ -5,7 +5,7 @@
  */
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.PlatformUser;
+import dbclasses.PlatformUser;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;

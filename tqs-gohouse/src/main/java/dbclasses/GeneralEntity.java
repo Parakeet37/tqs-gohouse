@@ -1,4 +1,4 @@
-package dbClasses;
+package dbclasses;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -22,6 +22,9 @@ public abstract class GeneralEntity implements Serializable {
     protected Long id;
     
     @Column(nullable = false)
+    protected String name;
+    
+    @Column(nullable = false)
     protected double userRating;
     
     @Column(nullable = false)
@@ -30,7 +33,13 @@ public abstract class GeneralEntity implements Serializable {
     @Column(nullable = false)
     protected double weightedRating;
     
-    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     
     public Long getId() {
         return id;

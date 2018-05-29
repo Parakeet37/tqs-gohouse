@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dbClasses;
+package dbclasses;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -17,12 +18,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
+@AttributeOverrides({
+    @AttributeOverride(name="name", column=@Column(nullable=false, unique=true))
+})
 public class University extends GeneralEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-    @Column(nullable = false, unique=true)
-    protected String name;
 
     @Column(nullable = false)
     private String address;
@@ -67,14 +68,6 @@ public class University extends GeneralEntity implements Serializable {
         return rentedRooms.remove(room);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -114,32 +107,4 @@ public class University extends GeneralEntity implements Serializable {
     public boolean removeVerifiedProperty(Property property){
         return verifiedProperties.remove(property);
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final University other = (University) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return Objects.equals(this.id, other.id);
-    }
-    
-    
-    
 }

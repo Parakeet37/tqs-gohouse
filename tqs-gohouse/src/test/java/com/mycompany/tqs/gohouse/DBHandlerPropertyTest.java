@@ -1,10 +1,10 @@
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.PlatformUser;
-import dbClasses.Property;
-import dbClasses.PropertyType;
-import dbClasses.Room;
-import dbClasses.University;
+import dbclasses.PlatformUser;
+import dbclasses.Property;
+import dbclasses.PropertyType;
+import dbclasses.Room;
+import dbclasses.University;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -109,7 +109,7 @@ public class DBHandlerPropertyTest {
             break;
         }
         instance.addRoom("A nice room.", 100, property.getId());
-        assertEquals(instance.rentPropertyToUser(property.getId(), renter.getId()), true);
+        assertEquals(instance.rentProperty(property.getId(), renter.getId()), true);
     }
 
     @Test
@@ -127,7 +127,7 @@ public class DBHandlerPropertyTest {
             break;
         }
         instance.addRoom("A nice room.", 100, property.getId());
-        assertEquals(instance.rentPropertyToUniversity(property.getId(), uni.getId()), true);
+        assertEquals(instance.rentProperty(property.getId(), uni.getId()), true);
     }
     
     @Test
@@ -146,7 +146,7 @@ public class DBHandlerPropertyTest {
             break;
         }
         instance.addRoom("A nice room.", 100, property.getId());
-        instance.rentPropertyToUser(property.getId(), renter.getId());
+        instance.rentProperty(property.getId(), renter.getId());
         assertEquals(instance.checkoutProperty(property.getId()), true);
     }
     
@@ -165,7 +165,7 @@ public class DBHandlerPropertyTest {
             break;
         }
         instance.addRoom("A nice room.", 100, property.getId());
-        instance.rentPropertyToUniversity(property.getId(), uni.getId());
+        instance.rentProperty(property.getId(), uni.getId());
         assertEquals(instance.removePropertyRoomOwnership(property.getId()), true);
     }
     

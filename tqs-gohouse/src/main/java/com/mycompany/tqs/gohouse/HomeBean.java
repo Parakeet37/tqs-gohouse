@@ -2,8 +2,8 @@
 package com.mycompany.tqs.gohouse;
 
 
-import dbClasses.Property;
-import dbClasses.Room;
+import dbclasses.Property;
+import dbclasses.Room;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;

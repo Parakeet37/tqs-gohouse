@@ -1,4 +1,4 @@
-package dbClasses;
+package dbclasses;
 
 import java.io.Serializable;
 import java.util.Objects;

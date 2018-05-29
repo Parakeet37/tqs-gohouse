@@ -1,6 +1,6 @@
 package com.mycompany.tqs.gohouse;
 
-import dbClasses.Property;
+import dbclasses.Property;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
