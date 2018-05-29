@@ -15,6 +15,11 @@
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
+        
+        <!-- Wildfly  --> 
+        <version.arquillian_core>1.1.4.Final</version.arquillian_core>
+        <version.wildfly>8.0.0.Final</version.wildfly>
+        
     </properties>
 
     <repositories>
@@ -26,6 +31,7 @@
     </repositories>
 
     <dependencies>
+        
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
@@ -151,4 +157,5 @@
             
         </plugins>
     </build>
+    
 </project>
