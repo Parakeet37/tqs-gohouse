@@ -32,7 +32,7 @@ public class HomeBean implements Serializable {
      * Empty constructor
      */
     public HomeBean() {
-        dBHandler.registerUser("joao@outlook.com", "Joao Serpa", LocalDate.of(1997,7,7), true);
+        //dBHandler.registerUser("joao@outlook.com", "Joao Serpa", LocalDate.of(1997,7,7), true);
     }
 
     //Has to connect to the database and get all the information from Propriedades
