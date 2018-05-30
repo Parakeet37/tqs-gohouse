@@ -1,7 +1,7 @@
 package com.mycompany.tqs.gohouse;
 
 import dbclasses.PropertyType;
-import java.time.LocalDate;
+import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
@@ -31,31 +31,30 @@ public class BeanAddPropriedade {
 
     public void submitProperty() {
         assert id != null && latitude != null && longitude != null && endereço != null && bloco != null && piso != null && tipoPropriedade != null;
-        assert id != "" && latitude != "" && longitude != "" && endereço != "" && bloco != "" && piso != "" && tipoPropriedade != "";
-        try {
-            //dBHandler.registerUser("joao@outlook.com", "dhdhd", LocalDate.of(1997, 3, 3), true);
+        assert !"".equals(id) && !"".equals(latitude) && !"".equals(longitude) && !"".equals(endereço) && !"".equals(bloco) && !"".equals(piso) && !"".equals(tipoPropriedade);
 
+        try {
             char bloc = bloco.toCharArray()[0];
-            boolean d = false;
+            boolean created = false;
             if ("Casa".equals(tipoPropriedade)) {
-                d = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.HOUSE, bloc, Integer.parseInt(piso), null);
+                created = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.HOUSE, bloc, Integer.parseInt(piso), null);
             } else {
-                d = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.APARTMENT, bloc, Integer.parseInt(piso), null);
+                created = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.APARTMENT, bloc, Integer.parseInt(piso), null);
             }
 
-            if (d == true) {
+            if (created == true) {
                 message = "Propriedade criada com sucesso!";
 
             } else {
-                message = "Propriedade não criada!";
+                message = "Propriedade não criada, propriedade não existente!";
             }
+
             showDialog();
             //Clear all values
             clearVars();
 
         } catch (NumberFormatException e) {
-
-            message = "Erro na informação";
+            message = "Erro na informação. Não foi possivel converter alguns valores.";
             showDialog();
         }
 
@@ -74,6 +73,9 @@ public class BeanAddPropriedade {
         tipoPropriedade = "";
     }
 
+    /**
+     * Show a message dialog.
+     */
     private void showDialog() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dlg1').show();");

@@ -1,14 +1,12 @@
 package com.mycompany.tqs.gohouse;
 
-import dbclasses.Property;
 import dbclasses.Room;
-import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-
-import javax.faces.bean.SessionScoped;
+import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 
 /**
@@ -16,7 +14,7 @@ import javax.faces.bean.ManagedBean;
  * @author joaos
  */
 @ManagedBean(name = "homeBean", eager = true)
-@SessionScoped
+@Singleton
 public class HomeBean implements Serializable {
 
     //Variables
@@ -34,7 +32,7 @@ public class HomeBean implements Serializable {
      * Empty constructor
      */
     public HomeBean() {
-
+        dBHandler.registerUser("joao@outlook.com", "Joao Serpa", LocalDate.of(1997,7,7), true);
     }
 
     //Has to connect to the database and get all the information from Propriedades
