@@ -80,7 +80,11 @@ public class BeanSearch implements Serializable{
         this.searchResults = searchResults;
     }
     
-    
+    public void redirectTo(long id) throws IOException{
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/tqs-gohouse-1.0-SNAPSHOT/faces/propertyDetailsPage.xhtml?propertyId="+id);
+
+        
+    }
 
     public String searchProperties() throws IOException{
         searchResults.clear();

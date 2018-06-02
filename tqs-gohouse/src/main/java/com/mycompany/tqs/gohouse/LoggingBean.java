@@ -64,6 +64,8 @@ public class LoggingBean implements Serializable {
 
         System.out.println("User detected! -> " + userName +"\t"+ userMail);
         dbHandler.registerUser(userMail, userName, LocalDate.MIN, false);
+        CurrentUser.ID = dbHandler.getSingleUser(userMail).getId();
+        CurrentUser.email = userMail;
 
     }
 }
