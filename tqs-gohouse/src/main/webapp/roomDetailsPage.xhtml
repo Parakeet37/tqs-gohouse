@@ -24,7 +24,6 @@ and open the template in the editor.
             <b:navbarLinks>
                 <b:navLink value="Login" href="#"></b:navLink>
                 <b:navLink value="SignUp" href="faces/registerAccount.xhtml"></b:navLink>
-
                 <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
                 <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"></b:navLink>
                 <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml"></b:navLink>
@@ -32,35 +31,24 @@ and open the template in the editor.
             </b:navbarLinks>
         </b:navBar>
 
-        <p></p>
-        <b:container style="width:600px; ">
-            <b:jumbotron >
-                <script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
 
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                <h:form>
-                    <p:remoteCommand name="userInfo" partialSubmit="true" process="@this"  action="#{loggingBean.userSignIn()}"/>
-                </h:form>         
-                <script>
-                    var bigBoy;
+        <!-- User information -->
+        <b:panel title="Detalhes" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
 
-                    function getBigBoy() {
-                        return bigBoy;
-                    }
+            <div class="panelStyle">
+                <div>                                
+                    <h4><b>Descrição: </b>  #{beanroomPage.description} </h4>
+                    <h4><b>Senhorio: </b> #{beanroomPage.user}</h4>
+                    <h4><b>Renda: </b> #{beanroomPage.rent}€</h4>
+                    <h:commandButton value="Arrendar" action="#{beanroomPage.rentRoom()}" ></h:commandButton>
 
-                    function onSignIn(googleUser) {
-                        var profile = googleUser.getBasicProfile();
-                        console.log('Name: ' + profile.getName());
-                        console.log('Image URL: ' + profile.getImageUrl());
-                        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-                        userInfo([
-                            {name: 'email', value: profile.getEmail()},
-                            {name: 'name', value: profile.getName()}
-                        ]);
-                    }
-                </script>
-            </b:jumbotron>
-        </b:container>
+                </div>
+            </div>
+        </b:panel>
+        
+          <p:dialog header="Mensagem" widgetVar="dlg1" minHeight="40">
+            <h:outputText value="#{beanroomPage.message}" />
+        </p:dialog>
 
     </h:body>
 </html>

@@ -1,6 +1,7 @@
 
 package com.mycompany.tqs.gohouse;
 
+import dbclasses.PlatformUser;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import other.CurrentUser;
 
 /**
  *
@@ -52,15 +54,17 @@ public class LoggingBean implements Serializable {
      * Aquires user's name and email when user finishes signing in via Google SignIn
      */
     public void userSignIn(){
-        System.out.println("Getting Login Values. (NOTE: Google will remember if you logged in a previous time!)");
+        //System.out.println("Getting Login Values. (NOTE: Google will remember if you logged in a previous time!)");
         
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
         userName  = params.get("name");
         userMail  = params.get("email");
         
+
         System.out.println("User detected! -> " + userName +"\t"+ userMail);
         dbHandler.registerUser(userMail, userName, LocalDate.MIN, false);
+
     }
 }
 

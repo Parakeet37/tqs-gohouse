@@ -19,6 +19,7 @@ import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
+import other.CurrentUser;
 
 /**
  *
@@ -27,9 +28,9 @@ import org.primefaces.context.RequestContext;
 @ManagedBean(name = "beanAddRoom", eager = true)
 @SessionScoped
 public class BeanAddRoom {
-    
+
     //Mapa para os endereços com quartos
-    private Map<String,Long> enderecoProperty = new HashMap<>();
+    private Map<String, Long> enderecoProperty = new HashMap<>();
     //Lista de endereços
     private List<String> enderecos = new ArrayList<>();
     //Set of rooms
@@ -46,54 +47,57 @@ public class BeanAddRoom {
     private String message = "";
     //Database handler
     private final DBHandler dbHandler = new DBHandler();
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         populateDropDown();
     }
-    
+
     /**
      * Empty constructor.
      */
-    public BeanAddRoom(){
-        
+    public BeanAddRoom() {
+
     }
-    
+
     /**
      * Populate the DropDown menu.
      */
-    public void populateDropDown(){
-        email = "joao@outlook.com";
-        Set<Property> tmpProperty = dbHandler.getSingleUser(email).getOwnedProperties();
-        for (Property p : tmpProperty) {
-            System.out.println(p.getAddress());
-            enderecoProperty.put(p.getAddress(), p.getId());
-            enderecos.add(p.getAddress());
+    public void populateDropDown() {
+
+        try {
+            Set<Property> tmpProperty = dbHandler.getSingleUser(CurrentUser.email).getOwnedProperties();
+            for (Property p : tmpProperty) {
+                enderecoProperty.put(p.getAddress(), p.getId());
+                enderecos.add(p.getAddress());
+            }
+        } catch (Exception e) {
+              descricao = "ERROR IN USER";
         }
     }
-    
+
     /**
      * Adds the room to the database.
      */
-    public void submitRoom(){
-        assert rent>0 && descricao != null;
-        
-        try{
+    public void submitRoom() {
+        assert rent > 0 && descricao != null;
+
+        try {
             long propID = enderecoProperty.get(selectedProperty);
             boolean created = dbHandler.addRoom(descricao, rent, propID);
-            if(created){
+            if (created) {
                 message = "Quarto criado com sucesso";
                 showDialog();
-            }else{
+            } else {
                 message = "Não foi possivel adicionar o quarto!";
                 showDialog();
             }
-            
-        }catch(Exception e){}
-        
+
+        } catch (Exception e) {
+        }
+
     }
-    
+
     /**
      * Show a message dialog.
      */
@@ -101,20 +105,18 @@ public class BeanAddRoom {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dlg1').show();");
     }
-    
+
     /**
      * Cleans all variables.
      */
-    private void clearVars(){
+    private void clearVars() {
         this.descricao = "";
         this.email = "";
         this.rent = 0;
         this.selectedProperty = "";
     }
-    
 
     //Getters and Setters
-    
     public Map<String, Long> getEnderecoProperty() {
         return enderecoProperty;
     }
@@ -178,11 +180,5 @@ public class BeanAddRoom {
     public void setMessage(String message) {
         this.message = message;
     }
-    
-    
-    
-    
-    
-    
-    
+
 }

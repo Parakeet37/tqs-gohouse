@@ -35,28 +35,25 @@ and open the template in the editor.
         </b:navBar>
 
 
-        <h3>Adicionar Quartos</h3>
+        <h3>Registar Universidade</h3>
 
 
         <div class="col-md-12 col-lg-12 col-sm-12">
 
-            <b:panel title="Informações da Propriedade" collapsible="false">
+            <b:panel title="Informações da Universidade" collapsible="false">
                 <h:form>
 
-                    <p><h4>Propriedade: </h4> <h:selectOneMenu value="#{beanAddRoom.selectedProperty}" required="true">
-                            <f:selectItems var="ender" value="#{beanAddRoom.enderecos}" itemValue="#{ender}" /></h:selectOneMenu> </p>
+                    <p><h4>Nome da Universidade:  </h4> <h:inputText value="#{beanAddUniversity.name}" required="true" ></h:inputText></p> 
 
-                    <p><h4>Descrição: </h4> <h:inputTextarea value="#{beanAddRoom.descricao}" required="true" ></h:inputTextarea></p> 
+                    <p><h4>Endereço:   </h4><h:inputText value="#{beanAddUniversity.endereco}" required="true" ></h:inputText> </p> 
 
-                    <p><h4>Renda:  </h4><h:inputText value="#{beanAddRoom.rent}" required="true" ></h:inputText> </p> 
-
-                    <h:commandButton value="Completar" action="#{beanAddRoom.submitRoom()}" />
+                    <h:commandButton value="Completar" action="#{beanAddUniversity.submitUniversity()}" />
                 </h:form>
             </b:panel>
 
         </div>
         <p:dialog header="Mensagem" widgetVar="dlg1" minHeight="40">
-            <h:outputText value="#{beanAddRoom.message}" />
+            <h:outputText value="#{beanAddUniversity.message}" />
         </p:dialog>
 
 
