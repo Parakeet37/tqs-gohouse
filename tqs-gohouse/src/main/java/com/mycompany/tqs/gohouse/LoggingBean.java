@@ -61,6 +61,7 @@ public class LoggingBean implements Serializable {
         userName  = params.get("name");
         userMail  = params.get("email");
         
+        /*
         PlatformUser exists = null;
         
         try{
@@ -75,7 +76,7 @@ public class LoggingBean implements Serializable {
         dbHandler.registerUser("alo@outlook.com", "Nameee", LocalDate.of(1997, 7, 7), false);
         CurrentUser.ID = dbHandler.getSingleUser("alo@outlook.com").getId();
         CurrentUser.email = userMail;
-        
+        */
         //System.out.println(userName +"\t"+ userMail);
     }
 }

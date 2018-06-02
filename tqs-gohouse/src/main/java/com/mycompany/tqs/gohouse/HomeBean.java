@@ -35,6 +35,8 @@ public class HomeBean implements Serializable {
      */
     public HomeBean() {
         //dBHandler.registerUser("joao@outlook.com", "Joao Serpa", LocalDate.of(1997,7,7), true);
+        //CurrentUser.ID = dBHandler.getSingleUser("joao@outlook.com").getId();
+        //CurrentUser.email = "joao@outlook.com";
     }
 
     //Has to connect to the database and get all the information from Propriedades

@@ -59,19 +59,22 @@ public class BeanRoomPage {
     private void populateView() {
         assert propertyID != -1 && roomID != -1;
         //Get the room we want
+       
         try {
             Set<Room> rooms = dBHandler.getPropertyByID(propertyID).getRooms();
             for (Room r : rooms) {
+                
                 if (r.getId() == roomID) {
                     room = r;
                     break;
                 }
             }
+            
             rent = room.getRent() + "";
-            user = room.getRenter().getName();
+            user = room.getProperty().getOwner().getName();
             description = room.getDescription();
         } catch (Exception e) {
-            message = "No room available";
+            message = "No Room available.";
             showDialog();
         }
 

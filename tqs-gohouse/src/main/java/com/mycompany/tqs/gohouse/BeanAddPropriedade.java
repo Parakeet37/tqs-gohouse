@@ -1,6 +1,7 @@
 package com.mycompany.tqs.gohouse;
 
 import dbclasses.PropertyType;
+import java.time.LocalDate;
 import java.util.Currency;
 import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
@@ -48,7 +49,7 @@ public class BeanAddPropriedade {
                 message = "Propriedade criada com sucesso!";
 
             } else {
-                message = "Propriedade não criada, propriedade não existente!";
+                message = "Propriedade não criada, utilizador não existente!";
             }
 
             showDialog();
