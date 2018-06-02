@@ -1,10 +1,12 @@
 package com.mycompany.tqs.gohouse;
 
 import dbclasses.PropertyType;
+import java.util.Currency;
 import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
+import other.CurrentUser;
 
 /**
  *
@@ -14,7 +16,7 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class BeanAddPropriedade {
 
-    private String id;
+    private String id = CurrentUser.ID + "";
     private String latitude;
     private String longitude;
     private String endereço;
@@ -37,7 +39,7 @@ public class BeanAddPropriedade {
             char bloc = bloco.toCharArray()[0];
             boolean created = false;
             if ("Casa".equals(tipoPropriedade)) {
-                created = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.HOUSE, bloc, Integer.parseInt(piso), null);
+                created = dBHandler.addNewProperty(CurrentUser.ID, Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.HOUSE, bloc, Integer.parseInt(piso), null);
             } else {
                 created = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.APARTMENT, bloc, Integer.parseInt(piso), null);
             }

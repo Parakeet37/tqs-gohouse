@@ -12,6 +12,9 @@ and open the template in the editor.
     xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:b="http://bootsfaces.net/ui"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:outputStylesheet library="Css" name="styles.css"  />    
+
     <h:head>
         <title>goHouse</title>
 
@@ -31,29 +34,29 @@ and open the template in the editor.
             </b:navbarLinks>
         </b:navBar>
 
-        <h2>Resultados da pesquisa por "Something":</h2>
-        <h:form>
-            <p:inputText value="#{searchBean.searchValue}"/> <p:commandButton value="Search!" action="#{searchBean.searchProperties}"/>
 
-            <p:dataScroller value="#{searchBean.searchResults}" var="prop" chunkSize="10">
-                <f:facet name="header">
-                    Scroll Down to Load More
-                </f:facet>
+        <h3>Registar Universidade</h3>
 
-                <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-                    <!--<p:graphicImage name="demo/images/car/-big.gif" /> -->
-                    <p:outputPanel>
-                        <h:panelGrid columns="2" cellpadding="5">
-                            <h:outputText value="Id:" />
-                            <h:outputText value="#{prop.address}" style="font-weight: bold"/>
 
-                            <h:outputText value="Year:" />
-                            <h:outputText value="#{prop.type}" style="font-weight: bold"/>
-                            <p/>
-                        </h:panelGrid>
-                    </p:outputPanel>
-                </h:panelGrid>
-            </p:dataScroller>
-        </h:form>
+        <div class="col-md-12 col-lg-12 col-sm-12">
+
+            <b:panel title="Informações da Universidade" collapsible="false">
+                <h:form>
+
+                    <p><h4>Nome da Universidade:  </h4> <h:inputText value="#{beanAddUniversity.name}" required="true" ></h:inputText></p> 
+
+                    <p><h4>Endereço:   </h4><h:inputText value="#{beanAddUniversity.endereco}" required="true" ></h:inputText> </p> 
+
+                    <h:commandButton value="Completar" action="#{beanAddUniversity.submitUniversity()}" />
+                </h:form>
+            </b:panel>
+
+        </div>
+        <p:dialog header="Mensagem" widgetVar="dlg1" minHeight="40">
+            <h:outputText value="#{beanAddUniversity.message}" />
+        </p:dialog>
+
+
+
     </h:body>
 </html>
