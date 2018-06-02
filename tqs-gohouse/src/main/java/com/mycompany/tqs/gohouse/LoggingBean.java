@@ -2,6 +2,7 @@
 package com.mycompany.tqs.gohouse;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Map;
 
 import javax.faces.bean.SessionScoped;
@@ -58,7 +59,8 @@ public class LoggingBean implements Serializable {
         userName  = params.get("name");
         userMail  = params.get("email");
         
-        System.out.println(userName +"\t"+ userMail);
+        System.out.println("User detected! -> " + userName +"\t"+ userMail);
+        dbHandler.registerUser(userMail, userName, LocalDate.MIN, false);
     }
 }
 
