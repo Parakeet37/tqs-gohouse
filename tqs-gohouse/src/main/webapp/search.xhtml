@@ -15,10 +15,20 @@ and open the template in the editor.
     <h:head>
         <title>goHouse</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+       /* Set the size of the div element that contains the map */
+      #map {
+        height: 550px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+    </style>
     </h:head>
     <h:body style="padding: 60px;">
         <div></div>
+        
+        
+        
         <!--Navigation bar -->
         <b:navBar brand="Home" brandHref="faces/home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
@@ -29,11 +39,13 @@ and open the template in the editor.
             </b:navbarLinks>
         </b:navBar>
 
-        <h2>Resultados da pesquisa por "Something":</h2>
+        <div class="row">
+    <div class="col-sm-6">
+      <h2>Resultados da pesquisa por "#{searchBean.searchValue}":</h2>
         <h:form>
             <p:inputText value="#{searchBean.searchValue}"/> <p:commandButton value="Search!" action="#{searchBean.searchProperties}"/>
 
-            <p:dataScroller value="#{searchBean.searchResults}" var="prop" chunkSize="10">
+            <p:dataScroller value="#{searchBean.searchResults}" var="prop" chunkSize="10" >
                 <f:facet name="header">
                     Scroll Down to Load More
                 </f:facet>
@@ -41,17 +53,69 @@ and open the template in the editor.
                 <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                     <!--<p:graphicImage name="demo/images/car/-big.gif" /> -->
                     <p:outputPanel>
-                        <h:panelGrid columns="2" cellpadding="5">
+                        <h:panelGrid columns="2" cellpadding="5" >
                             <h:outputText value="Id:" />
                             <h:outputText value="#{prop.address}" style="font-weight: bold"/>
-
+                            
                             <h:outputText value="Year:" />
                             <h:outputText value="#{prop.type}" style="font-weight: bold"/>
+                            <b:icon name="globe" size="2x" onclick="helloWorld(#{prop.latitude},#{prop.longitude})"/>
+                            <b:icon name="list" size="2x"  />
                             <p/>
                         </h:panelGrid>
                     </p:outputPanel>
                 </h:panelGrid>
             </p:dataScroller>
         </h:form>
+    </div>
+    <div class="col-sm-6">
+    <div id="map"></div>
+
+    </div>
+  </div>
+        
+        
+        
+<script>        
+
+    
+var map;
+
+
+// Initialize and add the map
+function initMap() {
+  // The map, centered somewhere in Africa for now
+  map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 4, center: {lat: 10, lng: 10}});
+      
+  var searchCoords = JSON.parse('#{searchBean.searchResults}');
+  
+  var markers = new Array(searchCoords.length);
+  for (i = 0; i &lt; searchCoords.length; i++){
+      coord = { lat: searchCoords[i].latitude, lng: searchCoords[i].longitude};
+      markers[i] = new google.maps.Marker({position: coord, map: map, title: searchCoords[i].address});
+    }        
+}
+
+function helloWorld(lat,long){
+    var uluru = {lat: lat, lng: long};
+    
+    map.setCenter(uluru);
+}
+function markMap(lat,long){
+    var uluru = {lat: lat, lng: long};
+    
+    var marker = new google.maps.Marker({position: uluru, map: map});
+}
+    </script>
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+    <script async="true" defer="true" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCE8YN0Mk-_6oeAKeJWAWt0K8V3e1kdVRY&amp;callback=initMap">
+    </script>
+
+        
     </h:body>
 </html>
