@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
+import other.CurrentUser;
 
 /**
  *
@@ -26,6 +27,7 @@ public class HomeBean implements Serializable {
     @PostConstruct
     public void init() {
         loadRooms();
+        
     }
 
     /**

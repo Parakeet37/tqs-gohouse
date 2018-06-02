@@ -51,7 +51,9 @@ and open the template in the editor.
                             <h4><b>Price: </b> #{rooms.rent}€</h4>
                             <h4><b>Local: </b> #{rooms.property.address}</h4>
                             <h5><b>Owner: <a href="faces/userDetailsPage.xhtml?id=#{rooms.property.owner.email}">#{rooms.property.owner.name}</a></b></h5>
-                            <b:button class="btn btn-default" value="Check details" href="faces/roomDetailsPage.xhtml?paramProp=#{rooms.property.id}&paramRoom=#{rooms.id}"></b:button>
+                            <b:button class="btn btn-default" value="Check details" href="faces/roomDetailsPage.xhtml?paramProp=#{rooms.property.id}z#{rooms.id}"></b:button>
+                            <b:button class="btn btn-default" value="Rent Full Property" href="#"></b:button>
+
                         </div>
                     </div>
 

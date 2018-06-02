@@ -72,8 +72,8 @@ public class LoggingBean implements Serializable {
         if(exists != null){
             dbHandler.registerUser(userMail, userName, LocalDate.of(1997, 7, 7), false);
         }
-        
-        CurrentUser.ID = dbHandler.getSingleUser(userMail).getId();
+        dbHandler.registerUser("alo@outlook.com", "Nameee", LocalDate.of(1997, 7, 7), false);
+        CurrentUser.ID = dbHandler.getSingleUser("alo@outlook.com").getId();
         CurrentUser.email = userMail;
         
         //System.out.println(userName +"\t"+ userMail);

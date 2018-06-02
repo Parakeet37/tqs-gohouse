@@ -32,9 +32,23 @@ and open the template in the editor.
         </b:navBar>
 
 
+        <!-- User information -->
+        <b:panel title="Detalhes" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
+
+            <div class="panelStyle">
+                <div>                                
+                    <h4><b>Descrição: </b>  #{beanroomPage.description} </h4>
+                    <h4><b>Senhorio: </b> #{beanroomPage.user}</h4>
+                    <h4><b>Renda: </b> #{beanroomPage.rent}€</h4>
+                    <h:commandButton value="Arrendar" action="#{beanroomPage.rentRoom()}" ></h:commandButton>
+
+                </div>
+            </div>
+        </b:panel>
         
-        
-        
+          <p:dialog header="Mensagem" widgetVar="dlg1" minHeight="40">
+            <h:outputText value="#{beanroomPage.message}" />
+        </p:dialog>
 
     </h:body>
 </html>

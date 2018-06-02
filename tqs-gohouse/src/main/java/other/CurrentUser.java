@@ -12,4 +12,5 @@ package other;
 public class CurrentUser {
     public static long ID = -1;
     public static String email = "";
+    public static boolean isUniversity = false;
 }
