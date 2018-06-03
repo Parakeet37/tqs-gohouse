@@ -10,12 +10,10 @@ import dbclasses.Room;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
@@ -55,9 +53,10 @@ public class BeanAddRoom {
 
     /**
      * Empty constructor.
+     * Only usefull to empty. 
      */
     public BeanAddRoom() {
-
+        selectedProperty = "";
     }
 
     /**
@@ -88,12 +87,17 @@ public class BeanAddRoom {
             if (created) {
                 message = "Quarto criado com sucesso";
                 showDialog();
+                clearVars();
             } else {
                 message = "Não foi possivel adicionar o quarto!";
                 showDialog();
             }
+            
+           
 
         } catch (Exception e) {
+            message = "Não foi possivel obter a propriedade!";
+            showDialog();
         }
 
     }

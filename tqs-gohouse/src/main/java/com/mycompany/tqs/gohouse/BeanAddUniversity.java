@@ -22,7 +22,9 @@ public class BeanAddUniversity {
      * Empty constructor.
      */
     public BeanAddUniversity() {
-
+        name = "";
+        endereco = "";
+        message = "";
     }
 
     /**

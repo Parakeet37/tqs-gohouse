@@ -1,9 +1,6 @@
 package com.mycompany.tqs.gohouse;
 
 import dbclasses.PropertyType;
-import java.time.LocalDate;
-import java.util.Currency;
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
@@ -20,7 +17,7 @@ public class BeanAddPropriedade {
     private String id = CurrentUser.ID + "";
     private String latitude;
     private String longitude;
-    private String endereço;
+    private String endereco;
     private String bloco;
     private String piso;
     private String tipoPropriedade;
@@ -33,19 +30,19 @@ public class BeanAddPropriedade {
     }
 
     public void submitProperty() {
-        assert id != null && latitude != null && longitude != null && endereço != null && bloco != null && piso != null && tipoPropriedade != null;
-        assert !"".equals(id) && !"".equals(latitude) && !"".equals(longitude) && !"".equals(endereço) && !"".equals(bloco) && !"".equals(piso) && !"".equals(tipoPropriedade);
+        assert id != null && latitude != null && longitude != null && endereco != null && bloco != null && piso != null && tipoPropriedade != null;
+        assert !"".equals(id) && !"".equals(latitude) && !"".equals(longitude) && !"".equals(endereco) && !"".equals(bloco) && !"".equals(piso) && !"".equals(tipoPropriedade);
 
         try {
             char bloc = bloco.toCharArray()[0];
             boolean created = false;
             if ("Casa".equals(tipoPropriedade)) {
-                created = dBHandler.addNewProperty(CurrentUser.ID, Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.HOUSE, bloc, Integer.parseInt(piso), null);
+                created = dBHandler.addNewProperty(CurrentUser.ID, Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.HOUSE, bloc, Integer.parseInt(piso), null);
             } else {
-                created = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereço, PropertyType.APARTMENT, bloc, Integer.parseInt(piso), null);
+                created = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.APARTMENT, bloc, Integer.parseInt(piso), null);
             }
 
-            if (created == true) {
+            if (created) {
                 message = "Propriedade criada com sucesso!";
 
             } else {
@@ -70,7 +67,7 @@ public class BeanAddPropriedade {
         id = "";
         latitude = "";
         longitude = "";
-        endereço = "";
+        endereco = "";
         bloco = "";
         piso = "";
         tipoPropriedade = "";
@@ -109,12 +106,12 @@ public class BeanAddPropriedade {
         this.longitude = longitude;
     }
 
-    public String getEndereço() {
-        return endereço;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setEndereço(String endereço) {
-        this.endereço = endereço;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public String getBloco() {
