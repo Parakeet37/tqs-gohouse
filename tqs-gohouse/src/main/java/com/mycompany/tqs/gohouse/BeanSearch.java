@@ -32,28 +32,15 @@ import javax.servlet.http.HttpServletRequest;
 @ManagedBean(name = "searchBean", eager = true)
 @SessionScoped
 public class BeanSearch implements Serializable{
+private final DBHandler dbHandler = new DBHandler();
+    
     private String searchValue;
     private List<Property> allProperties = new ArrayList<>();
     private List<Property> searchResults = new ArrayList<>();
     
    @PostConstruct
    public void construct(){
-       setSearchValue("");
-       
-       Set<Room> rs = new HashSet<>();
-       rs.add(new Room("awawa", 0, null));
-       rs.add(new Room("2323123", 0, null));
-       
-       PlatformUser pu = new PlatformUser("myEmail@Email", "Jackson", LocalDate.now(), true);
-       
-       Property p = new Property(pu, 12f, 15f, "wawa", PropertyType.HOUSE, 'a', 0, rs);
-       Property p2 = new Property(pu, 3.3f, 12f, "wawa", PropertyType.HOUSE, 'a', 0, rs);
-       Property p3 = new Property(pu, -18f, 17f, "ewe", PropertyType.HOUSE, 'a', 0, rs);
-       
-       List<Property> temp = new ArrayList<>();
-       temp.add(p);temp.add(p2);temp.add(p3);
-       
-        setAllProperties(temp);
+        setAllProperties(dbHandler.getAvailableProperties());
    }
 
     public List<Property> getAllProperties() {
