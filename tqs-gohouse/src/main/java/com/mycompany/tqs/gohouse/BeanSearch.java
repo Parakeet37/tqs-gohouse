@@ -97,4 +97,7 @@ public class BeanSearch implements Serializable{
     ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         return "search.xhtml";
     }
+    
+    
+
 }

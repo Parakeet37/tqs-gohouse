@@ -37,7 +37,7 @@ and open the template in the editor.
                 <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
                 <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"></b:navLink>
                 <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml"></b:navLink>
-
+                <b:navLink value="Pesquisar" href="#"></b:navLink>
             </b:navbarLinks>
         </b:navBar>
 
@@ -62,7 +62,8 @@ and open the template in the editor.
                             <h:outputText value="Year:" />
                             <h:outputText value="#{prop.type}" style="font-weight: bold"/>
                             <b:icon name="globe" size="2x" onclick="helloWorld(#{prop.latitude},#{prop.longitude})"/>
-                            <b:icon name="list" size="2x"  />
+                            <h5><b><a href="faces/propertyDetailsPage.xhtml?propertyId=#{prop.id}">Details</a></b></h5>
+
                             <p/>
                         </h:panelGrid>
                     </p:outputPanel>
