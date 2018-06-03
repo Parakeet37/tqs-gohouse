@@ -1,6 +1,5 @@
 package com.mycompany.tqs.gohouse;
 
-import dbclasses.Property;
 import dbclasses.Room;
 import java.util.Map;
 import java.util.Set;
@@ -37,8 +36,6 @@ public class BeanRoomPage {
             propertyID = Long.parseLong(params.get("paramProp").split("z")[0]);
             roomID = Long.parseLong(params.get("paramProp").split("z")[1]);
             room = new Room();
-            
-
         } catch (NumberFormatException e) {
             System.err.println("Could not retrieve the parametres or parse them");
         }
@@ -50,7 +47,7 @@ public class BeanRoomPage {
      * Empty constructor
      */
     public BeanRoomPage() {
-
+        rent = "";
     }
 
     /**
