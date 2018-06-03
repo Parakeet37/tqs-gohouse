@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
@@ -24,7 +25,7 @@ import other.CurrentUser;
  * @author joaos
  */
 @ManagedBean(name = "beanAddRoom", eager = true)
-@SessionScoped
+@Singleton
 public class BeanAddRoom {
 
     //Mapa para os endereços com quartos
@@ -46,10 +47,6 @@ public class BeanAddRoom {
     //Database handler
     private final DBHandler dbHandler = new DBHandler();
 
-    @PostConstruct
-    public void init() {
-        populateDropDown();
-    }
 
     /**
      * Empty constructor.
@@ -57,6 +54,7 @@ public class BeanAddRoom {
      */
     public BeanAddRoom() {
         selectedProperty = "";
+        populateDropDown();
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.mycompany.tqs.gohouse;
 
 import dbclasses.PropertyType;
+import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
@@ -11,7 +12,7 @@ import other.CurrentUser;
  * @author joaos
  */
 @ManagedBean(name = "beanAddPropriedade", eager = true)
-@SessionScoped
+@Singleton
 public class BeanAddPropriedade {
 
     private String id = CurrentUser.ID + "";
@@ -27,6 +28,8 @@ public class BeanAddPropriedade {
 
     public BeanAddPropriedade() {
         this.message = "";
+        
+        
     }
 
     public void submitProperty() {

@@ -1,5 +1,6 @@
 package com.mycompany.tqs.gohouse;
 
+import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
@@ -9,7 +10,7 @@ import org.primefaces.context.RequestContext;
  * @author Joao
  */
 @ManagedBean(name = "beanAddUniversity", eager = true)
-@SessionScoped
+@Singleton
 public class BeanAddUniversity {
 
     public String name;

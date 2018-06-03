@@ -1,9 +1,11 @@
 package com.mycompany.tqs.gohouse;
 
 import dbclasses.Room;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -28,27 +30,26 @@ public class BeanRoomPage {
 
     private final DBHandler dBHandler = new DBHandler();
 
-    @PostConstruct
-    public void init() {
+    
+    
+    public BeanRoomPage(){
         //Get the parameters from the url and initialize vars
         try {
-            Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-            propertyID = Long.parseLong(params.get("paramProp").split("z")[0]);
-            roomID = Long.parseLong(params.get("paramProp").split("z")[1]);
-            room = new Room();
+            if(propertyID == -1){
+                Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+                propertyID = Long.parseLong(params.get("paramProp").split("z")[0]);
+                roomID = Long.parseLong(params.get("paramProp").split("z")[1]);
+                room = new Room();
+            }
         } catch (NumberFormatException e) {
             System.err.println("Could not retrieve the parametres or parse them");
         }
 
         populateView();
     }
+    
+   
 
-    /**
-     * Empty constructor
-     */
-    public BeanRoomPage() {
-        rent = "";
-    }
 
     /**
      * Puts all the information.
@@ -80,7 +81,10 @@ public class BeanRoomPage {
     /**
      * Rents a room.
      */
-    public void rentRoom() {
+    public void rentRoom() throws IOException {
+        message  ="ALOOOO";
+        showDialog();
+        
         if (CurrentUser.ID == -1 || room == null) {
             message = "Não está registado.";
             showDialog();
@@ -90,6 +94,9 @@ public class BeanRoomPage {
             if (regist) {
                 message = "Quarto arrendado";
                 showDialog();
+                
+                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/home.xhtml");
+
             } else {
                 message = "Não foi possivel arrendar o quarto.";
                 showDialog();
