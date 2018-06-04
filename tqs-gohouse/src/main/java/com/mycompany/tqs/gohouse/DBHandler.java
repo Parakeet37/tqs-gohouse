@@ -213,15 +213,14 @@ public class DBHandler implements Serializable{
      * @param type type of the property (HOUSE or APARTMENT)
      * @param block block of the building in which the property is located 
      * @param floor floor in which the property is located
-     * @param rooms list of the rooms of the property
      * @return true if the property was added with success
      */
-    public boolean addNewProperty(long id, float longitude, float latitude, String address, PropertyType type, char block, int floor, Set<Room> rooms){
+    public boolean addNewProperty(long id, float longitude, float latitude, String address, PropertyType type, char block, int floor){
         PlatformUser owner;
         Property property;
         owner = em.find(PlatformUser.class, id);
         if (owner == null) return false;
-        property = new Property(owner, longitude, latitude, address, type, block, floor, rooms);
+        property = new Property(owner, longitude, latitude, address, type, block, floor);
         em.getTransaction().begin();
         if (owner.addOwnedProperty(property)) {
             em.persist(property);
@@ -246,6 +245,12 @@ public class DBHandler implements Serializable{
         em.getTransaction().begin();
         if (owner == null || property == null) return false;
         if (owner.removeOwnedProperty(property)){
+            Iterator<Room> itr = property.getRooms().iterator();
+            while (itr.hasNext()){
+                Room room = itr.next();
+                property.removeRoom(room);
+                em.remove(room);
+            }
             em.remove(property);
             em.getTransaction().commit();
             return true;
