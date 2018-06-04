@@ -79,17 +79,5 @@ public class GoHouseRESTUsers {
            @FormParam("isDelegate") boolean isDelegate) {
       registerUser(email, name, isDelegate);
    }
-   /**
-    * Sets a rating.
-    * @param id The user's ID
-    * @param rate The rate said user will attribute
-    */
-   @POST
-   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   @Path("rate")
-   public void rateApartment(@PathParam("id") long id,
-           @PathParam("rate") int rate) {
-       
-        dbH.giveRatingToProperty(id,rate);
-   }
+
 }
