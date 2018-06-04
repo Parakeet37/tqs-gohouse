@@ -22,13 +22,10 @@ and open the template in the editor.
         <b:navBar brand="Home" brandHref="#" inverse="true" fixed="top">
             <b:navbarLinks>
                 <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
-                <b:navLink value="SignUp" href="faces/registerAccount.xhtml"></b:navLink>
-                <form class="navbar-form navbar-left hidden-md hidden-sm hidden-xs" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search"/>
-                    </div>
-                    <button type="submit" class="btn btn-default">Search</button>
-                </form>
+                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
+                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"></b:navLink>
+                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml"></b:navLink>
+                <b:navLink value="Pesquisar" href="faces/search.xhtml"></b:navLink>
             </b:navbarLinks>
         </b:navBar>
 
@@ -38,7 +35,7 @@ and open the template in the editor.
 
             <b></b><h1>Quartos disponíveis</h1>
         </div>
-      
+
         <!-- Start the list of all properties  -->
         <div>            
 
@@ -53,7 +50,9 @@ and open the template in the editor.
                             <h4><b>Price: </b> #{rooms.rent}€</h4>
                             <h4><b>Local: </b> #{rooms.property.address}</h4>
                             <h5><b>Owner: <a href="faces/userDetailsPage.xhtml?id=#{rooms.property.owner.email}">#{rooms.property.owner.name}</a></b></h5>
-                            <b:button class="btn btn-default" value="Check details"></b:button>
+                            <b:button class="btn btn-default" value="Check details" href="faces/roomDetailsPage.xhtml?paramProp=#{rooms.property.id}z#{rooms.id}"></b:button>
+                            <b:button class="btn btn-default" value="Rent Full Property" href="#"></b:button>
+
                         </div>
                     </div>
 

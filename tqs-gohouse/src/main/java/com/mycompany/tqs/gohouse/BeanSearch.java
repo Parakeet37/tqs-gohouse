@@ -26,19 +26,18 @@ import javax.servlet.http.HttpServletRequest;
 @ManagedBean(name = "searchBean", eager = true)
 @SessionScoped
 public class BeanSearch implements Serializable{
+    private final DBHandler dbHandler = new DBHandler();
+    
     private String searchValue;
     private List<Property> allProperties = new ArrayList<>();
     private List<Property> searchResults = new ArrayList<>();
     
    @PostConstruct
    public void construct(){
-       setSearchValue("");
-       List<Property> temp = new ArrayList<>();
-       /*temp.add(new Property(300, 1234, "Uma Rua Qalquer", "Apartamento", 'A', 2));
-        temp.add(new Property(123, 4321, "Uma Outra Rua", "Residência", 'C', 1));
-        temp.add(new Property(300, 1234, "Mais Uma", "???", 'F', 3));
-        temp.add(new Property(300, 1234, "Outra", "Garbage", 'J', 4));*/
-        setAllProperties(temp);
+       List<Property> allProperties = dbHandler.getUnverifiedProperties();
+       allProperties.addAll(dbHandler.getVerifiedProperties());
+        setAllProperties(allProperties);
+        setSearchResults(allProperties);
    }
 
     public List<Property> getAllProperties() {
@@ -68,7 +67,6 @@ public class BeanSearch implements Serializable{
     
 
     public String searchProperties() throws IOException{
-        System.out.println("I got here!");
         searchResults.clear();
         List<Property> temp = new ArrayList<>();
     
@@ -83,4 +81,7 @@ public class BeanSearch implements Serializable{
     ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         return "search.xhtml";
     }
+    
+    
+
 }

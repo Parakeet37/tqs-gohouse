@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -48,8 +47,8 @@ public class Bean_UserDetails {
     
     /**
      * Displays all the user information.
-     * Goes to the database and checks the user by email
-     * and then all its properties.
+     * Goes to the database and checks the user by email and then all its properties.
+     * 
      */
     private void populateView(){
        
@@ -63,9 +62,11 @@ public class Bean_UserDetails {
                 }
             }
         }
-        //System.out.println(this.userPlatform.getEmail());
     }
 
+    
+    //Getters and setters
+    
     public String getEmail() {
         return email;
     }
@@ -89,9 +90,6 @@ public class Bean_UserDetails {
     public void setListaDePropriedades(List<Property> listaDePropriedades) {
         this.listaDePropriedades = listaDePropriedades;
     }
-    
-    
-    
     
     
 }

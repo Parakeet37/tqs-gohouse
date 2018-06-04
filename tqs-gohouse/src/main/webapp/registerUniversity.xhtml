@@ -12,6 +12,9 @@ and open the template in the editor.
     xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:b="http://bootsfaces.net/ui"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:outputStylesheet library="Css" name="styles.css"  />    
+
     <h:head>
         <title>goHouse</title>
 
@@ -19,7 +22,6 @@ and open the template in the editor.
     </h:head>
     <h:body style="padding: 60px;">
         <div></div>
-
         <!--Navigation bar -->
         <b:navBar brand="Home" brandHref="faces/home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
@@ -32,25 +34,28 @@ and open the template in the editor.
         </b:navBar>
 
 
-        <p></p>
-        <b:container style="width:600px; ">
-            <b:jumbotron>
-                <div align="center">
-                    <p><h2>Fill out this form please:</h2></p>
-                    <p><p:outputLabel value="Username:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputUName}"/></p>
-                    <p><p:outputLabel value="Password:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputPassword}"/></p>
-                    <p><p:outputLabel value="Name:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputName}"/></p>
-                    <p><p:outputLabel value="Email:" style="width:120px; text-align: right"/><p:inputText value="#{registerBean.inputEmail}"/></p>
-                    <p><p:outputLabel value="Student? " style="width:120px; text-align: right"/><p:selectBooleanCheckbox value="#{registerBean.isStudent}"/></p>
-                </div>
-                <div align="right">
-                    <p:button value="Login "/>
-                </div>
-                <div>
-                    <p:outputLabel style="color: crimson" value="#{registerBean.errorPrompt}"/>
-                </div>
+        <h3>Registar Universidade</h3>
 
-            </b:jumbotron>
-        </b:container>
+
+        <div class="col-md-12 col-lg-12 col-sm-12">
+
+            <b:panel title="Informações da Universidade" collapsible="false">
+                <h:form>
+
+                    <p><h4>Nome da Universidade:  </h4> <h:inputText value="#{beanAddUniversity.name}" required="true" ></h:inputText></p> 
+
+                    <p><h4>Endereço:   </h4><h:inputText value="#{beanAddUniversity.endereco}" required="true" ></h:inputText> </p> 
+
+                    <h:commandButton value="Completar" action="#{beanAddUniversity.submitUniversity()}" />
+                </h:form>
+            </b:panel>
+
+        </div>
+        <p:dialog header="Mensagem" widgetVar="dlg1" minHeight="40">
+            <h:outputText value="#{beanAddUniversity.message}" />
+        </p:dialog>
+
+
+
     </h:body>
 </html>

@@ -5,16 +5,16 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html  xmlns = "http://www.w3.org/1999/xhtml" 
-       xmlns:h = "http://java.sun.com/jsf/html"
-       xmlns:p = "http://primefaces.org/ui"
-       xmlns:f="http://xmlns.jcp.org/jsf/core"
-       xmlns:b="http://bootsfaces.net/ui"
-       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-
+<html 
+    xmlns = "http://www.w3.org/1999/xhtml" 
+    xmlns:h = "http://java.sun.com/jsf/html"
+    xmlns:p = "http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>goHouse</title>
-
+        <meta name="google-signin-client_id" content="322822969069-f1kdb3kuhui8gg146298tu85hpueh2cf.apps.googleusercontent.com"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body style="padding: 60px;">
@@ -22,7 +22,7 @@ and open the template in the editor.
         <!--Navigation bar -->
         <b:navBar brand="Home" brandHref="faces/home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
-                <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
+                <b:navLink value="Login" href="#"></b:navLink>
                 <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
                 <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"></b:navLink>
                 <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml"></b:navLink>
@@ -30,29 +30,26 @@ and open the template in the editor.
             </b:navbarLinks>
         </b:navBar>
 
-        <!--Esta pagina tem de conter toda a informação da propriedade -->
-
 
         <!-- User information -->
         <b:panel title="Detalhes" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
 
             <div class="panelStyle">
-                <div>                                
-                    <h4><b>Local: </b>  #{beanpropertyPage.propriedade.address} </h4>
-                    <h4><b>Senhorio: </b> #{beanpropertyPage.propriedade.owner.email}</h4>
-                    <h4><b>Numero de quartos: </b> #{beanpropertyPage.propriedade.rooms.size()}</h4>
-                    <h4><b>Coordenadas: </b>latitude: #{beanpropertyPage.propriedade.latitude}; longitude: #{beanpropertyPage.propriedade.longitude} </h4>
-
+                <div> 
+                    <h:form>
+                    <h4><b>Descrição: </b>  #{beanroomPage.description} </h4>
+                    <h4><b>Senhorio: </b> #{beanroomPage.user}</h4>
+                    <h4><b>Renda: </b> #{beanroomPage.rent}€</h4>
+                    <h:commandButton value="Arrendar" action="#{beanroomPage.rentRoom()}" >
+                    </h:commandButton>
+                    </h:form>              
                 </div>
             </div>
         </b:panel>
-
-
-        <!-- Mapa com coordenadas -->
-
-
-
+        
+          <p:dialog header="Mensagem" widgetVar="dlg1" minHeight="40">
+            <h:outputText value="#{beanroomPage.message}" />
+        </p:dialog>
 
     </h:body>
-
 </html>

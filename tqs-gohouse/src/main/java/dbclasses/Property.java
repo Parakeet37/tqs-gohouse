@@ -266,7 +266,7 @@ public class Property implements Serializable, Comparable<Property> {
 
     @Override
     public String toString() {
-        return "Property{" + "id=" + id + ", address=" + address + ", block=" + block + ", floor=" + floor + '}';
+        return String.format("{\"id\":%d, \"address\":\"%s\", \"block\":\"%s\", \"floor\":\"%s\", \"latitude\": %f, \"longitude\": %f }", id, address, block, floor,latitude,longitude);
     }
 
     @Override
