@@ -10,17 +10,11 @@ package com.mycompany.tqs.gohouse;
  * @author demo
  */
 
-import dbclasses.PlatformUser;
 import dbclasses.Property;
-import dbclasses.PropertyType;
-import dbclasses.Room;
 import java.io.IOException;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
@@ -32,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @ManagedBean(name = "searchBean", eager = true)
 @SessionScoped
 public class BeanSearch implements Serializable{
-private final DBHandler dbHandler = new DBHandler();
+    private final DBHandler dbHandler = new DBHandler();
     
     private String searchValue;
     private List<Property> allProperties = new ArrayList<>();
@@ -40,7 +34,10 @@ private final DBHandler dbHandler = new DBHandler();
     
    @PostConstruct
    public void construct(){
-        setAllProperties(dbHandler.getAvailableProperties());
+       List<Property> allProperties = dbHandler.getUnverifiedProperties();
+       allProperties.addAll(dbHandler.getVerifiedProperties());
+        setAllProperties(allProperties);
+        setSearchResults(allProperties);
    }
 
     public List<Property> getAllProperties() {
@@ -74,7 +71,7 @@ private final DBHandler dbHandler = new DBHandler();
         List<Property> temp = new ArrayList<>();
     
         for(Property p: allProperties){
-            if(p.getAddress().contains(searchValue) || searchValue.equals("")){
+            if(p.getAddress().contains(searchValue)){
                 System.out.println(p.getAddress());
                 temp.add(p);
             }
