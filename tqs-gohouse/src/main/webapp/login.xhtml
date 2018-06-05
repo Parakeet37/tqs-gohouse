@@ -35,10 +35,10 @@ and open the template in the editor.
 
         <p></p>
         <b:container style="width:600px; ">
-            <b:jumbotron >
+            <b:jumbotron>
                 <script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
 
-                <div class="g-signin2" data-onsuccess="onSignIn" data-redirecturi="http://localhost:8080/tqs-gohouse-1.0-SNAPSHOT"/></div>
+                <div class="g-signin2" data-onsuccess="onSignIn" data-redirecturi="http://localhost:8080/tqs-gohouse-1.0-SNAPSHOT"></div>
                 <h:form>
                     <p:remoteCommand name="userInfo" partialSubmit="true" process="@this"  action="#{loggingBean.userSignIn()}"/>
                 </h:form>         
