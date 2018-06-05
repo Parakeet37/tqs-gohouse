@@ -59,7 +59,7 @@ public class DBHandlerPropertyTest {
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
         boolean expResult = true;
-        boolean result = instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        boolean result = instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         assertEquals(expResult, result);
         assertEquals(user.getOwnedProperties().size(), 1);
     }
@@ -70,8 +70,8 @@ public class DBHandlerPropertyTest {
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
         boolean expResult = true;
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         Property property = new Property();
         while (itr.hasNext()){
@@ -88,8 +88,8 @@ public class DBHandlerPropertyTest {
         System.out.println("testing getting all the available properties");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
         assertEquals(instance.getAvailableProperties().size(), 2);
     }
     
@@ -101,7 +101,7 @@ public class DBHandlerPropertyTest {
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser renter = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         boolean expResult = true;
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         Property property = new Property();
         while (itr.hasNext()){
@@ -119,7 +119,7 @@ public class DBHandlerPropertyTest {
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         instance.addUniversity("UA", "adress");
         University uni = instance.getSingleUniversity("UA");
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         Property property = new Property();
         while (itr.hasNext()){
@@ -138,7 +138,7 @@ public class DBHandlerPropertyTest {
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser renter = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         boolean expResult = true;
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         Property property = new Property();
         while (itr.hasNext()){
@@ -155,7 +155,7 @@ public class DBHandlerPropertyTest {
         System.out.println("testing removing the renting of a property by an university");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         instance.addUniversity("UA", "adress");
         University uni = instance.getSingleUniversity("UA");
@@ -174,14 +174,14 @@ public class DBHandlerPropertyTest {
         System.out.println("testing changing the owner of a property");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'C', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'D', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 2, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 2, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'C', 2, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'D', 2, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'C', 1);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'D', 1);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 2);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 2);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'C', 2);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'D', 2);
         Property property = new Property();
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
@@ -201,7 +201,7 @@ public class DBHandlerPropertyTest {
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Property property = new Property();
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
@@ -224,7 +224,7 @@ public class DBHandlerPropertyTest {
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser delegate = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         instance.changeDelegation(delegate.getId(), true, "UA", "street");
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Property property = new Property();
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
@@ -243,8 +243,8 @@ public class DBHandlerPropertyTest {
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser delegate = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         instance.changeDelegation(delegate.getId(), true, "UA", "street");
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
         Property property = new Property();
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
@@ -263,8 +263,8 @@ public class DBHandlerPropertyTest {
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser delegate = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         instance.changeDelegation(delegate.getId(), true, "UA", "street");
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
         Property property = new Property();
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
@@ -283,8 +283,8 @@ public class DBHandlerPropertyTest {
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser delegate = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         instance.changeDelegation(delegate.getId(), true, "UA", "street");
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
         Property property = new Property();
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
@@ -299,10 +299,10 @@ public class DBHandlerPropertyTest {
         System.out.println("testing getting the unverified properties in range");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40.5), new Float(40), "Street", PropertyType.HOUSE, 'B', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(43), new Float(30), "Street", PropertyType.HOUSE, 'C', 1, new HashSet<Room>());
-        instance.addNewProperty(user.getId(), new Float(40.000005), new Float(39.999999), "Street", PropertyType.HOUSE, 'D', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
+        instance.addNewProperty(user.getId(), new Float(40.5), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
+        instance.addNewProperty(user.getId(), new Float(43), new Float(30), "Street", PropertyType.HOUSE, 'C', 1);
+        instance.addNewProperty(user.getId(), new Float(40.000005), new Float(39.999999), "Street", PropertyType.HOUSE, 'D', 1);
         assertEquals(instance.getUnverifiedPropertiesInRange(new Float(40), new Float (40), 10).size(), 2);
     }
 }
