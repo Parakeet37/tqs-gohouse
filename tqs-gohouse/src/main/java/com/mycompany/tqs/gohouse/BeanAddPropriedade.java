@@ -3,9 +3,9 @@ package com.mycompany.tqs.gohouse;
 import dbclasses.PropertyType;
 import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
+import other.Utils;
 
 /**
  *
@@ -24,12 +24,14 @@ public class BeanAddPropriedade {
     private String tipoPropriedade;
     private String message;
 
+    //Database handler
     private final DBHandler dBHandler = new DBHandler();
+    //Used to render some Controls
+    private boolean isLoggedIn = Utils.isLoggedIn();
 
     public BeanAddPropriedade() {
         this.message = "";
-        
-        
+
     }
 
     public void submitProperty() {
@@ -38,11 +40,11 @@ public class BeanAddPropriedade {
 
         try {
             char bloc = bloco.toCharArray()[0];
-            boolean created = false;
+            boolean created;
             if ("Casa".equals(tipoPropriedade)) {
-                created = dBHandler.addNewProperty(CurrentUser.ID, Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.HOUSE, bloc, Integer.parseInt(piso), null);
+                created = dBHandler.addNewProperty(CurrentUser.ID, Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.HOUSE, bloc, Integer.parseInt(piso));
             } else {
-                created = dBHandler.addNewProperty(Integer.parseInt(id), Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.APARTMENT, bloc, Integer.parseInt(piso), null);
+                created = dBHandler.addNewProperty(CurrentUser.ID, Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.APARTMENT, bloc, Integer.parseInt(piso));
             }
 
             if (created) {
@@ -147,6 +149,14 @@ public class BeanAddPropriedade {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isIsLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
     }
 
 }

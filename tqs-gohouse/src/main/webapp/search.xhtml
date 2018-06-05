@@ -13,33 +13,33 @@ and open the template in the editor.
     xmlns:b="http://bootsfaces.net/ui"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>goHouse</title>
-
-                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>GoHouse</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <style>
-       /* Set the size of the div element that contains the map */
-      #map {
-        height: 550px;  /* The height is 400 pixels */
-        width: 100%;  /* The width is the width of the web page */
-       }
-    </style>
+            /* Set the size of the div element that contains the map */
+           #map {
+             height: 550px;  /* The height is 400 pixels */
+             width: 100%;  /* The width is the width of the web page */
+            }
+        </style>
+        <h:outputStylesheet library="Css" name="styles.css"  />    
     </h:head>
-    <h:body style="padding: 60px;">
+
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
         <div></div>
-        
-        
-        
-        <!--Navigation bar -->
-        <b:navBar brand="Home" brandHref="faces/home.xhtml" inverse="true" fixed="top">
+        <!-- [INIT] Navigation bar -->
+        <b:navBar brand="GoHouse" brandHref="faces/home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
-                <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
-                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
-                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"></b:navLink>
-                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml"></b:navLink>
-                <b:navLink value="Pesquisar" href="#"></b:navLink>
+                <b:navLink value="Login" href="faces/login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!searchBean.isLoggedIn}"></b:navLink>
+                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml" icon-awesome="fa-plus-square"></b:navLink>
+                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"         icon-awesome="fa-plus-square"></b:navLink>
+                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml" icon-awesome="fa-edit"></b:navLink>
+                <b:navLink value="Pesquisar" href="faces/search.xhtml"                  icon-awesome="fa-search-plus" ></b:navLink>
             </b:navbarLinks>
         </b:navBar>
-
+        <!--[End] NavigationBar -->
+        
+        
         <div class="row">
     <div class="col-sm-6">
       <h2>Resultados da pesquisa por "#{searchBean.searchValue}":</h2>
