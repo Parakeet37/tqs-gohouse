@@ -80,14 +80,14 @@ public class Property implements Serializable, Comparable<Property> {
     public Property() {
     }
 
-    public Property(PlatformUser owner, float longitude, float latitude, String address, PropertyType type, char block, int floor, Set<Room> rooms) {
+    public Property(PlatformUser owner, float longitude, float latitude, String address, PropertyType type, char block, int floor) {
         this.owner = owner;
         this.address = address;
         this.type = type;
         this.block = block;
         this.floor = floor;
         this.occupied = false;
-        this.rooms = rooms;
+        this.rooms = new TreeSet<>();
         this.verified = false;
         this.longitude = longitude;
         this.latitude = latitude;
