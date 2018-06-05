@@ -13,12 +13,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
+import other.Utils;
 
 /**
  *
@@ -46,11 +45,11 @@ public class BeanAddRoom {
     private String message = "";
     //Database handler
     private final DBHandler dbHandler = new DBHandler();
-
+    //Used to render some Controls
+    private boolean isLoggedIn = Utils.isLoggedIn();
 
     /**
-     * Empty constructor.
-     * Only usefull to empty. 
+     * Empty constructor. Only usefull to empty.
      */
     public BeanAddRoom() {
         selectedProperty = "";
@@ -69,7 +68,7 @@ public class BeanAddRoom {
                 enderecos.add(p.getAddress());
             }
         } catch (Exception e) {
-              descricao = "ERROR IN USER";
+            descricao = "ERROR IN USER";
         }
     }
 
@@ -90,8 +89,6 @@ public class BeanAddRoom {
                 message = "Não foi possivel adicionar o quarto!";
                 showDialog();
             }
-            
-           
 
         } catch (Exception e) {
             message = "Não foi possivel obter a propriedade!";
@@ -183,4 +180,12 @@ public class BeanAddRoom {
         this.message = message;
     }
 
+    public boolean isIsLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
+    }
+ 
 }

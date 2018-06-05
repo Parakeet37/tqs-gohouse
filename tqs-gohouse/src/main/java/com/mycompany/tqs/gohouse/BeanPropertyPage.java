@@ -8,16 +8,17 @@ package com.mycompany.tqs.gohouse;
 import dbclasses.Property;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import other.Utils;
 
 /**
  *
  * @author joaos
  */
 @ManagedBean(name = "beanpropertyPage", eager = true)
-@SessionScoped
+@Singleton
 public class BeanPropertyPage {
 
     //Propriedade a ser vista
@@ -26,6 +27,8 @@ public class BeanPropertyPage {
     private long id;
     //Database handler
     private DBHandler dBHandler = new DBHandler();
+    //Used to render some Controls
+    private boolean isLoggedIn = Utils.isLoggedIn();
 
     /**
      * When the bean is created; Get the parameter id which is the id of the
@@ -54,9 +57,8 @@ public class BeanPropertyPage {
         assert id >= 0;
         this.propriedade = dBHandler.getPropertyByID(id);
     }
-    
-    //Getters and setters
 
+    //Getters and setters
     public Property getPropriedade() {
         return propriedade;
     }
@@ -79,6 +81,14 @@ public class BeanPropertyPage {
 
     public void setdBHandler(DBHandler dBHandler) {
         this.dBHandler = dBHandler;
+    }
+
+    public boolean isIsLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
     }
 
 }

@@ -4,6 +4,8 @@ import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
+import other.CurrentUser;
+import other.Utils;
 
 /**
  *
@@ -19,6 +21,9 @@ public class BeanAddUniversity {
 
     private final DBHandler dBHandler = new DBHandler();
 
+    //Used to render some Controls
+    private boolean isLoggedIn = Utils.isLoggedIn();
+    
     /**
      * Empty constructor.
      */
@@ -34,15 +39,23 @@ public class BeanAddUniversity {
     public void submitUniversity() {
         assert !"".equals(name) && !"".equals(endereco);
 
-        boolean added = dBHandler.addUniversity(name, endereco);
-        if (added) {
-            message = "Universidade Registada";
-            showDialog();
-            clearVars();
-        } else {
-            message = "Universidade não Registada. Verifique se o nome/endereço já existe";
-            showDialog();
+        if (CurrentUser.univ == null) {
+            boolean added = dBHandler.addUniversity(name, endereco);
+            if (added) {
+                message = "Universidade Registada";
+                //Adiciona como delegado da universidade
+                dBHandler.getSingleUniversity(name).addDelegate(dBHandler.getSingleUser(CurrentUser.email));
+                CurrentUser.univ = dBHandler.getSingleUniversity(name);
+                showDialog();
+                clearVars();
+            } else {
+                message = "Universidade não Registada. Verifique se o nome/endereço já existe";
+                showDialog();
 
+            }
+        } else {
+            message = "Um utilizador não pode ser delegado de 2 universidades";
+            showDialog();
         }
     }
 
@@ -54,11 +67,12 @@ public class BeanAddUniversity {
         context.execute("PF('dlg1').show();");
     }
 
-    private void clearVars(){
+    private void clearVars() {
         this.endereco = "";
         this.message = "";
         this.name = "";
     }
+
     public String getName() {
         return name;
     }
@@ -81,6 +95,14 @@ public class BeanAddUniversity {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isIsLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
     }
 
 }
