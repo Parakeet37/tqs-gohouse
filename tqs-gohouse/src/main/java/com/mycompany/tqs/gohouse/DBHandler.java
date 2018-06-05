@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
