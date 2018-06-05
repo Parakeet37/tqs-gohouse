@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
@@ -79,7 +80,13 @@ public class HomeBean implements Serializable {
     private void loadRooms() {
         List<Property> properties = dBHandler.getAvailableProperties();
         for (Property p : properties) {
-            rooms.addAll(p.getRooms());
+            Set<Room> rms = p.getRooms();
+            for(Room r : rms){
+                if(!r.isOccupied()){
+                    rooms.add(r);
+                }
+            }
+            
         }
 
     }
