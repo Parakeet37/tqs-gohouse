@@ -5,7 +5,6 @@ import dbclasses.Property;
 import dbclasses.PropertyType;
 import dbclasses.Room;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Iterator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -58,8 +57,8 @@ public class DBHandlerPropertyFailureTest {
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
         boolean expResult = false;
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
-        boolean result = instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
+        boolean result = instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         assertEquals(expResult, result);
     }
     
@@ -68,7 +67,7 @@ public class DBHandlerPropertyFailureTest {
         System.out.println("testing adition of a new property having an owner that is not in the database");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
-        boolean result = instance.addNewProperty(0L, new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        boolean result = instance.addNewProperty(0L, new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         assertEquals(expResult, result);
     }
     
@@ -77,7 +76,7 @@ public class DBHandlerPropertyFailureTest {
         System.out.println("testing the removal of a non existent property");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         boolean expResult = false;
         boolean result = instance.removeProperty(user.getId(), 0);
         assertEquals(expResult, result);
@@ -88,7 +87,7 @@ public class DBHandlerPropertyFailureTest {
         System.out.println("testing the removal of a property of a non existent user");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         boolean expResult = false;
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         Property property = new Property();
@@ -104,7 +103,7 @@ public class DBHandlerPropertyFailureTest {
         System.out.println("testing the changing of the owner of a property when the new owner user doesn't exist");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = instance.getMostPopularUser();
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         boolean expResult = false;
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         Property property = new Property();
@@ -122,7 +121,7 @@ public class DBHandlerPropertyFailureTest {
         instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser renter = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         Property property = new Property();
         while (itr.hasNext()){
@@ -146,7 +145,7 @@ public class DBHandlerPropertyFailureTest {
         instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser renter = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         Property property = new Property();
         while (itr.hasNext()){
@@ -179,7 +178,7 @@ public class DBHandlerPropertyFailureTest {
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser delegate = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         instance.changeDelegation(delegate.getId(), true, "UA", "street");
-        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1, new HashSet<Room>());
+        instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Property property = new Property();
         Iterator<Property> itr = user.getOwnedProperties().iterator();
         while (itr.hasNext()){
