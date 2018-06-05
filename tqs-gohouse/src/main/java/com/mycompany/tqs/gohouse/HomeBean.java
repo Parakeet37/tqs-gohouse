@@ -40,7 +40,7 @@ public class HomeBean implements Serializable {
     @PostConstruct
     public void init() {
         //Test -------
-        dBHandler.registerUser("joaoserpa@ua.pt", "dsad", LocalDate.of(1997, 1, 1), true);
+        /*dBHandler.registerUser("joaoserpa@ua.pt", "dsad", LocalDate.of(1997, 1, 1), true);
 
         List<PlatformUser> d = dBHandler.getNMostPopularUsers(90);
         for (PlatformUser u : d) {
@@ -51,7 +51,7 @@ public class HomeBean implements Serializable {
                 System.out.println("Email " + "joaoserpa@ua.pt" + "    ID " + CurrentUser.ID + " ddd " + CurrentUser.email);
             }
         }
-        /*
+        
         dBHandler.addNewProperty(CurrentUser.ID, 0.0f, 0.0f, "Teste address", PropertyType.APARTMENT, 'c', 1);
         dBHandler.addRoom("Description", 10090, 2);
         dBHandler.addRoom("Description", 1000, 2);
