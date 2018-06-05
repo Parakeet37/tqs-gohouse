@@ -35,7 +35,7 @@ and open the template in the editor.
             <b:jumbotron >
                 <script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
 
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <div class="g-signin2" data-onsuccess="onSignIn" data-redirecturi="http://localhost:8080/tqs-gohouse-1.0-SNAPSHOT"/></div>
                 <h:form>
                     <p:remoteCommand name="userInfo" partialSubmit="true" process="@this"  action="#{loggingBean.userSignIn()}"/>
                 </h:form>         
