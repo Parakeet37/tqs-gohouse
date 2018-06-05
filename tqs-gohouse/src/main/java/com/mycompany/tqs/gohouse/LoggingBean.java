@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import other.CurrentUser;
+import other.Utils;
 
 /**
  *
@@ -21,32 +22,21 @@ public class LoggingBean implements Serializable {
 
     //Database handler
     private final DBHandler dbHandler;
+    //Used to render some Controls
+    private boolean isLoggedIn = Utils.isLoggedIn();
+    //Used to render if the user has a university.
+    private boolean hasUniversity = Utils.hasUniversity();
+    //Used to render button with text
+    private String universityName = Utils.universityName();
+    //User from Gsign in
     private String userName;
+    //User Mail from GSignIn
     private String userMail;
 
     //Constructor
     public LoggingBean() {
         dbHandler = new DBHandler();
-    }
-
-    //userName getter
-    public String getUserName() {
-        return userName;
-    }
-
-    //userName setter
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    //userMail getter
-    public String getUserMail() {
-        return userMail;
-    }
-
-    //userMail setter
-    public void setUserMail(String userMail) {
-        this.userMail = userMail;
+        exists();
     }
 
     /**
@@ -85,5 +75,55 @@ public class LoggingBean implements Serializable {
         }
         return false;
     }
+    
+    
+        //userName getter
+    public String getUserName() {
+        return userName;
+    }
+
+    //userName setter
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    //userMail getter
+    public String getUserMail() {
+        return userMail;
+    }
+
+    //userMail setter
+    public void setUserMail(String userMail) {
+        this.userMail = userMail;
+    }
+
+    public boolean isIsLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
+    }
+
+    public boolean isHasUniversity() {
+        return hasUniversity;
+    }
+
+    public void setHasUniversity(boolean hasUniversity) {
+        this.hasUniversity = hasUniversity;
+    }
+
+    public String getUniversityName() {
+        return universityName;
+    }
+
+    public void setUniversityName(String universityName) {
+        this.universityName = universityName;
+    }
+    
+    
+    
+    
+    
     
 }

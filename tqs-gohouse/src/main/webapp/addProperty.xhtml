@@ -7,21 +7,27 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>goHome</title>
-
+        <title>GoHouse</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet library="Css" name="styles.css"  />    
     </h:head>
+
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
-        <!--Navigation bar -->
-        <b:navBar brand="Home" brandHref="faces/home.xhtml" inverse="true" fixed="top">
+
+        <!-- [INIT] Navigation bar -->
+        <b:navBar brand="GoHouse" brandHref="faces/home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
-                <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
-                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
-                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"></b:navLink>
-                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml"></b:navLink>
-<b:navLink value="Pesquisar" href="faces/search.xhtml"></b:navLink>
+                <b:navLink value="Login" href="faces/login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!beanAddPropriedade.isLoggedIn}"></b:navLink>
+                <b:navLink value="Adicionar Propriedade" href="#"                       icon-awesome="fa-plus-square"></b:navLink>
+                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"         icon-awesome="fa-plus-square"></b:navLink>
+                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml" icon-awesome="fa-edit"></b:navLink>
+                <b:navLink value="Pesquisar" href="faces/search.xhtml"                  icon-awesome="fa-search-plus" ></b:navLink>
             </b:navbarLinks>
         </b:navBar>
+        <!--[End] NavigationBar -->
+        
+        
+        
         <!-- Add property -->
         <br></br>
 
@@ -29,7 +35,7 @@
 
             <b:panel title="Informações da Propriedade" collapsible="false">
                 <h:form>
-                    <p><h4>ID: </h4> <h:inputText value="#{beanAddPropriedade.id}" required="true" ></h:inputText></p> 
+                    <p><h4>ID: </h4> <h:inputText value="#{beanAddPropriedade.id}" readonly="true"></h:inputText></p> 
                     <p><h4>Latitude:  </h4> <h:inputText value="#{beanAddPropriedade.latitude}" required="true" ></h:inputText> </p> 
                     <p><h4>Longitude:  </h4> <h:inputText value="#{beanAddPropriedade.longitude}" required="true" ></h:inputText> </p> 
                     <p><h4>Endereço:   </h4><h:inputText value="#{beanAddPropriedade.endereco}" required="true" ></h:inputText> </p> 

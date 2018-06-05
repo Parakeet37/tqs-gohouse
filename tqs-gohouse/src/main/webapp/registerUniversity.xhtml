@@ -16,22 +16,24 @@ and open the template in the editor.
     <h:outputStylesheet library="Css" name="styles.css"  />    
 
     <h:head>
-        <title>goHouse</title>
-
+        <title>GoHouse</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet library="Css" name="styles.css"  />    
     </h:head>
-    <h:body style="padding: 60px;">
-        <div></div>
-        <!--Navigation bar -->
-        <b:navBar brand="Home" brandHref="faces/home.xhtml" inverse="true" fixed="top">
+
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+
+        <!-- [INIT] Navigation bar -->
+        <b:navBar brand="GoHouse" brandHref="faces/home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
-                <b:navLink value="Login" href="faces/login.xhtml"></b:navLink>
-                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml"></b:navLink>
-                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"></b:navLink>
-                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml"></b:navLink>
-<b:navLink value="Pesquisar" href="faces/search.xhtml"></b:navLink>
+                <b:navLink value="Login" href="faces/login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!beanAddUniversity.isLoggedIn}"></b:navLink>
+                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml" icon-awesome="fa-plus-square"></b:navLink>
+                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"         icon-awesome="fa-plus-square"></b:navLink>
+                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml" icon-awesome="fa-edit"></b:navLink>
+                <b:navLink value="Pesquisar" href="faces/search.xhtml"                  icon-awesome="fa-search-plus" ></b:navLink>
             </b:navbarLinks>
         </b:navBar>
+        <!--[End] NavigationBar -->
 
 
         <h3>Registar Universidade</h3>
@@ -46,7 +48,7 @@ and open the template in the editor.
 
                     <p><h4>Endereço:   </h4><h:inputText value="#{beanAddUniversity.endereco}" required="true" ></h:inputText> </p> 
 
-                    <h:commandButton value="Completar" action="#{beanAddUniversity.submitUniversity()}" />
+                    <h:commandButton value="Completar" action="#{beanAddUniversity.submitUniversity()}"/>
                 </h:form>
             </b:panel>
 
