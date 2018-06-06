@@ -14,66 +14,88 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class Property implements Serializable, Comparable<Property> {
 
     private static final long serialVersionUID = 1L;
+
+    @XmlElement
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     
+    @XmlElement
     @OneToMany(targetEntity=Room.class, mappedBy="property")
     @JoinColumn(nullable = false)
     private Set<Room> rooms;
     
     @Column(nullable = false)
+    @XmlElement
     private float longitude;
     
+    @XmlElement
     @Column(nullable = false)
-    private float latitude;;
+    private float latitude;
     
+    @XmlElement
     @ManyToOne
     @JoinColumn(nullable = false)
     private PlatformUser owner;
     
+    @XmlElement
     @Column(nullable = false)
     private boolean occupied;
     
+    @XmlElement
     @Column(nullable = false)
     private String address;
     
+    @XmlElement
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PropertyType type;
     
+    @XmlElement
     @Column(nullable = false)
     private char block;
     
+    @XmlElement
     @Column(nullable = false)
     private int floor;
 
+    @XmlElement
     @Column(nullable = false)
     private boolean verified;
     
+    @XmlElement
     @ManyToOne
     @JoinColumn()
     private University verifiedBy;
     
+    @XmlElement
     @Column(nullable = false)
     private double moderatorRating;
     
+    @XmlElement
     @Column(nullable = false)
     private double userRating;
     
+    @XmlElement
     @Column(nullable = false)
     private int nVotes;
     
+    @XmlElement
     @Column(nullable = false)
     private double weightedRating;
     
+    @XmlElement
     @Column(nullable = false)
     private Set<String> photos;
     
