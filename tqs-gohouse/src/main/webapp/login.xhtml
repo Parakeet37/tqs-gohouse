@@ -33,6 +33,7 @@ and open the template in the editor.
         </b:navBar>
         <!--[End] NavigationBar -->
 
+        <!-- 
         <p></p>
         <b:container style="width:600px; ">
             <b:jumbotron>
@@ -62,6 +63,27 @@ and open the template in the editor.
                 </script>
             </b:jumbotron>
         </b:container>
+        -->
+        
+        <h3>Registar Utilizador</h3>
+
+
+        <div class="col-md-12 col-lg-12 col-sm-12">
+
+            <b:panel title="Informações de utilizador" collapsible="false">
+                <h:form>
+
+                    <p><h4>Nome de Utilizador:  </h4> <h:inputText value="#{loggingBean.userName}" required="true" ></h:inputText></p> 
+
+                    <p><h4>Password:  </h4> <h:inputSecret value="#{loggingBean.password}" required="true" ></h:inputSecret></p> 
+
+                    <p><h4>Email:   </h4><h:inputText value="#{loggingBean.userMail}" required="true" ></h:inputText> </p> 
+
+                    <h:commandButton value="Completar" action="#{beanAddUniversity.submitUniversity()}"/>
+                </h:form>
+            </b:panel>
+
+        </div>
 
     </h:body>
 </html>

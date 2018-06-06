@@ -63,21 +63,16 @@ public class GoHouseRESTUsers {
     * @param email User's email
     * @param name User's name
     * @param isDelegate Sets if is delegate or not
+    * @param password The user password 
     */
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    public void registerUser(@FormParam("email") String email,
            @FormParam("name") String name,
-           @FormParam("isDelegate") boolean isDelegate) {
+           @FormParam("isDelegate") boolean isDelegate, 
+           @FormParam("password") String password) {
         System.out.println("Creating " + name + "...");
-        dbH.registerUser(email, name, LocalDate.now(), isDelegate);
-   }
-
-   @PUT
-   public void putUser(@FormParam("email") String email,
-           @FormParam("name") String name,
-           @FormParam("isDelegate") boolean isDelegate) {
-      registerUser(email, name, isDelegate);
+        dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
    }
 
 }
