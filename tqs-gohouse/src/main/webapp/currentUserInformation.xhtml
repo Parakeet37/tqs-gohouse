@@ -30,34 +30,62 @@ and open the template in the editor.
                 <b:navLink value="Registar Universidade" href="registerUniversity.xhtml" icon-awesome="fa-edit"></b:navLink>
                 <b:navLink value="Pesquisar" href="search.xhtml"                  icon-awesome="fa-search-plus" ></b:navLink>
                 <b:navLink value="Minha Conta" href="currentUserInformation.xhtml"                  icon-awesome="fa-user" ></b:navLink>
-
             </b:navbarLinks>
         </b:navBar>
         <!--[End] NavigationBar -->
 
         <!--User Email-->
         <div style="padding-left: 20px;padding-top: 20px">
-            <h3>#{userDetailsBean.email}</h3>
+            <h3>Minha conta</h3>
         </div>
 
         <!-- User information -->
-        <b:panel title="#{userDetailsBean.userPlatform.name}" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
+        <b:panel title="#{beanUserInfo.userPlatform.name}" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
             <div class="panelStyle">
                 <div>                                
-                    <h4><b>Nome:</b>  #{userDetailsBean.userPlatform.name} </h4>
-                    <h4><b>Email: </b> #{userDetailsBean.userPlatform.email}</h4>
-                    <h4><b>Idade: </b>#{userDetailsBean.userPlatform.age}</h4>
-                    <h4><b>Rating: </b> #{userDetailsBean.userPlatform.userRating}</h4>
+                    <h4><b>Nome:</b>  #{beanUserInfo.userPlatform.name} </h4>
+                    <h4><b>Email: </b> #{beanUserInfo.userPlatform.email}</h4>
+                    <h4><b>Idade: </b>#{beanUserInfo.userPlatform.age}</h4>
+                    <h4><b>Rating: </b> #{beanUserInfo.userPlatform.userRating}</h4>
                 </div>
             </div>
         </b:panel>
+
+
+        <!--Avaliação -->
+        <div style="padding-left: 20px;padding-top: 20px">
+            <h3>Avaliar Senhorios</h3>
+        </div>
+        <div class="col-md-12 col-lg-12 col-sm-12">
+
+            <b:panel title="Avaliação" collapsible="false">
+                <h:form>
+
+                    <p><h4>Senhorio: </h4> <h:selectOneMenu value="#{beanUserInfo.selectedSenhorio}" required="true">
+                            <f:selectItems var="ender" value="#{beanUserInfo.senhorios}" itemValue="#{ender}" /></h:selectOneMenu> </p>
+
+                    <p><h4>Rating:  </h4><h:inputText value="#{beanUserInfo.rating}" required="true" ></h:inputText> </p> 
+
+                    <h:commandButton value="Avaliar" action="#{beanUserInfo.submitRating()}" />
+                </h:form>
+            </b:panel>
+
+        </div>
+
+
+
+
+
+
+
+
 
 
 
 
         <!--User's Properties -->
         <div style="padding-left: 20px;padding-top: 20px">
-            <h3>Propriedades do utilizador</h3>
+            <h3>Quartos Arrendados</h3>
         </div>
 
         <div style="padding-right: 10px">            
