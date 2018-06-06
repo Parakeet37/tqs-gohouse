@@ -18,6 +18,7 @@ public class BeanAddUniversity {
     public String name;
     public String endereco;
     public String message;
+    public String password; 
 
     private final DBHandler dBHandler = new DBHandler();
 
@@ -31,6 +32,7 @@ public class BeanAddUniversity {
         name = "";
         endereco = "";
         message = "";
+        password = ""; 
     }
 
     /**
@@ -40,7 +42,7 @@ public class BeanAddUniversity {
         assert !"".equals(name) && !"".equals(endereco);
 
         if (CurrentUser.univ == null) {
-            boolean added = dBHandler.addUniversity(name, endereco);
+            boolean added = dBHandler.addUniversity(password, name, endereco);
             if (added) {
                 message = "Universidade Registada";
                 //Adiciona como delegado da universidade
