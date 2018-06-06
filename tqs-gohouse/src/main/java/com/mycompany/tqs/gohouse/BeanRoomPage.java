@@ -1,11 +1,11 @@
 package com.mycompany.tqs.gohouse;
 
-import com.sun.istack.internal.logging.Logger;
 import dbclasses.Room;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -56,7 +56,7 @@ public class BeanRoomPage {
             room = new Room();
 
         } catch (NumberFormatException e) {
-            Logger.getLogger(BeanRoomPage.class).log(Level.SEVERE, "Não foram lidos nenhuns parametros ou estes estão mal passados... not the food");
+            Logger.getLogger("Não foram lidos nenhuns parametros ou estes estão mal passados... not the food");
         }
 
         populateView();

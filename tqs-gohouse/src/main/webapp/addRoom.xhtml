@@ -22,13 +22,13 @@ and open the template in the editor.
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
 
         <!-- [INIT] Navigation bar -->
-        <b:navBar brand="GoHouse" brandHref="faces/home.xhtml" inverse="true" fixed="top">
+        <b:navBar brand="GoHouse" brandHref="home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
-                <b:navLink value="Login" href="faces/login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!beanAddRoom.isLoggedIn}"></b:navLink>
-                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml" icon-awesome="fa-plus-square"></b:navLink>
+                <b:navLink value="Login" href="login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!beanAddRoom.isLoggedIn}"></b:navLink>
+                <b:navLink value="Adicionar Propriedade" href="addProperty.xhtml" icon-awesome="fa-plus-square"></b:navLink>
                 <b:navLink value="Adicionar Quartos" href="#"                           icon-awesome="fa-plus-square"></b:navLink>
-                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml" icon-awesome="fa-edit"></b:navLink>
-                <b:navLink value="Pesquisar" href="faces/search.xhtml"                  icon-awesome="fa-search-plus" ></b:navLink>
+                <b:navLink value="Registar Universidade" href="registerUniversity.xhtml" icon-awesome="fa-edit"></b:navLink>
+                <b:navLink value="Pesquisar" href="search.xhtml"                  icon-awesome="fa-search-plus" ></b:navLink>
             </b:navbarLinks>
         </b:navBar>
         <!--[End] NavigationBar -->
@@ -54,10 +54,16 @@ and open the template in the editor.
             </b:panel>
 
         </div>
-        <p:dialog header="Mensagem" widgetVar="dlg1" minHeight="40">
-            <h:outputText value="#{beanAddRoom.message}" />
-        </p:dialog>
-
+        
+        
+      <!-- Room Modal -->
+        <b:modal id="modalMsg" title="GoHouse Rooms" styleClass="modalPseudoClass">
+            <p>#{beanAddRoom.message}</p>
+            <f:facet name="footer">
+                <b:button value="Ok" look="success" dismiss="modal" rendered="#{beanAddRoom.roomAdded}"/>
+                <b:button value="Ok" look="warning" dismiss="modal" rendered="#{!beanAddRoom.roomAdded}" />
+            </f:facet>
+        </b:modal>
 
 
     </h:body>
