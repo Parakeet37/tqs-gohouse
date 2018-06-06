@@ -3,10 +3,8 @@ package com.mycompany.tqs.gohouse;
 import dbclasses.PlatformUser;
 import dbclasses.Property;
 import dbclasses.PropertyType;
-import dbclasses.Room;
 import dbclasses.University;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Iterator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -45,7 +43,7 @@ public class DBHandlerPropertyTest {
         query.executeUpdate();
         query = em.createQuery("DELETE FROM University");
         query.executeUpdate();
-        em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
+        em.persist(new PlatformUser("xd", "testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
         em.getTransaction().commit();
     }
     
@@ -97,7 +95,7 @@ public class DBHandlerPropertyTest {
     public void testRentPropertyForUser(){
         System.out.println("testing renting a property for an user");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
+        instance.registerUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser renter = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         boolean expResult = true;
@@ -117,7 +115,7 @@ public class DBHandlerPropertyTest {
         System.out.println("testing renting a property for a university");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
-        instance.addUniversity("UA", "adress");
+        instance.addUniversity("UA", "adress", "xd");
         University uni = instance.getSingleUniversity("UA");
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Iterator<Property> itr = user.getOwnedProperties().iterator();
@@ -134,7 +132,7 @@ public class DBHandlerPropertyTest {
     public void testCheckoutProperty(){
         System.out.println("testing checking out a property");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
+        instance.registerUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser renter = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         boolean expResult = true;
@@ -157,7 +155,7 @@ public class DBHandlerPropertyTest {
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Iterator<Property> itr = user.getOwnedProperties().iterator();
-        instance.addUniversity("UA", "adress");
+        instance.addUniversity("UA", "adress", "xd");
         University uni = instance.getSingleUniversity("UA");
         Property property = new Property();
         while (itr.hasNext()){
@@ -189,7 +187,7 @@ public class DBHandlerPropertyTest {
             break; //we only need one element
         }
         PlatformUser formerOwner = property.getOwner();
-        instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
+        instance.registerUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser newOwner = instance.getSingleUser("testemail1@gmail.com");
         assertEquals(instance.changeOwner(formerOwner.getId(), newOwner.getId(), property.getId()), true);
         assertEquals(property.getOwner().getId(), newOwner.getId());
@@ -220,10 +218,11 @@ public class DBHandlerPropertyTest {
     public void testVerifyProperty(){
         System.out.println("testing verification of a property");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
+        instance.registerUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser delegate = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
-        instance.changeDelegation(delegate.getId(), true, "UA", "street");
+        instance.addUniversity("UA", "adress", "xd");
+        instance.changeDelegation(delegate.getId(), true, "UA");
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Property property = new Property();
         Iterator<Property> itr = user.getOwnedProperties().iterator();
@@ -239,10 +238,11 @@ public class DBHandlerPropertyTest {
     public void testGetUnverifiedProperties(){
         System.out.println("testing getting all the unverified properties");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
+        instance.registerUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser delegate = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
-        instance.changeDelegation(delegate.getId(), true, "UA", "street");
+        instance.addUniversity("UA", "adress", "xd");
+        instance.changeDelegation(delegate.getId(), true, "UA");
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
         Property property = new Property();
@@ -259,10 +259,11 @@ public class DBHandlerPropertyTest {
     public void testGetVerifiedProperties(){
         System.out.println("testing getting all the verified properties");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
+        instance.registerUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser delegate = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
-        instance.changeDelegation(delegate.getId(), true, "UA", "street");
+        instance.addUniversity("UA", "adress", "xd");
+        instance.changeDelegation(delegate.getId(), true, "UA");
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
         Property property = new Property();
@@ -279,10 +280,11 @@ public class DBHandlerPropertyTest {
     public void testGetPropertyByType(){
         System.out.println("testing getting properties by type (House or Apartment)");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
+        instance.registerUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser delegate = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
-        instance.changeDelegation(delegate.getId(), true, "UA", "street");
+        instance.addUniversity("UA", "adress", "xd");
+        instance.changeDelegation(delegate.getId(), true, "UA");
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
         Property property = new Property();

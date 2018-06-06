@@ -54,15 +54,15 @@ public class DBHandlerUserTest{
         em.getTransaction().begin();
         int i = NUMBER_OF_USERS;
         while (i>2){
-            em.persist(new PlatformUser("testemail"+(i-1)+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
+            em.persist(new PlatformUser("xd", "testemail"+(i-1)+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
             i--;
             em.getTransaction().commit();
             em.getTransaction().begin();
         }
-        em.persist(new PlatformUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
+        em.persist(new PlatformUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
         em.getTransaction().commit();
         em.getTransaction().begin();
-        em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
+        em.persist(new PlatformUser("xd", "testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
         em.getTransaction().commit();
     }
     
@@ -95,7 +95,7 @@ public class DBHandlerUserTest{
         boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
-        boolean result = instance.registerUser(email, name, age, isDelegate);
+        boolean result = instance.registerUser("xd", email, name, age, isDelegate);
         assertEquals(expResult, result);
     }
  
@@ -106,7 +106,8 @@ public class DBHandlerUserTest{
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = true;
         PlatformUser user = instance.getSingleUser(email);
-        boolean result = instance.changeDelegation(user.getId(), true, "UA", "address");
+        instance.addUniversity("UA", "address", "xd");
+        boolean result = instance.changeDelegation(user.getId(), true, "UA");
         assertEquals(expResult, result);
         PlatformUser newuser = instance.getSingleUser(email);
         assertNotEquals("No changes were saved", false, newuser.isIsDelegate());

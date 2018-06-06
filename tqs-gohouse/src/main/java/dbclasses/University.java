@@ -44,8 +44,9 @@ public class University extends GeneralEntity implements Serializable {
         super();
     }
 
-    public University(String name, String address) {
+    public University(String name, String password, String address) {
         super();
+        this.password = password;
         this.name = name;
         this.address = address;
         delegates = new TreeSet<>();
