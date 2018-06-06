@@ -90,7 +90,6 @@ function initMap() {
       document.getElementById('map'), {zoom: 4, center: {lat: 10, lng: 10}});
       
   var searchCoords = JSON.parse('#{searchBean.searchResults}');
-  
   var markers = new Array(searchCoords.length);
   for (i = 0; i &lt; searchCoords.length; i++){
       coord = { lat: searchCoords[i].latitude, lng: searchCoords[i].longitude};
@@ -104,6 +103,7 @@ function centerAt(lat,long){
     
     map.setCenter(target);
 }
+
 function markMap(lat,long){
     var target = {lat: lat, lng: long};
     
