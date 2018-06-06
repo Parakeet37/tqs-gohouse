@@ -11,20 +11,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class Room implements Serializable, Comparable<Room>{
 
     private static final long serialVersionUID = 1L;
+    
+    @XmlElement
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @XmlElement
     @Column(nullable = false)
     private int rent;
 
+    @XmlElement
     private String description;
     
     @ManyToOne
@@ -39,8 +46,10 @@ public class Room implements Serializable, Comparable<Room>{
     @JoinColumn
     private PlatformUser renter;
 
+    @XmlElement
     private boolean occupied;
 
+    @XmlElement
     @Column(nullable = false)
     private Set<String> photos;
     

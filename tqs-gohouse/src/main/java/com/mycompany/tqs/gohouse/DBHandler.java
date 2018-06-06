@@ -65,17 +65,54 @@ public class DBHandler implements Serializable{
     }
     
     /**
+     * verifies if a user has the right credentials to use the platform
+     * @param email email of the user
+     * @param password password the user wants to check
+     * @return true if the user exists and the password is correct
+     */
+    public boolean loginUser(String email, String password){
+        PlatformUser user;
+        try {
+            Query query = em.createQuery("select u from PlatformUser AS u where u.email = :email");
+            query.setParameter("email", email);
+            user = (PlatformUser) query.getSingleResult();
+            return user.verifyPassword(password);
+        } catch (NoResultException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * verifies if a university has the right credentials to use the platform
+     * @param name name of the university
+     * @param password password the university wants to check
+     * @return true if the university exists and the password is correct
+     */
+    public boolean loginUniversity(String name, String password){
+        University university;
+        try {
+            Query query = em.createQuery("select u from University AS u where u.name = :name");
+            query.setParameter("name", name);
+            university = (University) query.getSingleResult();
+            return university.verifyPassword(password);
+        } catch (NoResultException e) {
+            return false;
+        }
+    }
+    
+    /**
      * registers an user in the platform
+     * @param password password of the user
      * @param email email of the user we want to register
      * @param name name (first and last) of the user
      * @param age age of the user
      * @param isDelegate false if the user is not a delegate of a university
      * @return false if the user already exists, true otherwise
      */
-    public boolean registerUser(String email, String name, LocalDate age, boolean isDelegate) {
+    public boolean registerUser(String password, String email, String name, LocalDate age, boolean isDelegate) {
         try {
             em.getTransaction().begin();
-            em.persist(new PlatformUser(email, name, age, isDelegate));
+            em.persist(new PlatformUser(password, email, name, age, isDelegate));
             em.getTransaction().commit();
         } catch (RollbackException ex) {
             return false;
@@ -90,10 +127,9 @@ public class DBHandler implements Serializable{
 
      * @param isDelegate boolean to update
      * @param univName name of the university
-     * @param univAddress address o the university
      * @return true if success, false otherwise
      */
-    public boolean changeDelegation(long id, boolean isDelegate, String univName, String univAddress) {
+    public boolean changeDelegation(long id, boolean isDelegate, String univName) {
         Query query  = em.createQuery("Select u from University as u where u.name=:name");
         query.setParameter("name", univName);
         PlatformUser user = em.find(PlatformUser.class, id);
@@ -102,13 +138,7 @@ public class DBHandler implements Serializable{
             University univ;
             try {
                 univ = (University) query.getSingleResult();                    
-            } catch (NoResultException x){
-                //University does not exist in the database... Needs to be created
-                univ = new University(univName, univAddress);
-                em.getTransaction().begin();
-                em.persist(univ);
-                em.getTransaction().commit();
-            } catch (RollbackException e){
+            } catch (NoResultException | RollbackException x){
                 return false;
             }
             em.getTransaction().begin();
@@ -691,10 +721,10 @@ public class DBHandler implements Serializable{
     
 //-------------------------------------UNIVERSITY QUERIES-------------------------------------
     
-    public boolean addUniversity(String name, String address){
+    public boolean addUniversity(String name, String address, String password){
         try {
             em.getTransaction().begin();
-            em.persist(new University(name, address));
+            em.persist(new University(name, password, address));
             em.getTransaction().commit();
         } catch (RollbackException ex) {
             em.getTransaction().commit();

@@ -2,7 +2,6 @@ package dbclasses;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.persistence.Column;
@@ -10,17 +9,22 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class PlatformUser extends GeneralEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
+    @XmlElement
     @Column(nullable = false, unique=true)
     private String email;
     
+    @XmlElement
     @Column(nullable = false)
     private LocalDate age;
     
@@ -28,6 +32,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     @JoinColumn(nullable=false)
     private Set<Property> ownedProperties;
     
+    @XmlElement
     @Column(nullable = false)
     private boolean isDelegate;
     
@@ -35,6 +40,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     @JoinColumn(nullable=false)
     private Set<Room> rentedRooms;
     
+    @XmlElement
     @ManyToOne
     @JoinColumn()
     private University university;
@@ -43,8 +49,9 @@ public class PlatformUser extends GeneralEntity implements Serializable {
         super();
     }
 
-    public PlatformUser(String email, String name, LocalDate age, boolean isDelegate) {
+    public PlatformUser(String password, String email, String name, LocalDate age, boolean isDelegate) {
         super();
+        this.password = password;
         this.name = name;
         this.email = email;
         this.age = age;
@@ -116,7 +123,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     public void setUniversity(University university) {
         this.university = university;
     }
-
+    
     @Override
     public String toString() {
         return "PlatformUser{" + "id=" + id + ", email=" + email + ", name=" + name + ", age=" + age + ", ownedProperties=" + ownedProperties + ", userRating=" + userRating + ", isDelegate=" + isDelegate + ", universityId=" + university + '}';
