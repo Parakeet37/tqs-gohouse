@@ -60,6 +60,7 @@ public class GoHouseRESTUsers {
    
    /**
     * Registers a user, can be a Delegate
+     * @param password
     * @param email User's email
     * @param name User's name
     * @param isDelegate Sets if is delegate or not
@@ -67,12 +68,14 @@ public class GoHouseRESTUsers {
     */
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public void registerUser(@FormParam("email") String email,
+   public void registerUser(@FormParam("password") String password, 
+           @FormParam("email") String email,
            @FormParam("name") String name,
            @FormParam("isDelegate") boolean isDelegate, 
            @FormParam("password") String password) {
         System.out.println("Creating " + name + "...");
         dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
+
    }
 
 }
