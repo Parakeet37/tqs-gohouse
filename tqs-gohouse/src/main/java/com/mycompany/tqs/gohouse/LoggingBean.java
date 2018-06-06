@@ -32,6 +32,8 @@ public class LoggingBean implements Serializable {
     private String userName;
     //User Mail from GSignIn
     private String userMail;
+    //User password
+    private String password; 
 
     //Constructor
     public LoggingBean() {
@@ -46,16 +48,18 @@ public class LoggingBean implements Serializable {
     public void userSignIn() {
         //System.out.println("Getting Login Values. (NOTE: Google will remember if you logged in a previous time!)");
 
+        /*
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
         userName = params.get("name");
         userMail = params.get("email");
+        */
 
         System.out.println("User detected! -> " + userName + "\t" + userMail);
         
       
         if(!exists()){
-            dbHandler.registerUser(userMail, userName, LocalDate.of(1997,1,1), false);
+            dbHandler.registerUser(password, userMail, userName, LocalDate.of(1997,1,1), false);
             exists();
         }
 
@@ -85,6 +89,14 @@ public class LoggingBean implements Serializable {
     //userName setter
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+    
+    public String getPassword() {
+        return password; 
+    }
+    
+    public void setPassword(String password){
+        this.password = password; 
     }
 
     //userMail getter
