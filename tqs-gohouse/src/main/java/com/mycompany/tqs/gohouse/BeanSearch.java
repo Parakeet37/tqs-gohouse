@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project AllProperties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tqs.gohouse;
 
 /**
@@ -14,6 +9,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
@@ -27,30 +23,40 @@ import other.Utils;
 @SessionScoped
 public class BeanSearch implements Serializable {
 
+    //Database handler
     private final DBHandler dbHandler = new DBHandler();
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
-    
+    //Value used to search properties
     private String searchValue;
+    //List with all properties. Used when the search is empty
     private List<Property> allProperties = new ArrayList<>();
+    //List with properties with search value
     private List<Property> searchResults = new ArrayList<>();
 
+    /**
+     * Post constructor that populates all lists with properties.
+     */
     @PostConstruct
     public void construct() {
-        List<Property> allProperties = dbHandler.getUnverifiedProperties();
-        allProperties.addAll(dbHandler.getVerifiedProperties());
-        setAllProperties(allProperties);
-        setSearchResults(allProperties);
+        List<Property> allProps = dbHandler.getUnverifiedProperties();
+        allProps.addAll(dbHandler.getVerifiedProperties());
+        setAllProperties(allProps);
+        setSearchResults(allProps);
     }
 
-    
+    /**
+     * Searched from all properties the ones with given search parameter.
+     * @return  Same page refreshed.
+     * @throws IOException Couldn't refresh page.
+     */
     public String searchProperties() throws IOException {
         searchResults.clear();
         List<Property> temp = new ArrayList<>();
 
         for (Property p : allProperties) {
             if (p.getAddress().contains(searchValue)) {
-                System.out.println(p.getAddress());
+                Logger.getLogger(p.getAddress());
                 temp.add(p);
             }
         }
@@ -60,7 +66,7 @@ public class BeanSearch implements Serializable {
         return "search.xhtml";
     }
     
-    
+    //Getters and setters
     public List<Property> getAllProperties() {
         return allProperties;
     }

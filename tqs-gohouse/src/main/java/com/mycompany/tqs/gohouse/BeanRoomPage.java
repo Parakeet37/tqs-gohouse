@@ -4,69 +4,79 @@ import dbclasses.Room;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
 
-/**
- *
- * @author Joao
- */
 @ManagedBean(name = "beanroomPage", eager = true)
 @ViewScoped
 public class BeanRoomPage {
 
+    //Id da propriedade
     private long propertyID = -1;
+
+    //Id do quarto
     private long roomID = -1;
+
+    //Quarto a ser apresentado
     private Room room;
+
+    //Descrição do quarto.
     private String rent = "";
     private String user = "";
     private String description = "";
+
+    //Mensagem a ser apresentada no modal.
     private String message = "";
+
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
+    //Database handler
     private final DBHandler dBHandler = new DBHandler();
 
+    /**
+     * Post constructor. Gets the parameters from the URL with the Id of the
+     * room and property.
+     */
     @PostConstruct
     public void init() {
         //Get the parameters from the url and initialize vars
         try {
-
             Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+
             propertyID = Long.parseLong(params.get("paramProp").split("z")[0]);
             roomID = Long.parseLong(params.get("paramProp").split("z")[1]);
-            System.out.println("I READ                 " + roomID);
 
             room = new Room();
 
         } catch (NumberFormatException e) {
-            System.err.println("Could not retrieve the parametres or parse them");
+            Logger.getLogger("Não foram lidos nenhuns parametros ou estes estão mal passados... not the food");
         }
 
         populateView();
     }
 
     /**
-     * Puts all the information.
+     * Puts all the information of the room in the variable Room that is used in
+     * the XHTML.
      */
     private void populateView() {
         assert propertyID != -1 && roomID != -1;
-        //Get the room we want
 
+        //Get the room we want
         try {
-            Set<Room> rooms = dBHandler.getPropertyByID(propertyID).getRooms();
-            System.out.println("TOOOO  " + rooms.size());
-            for (Room r : rooms) {
+            Set<Room> listRooms = dBHandler.getPropertyByID(propertyID).getRooms();
+            for (Room r : listRooms) {
 
                 if (r.getId() == roomID) {
-                    System.out.println("Yooo " + r.getId());
                     room = r;
+                    //No need to go further.
                     break;
                 }
             }
@@ -75,44 +85,56 @@ public class BeanRoomPage {
             user = room.getProperty().getOwner().getName();
             description = room.getDescription();
         } catch (Exception e) {
-            message = "No Room available.";
+            message = "Ups...Nenhum quarto foi encontrado. Por favor volte à página de inicio.";
             showDialog();
         }
 
     }
 
     /**
-     * Rents a room.
+     * Rents the room given some circumstances.
+     *
+     * @throws IOException HomePage not found.
      */
     public void rentRoom() throws IOException {
 
+        //Verificar se o user está registado.
         if (CurrentUser.ID == -1 || room == null) {
-            message = "Não está registado.";
+            message = "Ups...Parece que não está registado.";
             showDialog();
 
         } else {
             boolean regist = dBHandler.rentRoomToUser(roomID, CurrentUser.ID);
             if (regist) {
-                message = "Quarto arrendado";
+                message = "Obrigado por utilizar a nossa plataforma como meio de arrendamento de quartos.\n"
+                        + "Este é o seu novo quarto : " + room.getProperty().getAddress() + "\n"
+                        + "Piso: " + room.getProperty().getFloor() + "\n"
+                        + "Bloco: " + room.getProperty().getBlock() + "\n";
+                //In case it is owned by a university.
+                if (room.getUniversity() != null) {
+                    message += "\n\n\n";
+                    message += room.getUniversity().getName();
+                }
                 showDialog();
-
+                //Redirect to the HomePage
                 FacesContext.getCurrentInstance().getExternalContext().redirect("faces/home.xhtml");
 
             } else {
-                message = "Não foi possivel arrendar o quarto.";
+                message = "Ups...Por alguma razão não foi possivel arrendar o quarto.";
                 showDialog();
             }
         }
     }
 
     /**
-     * Show a message dialog.
+     * Show a message dialog by executing the javascript.
      */
     private void showDialog() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('dlg1').show();");
+        context.execute("$('.modalPseudoClass').modal();");
     }
 
+    //Getters and setters
     public long getPropertyID() {
         return propertyID;
     }

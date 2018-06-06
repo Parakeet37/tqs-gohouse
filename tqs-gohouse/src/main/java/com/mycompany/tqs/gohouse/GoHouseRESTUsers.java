@@ -64,6 +64,7 @@ public class GoHouseRESTUsers {
     * @param email User's email
     * @param name User's name
     * @param isDelegate Sets if is delegate or not
+    * @param password The user password 
     */
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -73,21 +74,6 @@ public class GoHouseRESTUsers {
            @FormParam("isDelegate") boolean isDelegate) {
         System.out.println("Creating " + name + "...");
         dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
-   }
-
-   /**
-    * Registers/Overrides a user, can be a Delegate
-     * @param password
-    * @param email User's email
-    * @param name User's name
-    * @param isDelegate Sets if is delegate or not
-    */
-   @PUT
-   public void putUser(@FormParam("password") String password, 
-           @FormParam("email") String email,
-           @FormParam("name") String name,
-           @FormParam("isDelegate") boolean isDelegate) {
-      registerUser(password, email, name, isDelegate);
    }
 
 }

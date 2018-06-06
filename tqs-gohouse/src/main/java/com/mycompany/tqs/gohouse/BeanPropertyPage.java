@@ -6,11 +6,18 @@
 package com.mycompany.tqs.gohouse;
 
 import dbclasses.Property;
+import dbclasses.Room;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
+import other.CurrentUser;
 import other.Utils;
 
 /**
@@ -18,7 +25,7 @@ import other.Utils;
  * @author joaos
  */
 @ManagedBean(name = "beanpropertyPage", eager = true)
-@Singleton
+@ViewScoped
 public class BeanPropertyPage {
 
     //Propriedade a ser vista
@@ -29,6 +36,15 @@ public class BeanPropertyPage {
     private DBHandler dBHandler = new DBHandler();
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
+    //List of rooms
+    private List<Room> rooms = new ArrayList<>();
+    //Used to render if the user has a university.
+    private boolean hasUniversity = Utils.hasUniversity();
+    //Used to render button with text
+    private String universityName = Utils.universityName();
+    //Message 
+    private String message = "";
+    private boolean roomRented = true;
 
     /**
      * When the bean is created; Get the parameter id which is the id of the
@@ -41,9 +57,8 @@ public class BeanPropertyPage {
             Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             id = Long.parseLong(params.get("propertyId"));
             propriedade = new Property();
-
         } catch (NumberFormatException e) {
-            System.err.println("Could not retrieve the parametres or parse them");
+            Logger.getLogger("Could not parse values");
         }
         //Populate view
         populateView();
@@ -56,6 +71,40 @@ public class BeanPropertyPage {
     private void populateView() {
         assert id >= 0;
         this.propriedade = dBHandler.getPropertyByID(id);
+        Set<Room> tmp = propriedade.getRooms();
+        for(Room r: tmp){
+            rooms.add(r);
+        }
+    }
+
+    /**
+     * Used by University to rent a room.
+     *
+     * @param roomId Room id
+     */
+    public void rentFull(long roomId) {
+        //Check if it has any University assossiated.
+        if (CurrentUser.univ != null) {
+            boolean sucess = dBHandler.rentRoomToUniversity(roomId, CurrentUser.ID);
+            if (sucess) {
+                message = "Quarto foi arrendade á universidade " + universityName;
+                roomRented = true;
+                showDialog();
+            }else{
+                message = "Não foi possivel arrendar o quarto!";
+                roomRented = false;
+                showDialog();
+            }
+        }
+
+    }
+
+    /**
+     * Show a message dialog by executing the javascript.
+     */
+    private void showDialog() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("$('.modalPseudoClass').modal();");
     }
 
     //Getters and setters
@@ -90,5 +139,46 @@ public class BeanPropertyPage {
     public void setIsLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;
     }
+
+    public boolean isHasUniversity() {
+        return hasUniversity;
+    }
+
+    public void setHasUniversity(boolean hasUniversity) {
+        this.hasUniversity = hasUniversity;
+    }
+
+    public String getUniversityName() {
+        return universityName;
+    }
+
+    public void setUniversityName(String universityName) {
+        this.universityName = universityName;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isRoomRented() {
+        return roomRented;
+    }
+
+    public void setRoomRented(boolean roomRented) {
+        this.roomRented = roomRented;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
+    }
+    
 
 }

@@ -28,13 +28,13 @@ and open the template in the editor.
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
         <div></div>
         <!-- [INIT] Navigation bar -->
-        <b:navBar brand="GoHouse" brandHref="faces/home.xhtml" inverse="true" fixed="top">
+        <b:navBar brand="GoHouse" brandHref="home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
-                <b:navLink value="Login" href="faces/login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!searchBean.isLoggedIn}"></b:navLink>
-                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml" icon-awesome="fa-plus-square" rendered="#{searchBean.isLoggedIn}"></b:navLink>
-                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"         icon-awesome="fa-plus-square" rendered="#{searchBean.isLoggedIn}"></b:navLink>
-                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml" icon-awesome="fa-edit" rendered="#{searchBean.isLoggedIn}"></b:navLink>
-                <b:navLink value="Pesquisar" href="faces/search.xhtml"                  icon-awesome="fa-search-plus" rendered="#{searchBean.isLoggedIn}"></b:navLink>
+                <b:navLink value="Login" href="login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!searchBean.isLoggedIn}"></b:navLink>
+                <b:navLink value="Adicionar Propriedade" href="addProperty.xhtml" icon-awesome="fa-plus-square" rendered="#{searchBean.isLoggedIn}"></b:navLink>
+                <b:navLink value="Adicionar Quartos" href="addRoom.xhtml"         icon-awesome="fa-plus-square" rendered="#{searchBean.isLoggedIn}"></b:navLink>
+                <b:navLink value="Registar Universidade" href="registerUniversity.xhtml" icon-awesome="fa-edit" rendered="#{searchBean.isLoggedIn}"></b:navLink>
+                <b:navLink value="Pesquisar" href="#"                  icon-awesome="fa-search-plus" rendered="#{searchBean.isLoggedIn}"></b:navLink>
             </b:navbarLinks>
         </b:navBar>
         <!--[End] NavigationBar -->
@@ -58,11 +58,10 @@ and open the template in the editor.
                             <h:outputText value="Endereço:" />
                             <h:outputText value="#{prop.address}" style="font-weight: bold"/>
                             
-                            <h:outputText value="Year:" />
+                            <h:outputText value="Tipo:" />
                             <h:outputText value="#{prop.type}" style="font-weight: bold"/>
                             <b:icon name="globe" size="2x" onclick="centerAt(#{prop.latitude},#{prop.longitude})"/>
                             <h5><b><a href="faces/propertyDetailsPage.xhtml?propertyId=#{prop.id}">Details</a></b></h5>
-
                             <p/>
                         </h:panelGrid>
                     </p:outputPanel>

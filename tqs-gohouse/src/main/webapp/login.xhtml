@@ -14,7 +14,6 @@ and open the template in the editor.
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>GoHouse</title>
-        <meta name="google-signin-client_id" content="322822969069-f1kdb3kuhui8gg146298tu85hpueh2cf.apps.googleusercontent.com"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <h:outputStylesheet library="Css" name="styles.css"  />    
     </h:head>
@@ -22,46 +21,37 @@ and open the template in the editor.
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
 
         <!-- [INIT] Navigation bar -->
-        <b:navBar brand="GoHouse" brandHref="faces/home.xhtml" inverse="true" fixed="top">
+        <b:navBar brand="GoHouse" brandHref="home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
-                <b:navLink value="Login" href="faces/login.xhtml" icon-awesome="fa fa-address-book"                      rendered="#{!loggingBean.isLoggedIn}"></b:navLink>
-                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml" icon-awesome="fa-plus-square"    rendered="#{loggingBean.isLoggedIn}"></b:navLink>
-                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml" icon-awesome="fa-plus-square"            rendered="#{loggingBean.isLoggedIn}" ></b:navLink>
-                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml" icon-awesome="fa-edit"    rendered="#{loggingBean.isLoggedIn}"></b:navLink>
-                <b:navLink value="Pesquisar" href="faces/search.xhtml" icon-awesome="fa-search-plus" ></b:navLink>
+                <b:navLink value="Login" href="#" icon-awesome="fa fa-address-book"                      rendered="#{!loggingBean.isLoggedIn}"></b:navLink>
+                <b:navLink value="Adicionar Propriedade" href="addProperty.xhtml" icon-awesome="fa-plus-square"    rendered="#{loggingBean.isLoggedIn}"></b:navLink>
+                <b:navLink value="Adicionar Quartos" href="addRoom.xhtml" icon-awesome="fa-plus-square"            rendered="#{loggingBean.isLoggedIn}" ></b:navLink>
+                <b:navLink value="Registar Universidade" href="registerUniversity.xhtml" icon-awesome="fa-edit"    rendered="#{loggingBean.isLoggedIn}"></b:navLink>
+                <b:navLink value="Pesquisar" href="search.xhtml" icon-awesome="fa-search-plus" ></b:navLink>
             </b:navbarLinks>
         </b:navBar>
         <!--[End] NavigationBar -->
 
-        <p></p>
-        <b:container style="width:600px; ">
-            <b:jumbotron>
-                <script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
+       
+        <h3>Login/Registo</h3>
 
-                <div class="g-signin2" data-onsuccess="onSignIn" data-redirecturi="http://localhost:8080/tqs-gohouse-1.0-SNAPSHOT"></div>
+
+        <div class="col-md-12 col-lg-12 col-sm-12">
+
+            <b:panel title="Informações de utilizador" collapsible="false">
                 <h:form>
-                    <p:remoteCommand name="userInfo" partialSubmit="true" process="@this"  action="#{loggingBean.userSignIn()}"/>
-                </h:form>         
-                <script>
-                    var bigBoy;
 
-                    function getBigBoy() {
-                        return bigBoy;
-                    }
+                    <p><h4>Nome de Utilizador:  </h4> <h:inputText value="#{loggingBean.userName}" required="true" ></h:inputText></p> 
 
-                    function onSignIn(googleUser) {
-                        var profile = googleUser.getBasicProfile();
-                        console.log('Name: ' + profile.getName());
-                        console.log('Image URL: ' + profile.getImageUrl());
-                        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-                        userInfo([
-                            {name: 'email', value: profile.getEmail()},
-                            {name: 'name', value: profile.getName()}
-                        ]);
-                    }
-                </script>
-            </b:jumbotron>
-        </b:container>
+                    <p><h4>Password:  </h4> <h:inputSecret value="#{loggingBean.password}" required="true" ></h:inputSecret></p> 
+
+                    <p><h4>Email:   </h4><h:inputText value="#{loggingBean.userMail}" required="true" ></h:inputText> </p> 
+
+                    <h:commandButton value="Completar" action="#{loggingBean.userSignIn()}"/>
+                </h:form>
+            </b:panel>
+
+        </div>
 
     </h:body>
 </html>

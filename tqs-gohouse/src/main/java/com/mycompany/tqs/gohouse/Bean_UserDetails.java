@@ -5,19 +5,15 @@ import dbclasses.Property;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import other.Utils;
 
-/**
- * This class is to be used in userDetailsPage
- *
- * @author joaos
- */
 @ManagedBean(name = "userDetailsBean", eager = true)
-@Singleton
+@ViewScoped
 public class Bean_UserDetails {
 
     //This is the user we are viewing
@@ -32,19 +28,20 @@ public class Bean_UserDetails {
     private boolean isLoggedIn = Utils.isLoggedIn();
 
     /**
-     * When the bean is created; Get the parameter id which is the email of the
-     * user we are viewing.
+     * When the bean is created, get the parameter <b>id</b> which is the email
+     * of the user we are viewing.
      */
     @PostConstruct
     public void init() {
-        //Get the parameters from the url
+
         try {
             Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             email = params.get("id");
             listaDePropriedades = new ArrayList<>();
         } catch (Exception e) {
-            System.err.println("Could not retrieve the parametres");
+            Logger.getLogger("Could not get the parameter ID");
         }
+
         populateView();
     }
 
@@ -100,5 +97,4 @@ public class Bean_UserDetails {
         this.isLoggedIn = isLoggedIn;
     }
 
-    
 }

@@ -15,19 +15,19 @@
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
 
         <!-- [INIT] Navigation bar -->
-        <b:navBar brand="GoHouse" brandHref="faces/home.xhtml" inverse="true" fixed="top">
+        <b:navBar brand="GoHouse" brandHref="home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
-                <b:navLink value="Login" href="faces/login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!beanAddPropriedade.isLoggedIn}"></b:navLink>
+                <b:navLink value="Login" href="login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!beanAddPropriedade.isLoggedIn}"></b:navLink>
                 <b:navLink value="Adicionar Propriedade" href="#"                       icon-awesome="fa-plus-square"></b:navLink>
-                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"         icon-awesome="fa-plus-square"></b:navLink>
-                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml" icon-awesome="fa-edit"></b:navLink>
-                <b:navLink value="Pesquisar" href="faces/search.xhtml"                  icon-awesome="fa-search-plus" ></b:navLink>
+                <b:navLink value="Adicionar Quartos" href="addRoom.xhtml"         icon-awesome="fa-plus-square"></b:navLink>
+                <b:navLink value="Registar Universidade" href="registerUniversity.xhtml" icon-awesome="fa-edit"></b:navLink>
+                <b:navLink value="Pesquisar" href="search.xhtml"                  icon-awesome="fa-search-plus" ></b:navLink>
             </b:navbarLinks>
         </b:navBar>
         <!--[End] NavigationBar -->
-        
-        
-        
+
+
+
         <!-- Add property -->
         <br></br>
 
@@ -35,11 +35,11 @@
 
             <b:panel title="Informações da Propriedade" collapsible="false">
                 <h:form>
-                    <p><h4>ID: </h4> <h:inputText value="#{beanAddPropriedade.id}" readonly="true"></h:inputText></p> 
-                    <p><h4>Latitude:  </h4> <h:inputText value="#{beanAddPropriedade.latitude}" required="true" ></h:inputText> </p> 
+                    
+                    <p><h4>Latitude:  </h4> <h:inputText  value="#{beanAddPropriedade.latitude}" required="true" ></h:inputText> </p> 
                     <p><h4>Longitude:  </h4> <h:inputText value="#{beanAddPropriedade.longitude}" required="true" ></h:inputText> </p> 
-                    <p><h4>Endereço:   </h4><h:inputText value="#{beanAddPropriedade.endereco}" required="true" ></h:inputText> </p> 
-                    <p><h4>Tipo:  </h4><h:selectOneMenu value="#{beanAddPropriedade.tipoPropriedade}" required="true">
+                    <p><h4>Endereço:   </h4><h:inputText  value="#{beanAddPropriedade.endereco}" required="true" ></h:inputText> </p> 
+                    <p><h4>Tipo: </h4> <h:selectOneMenu  value="#{beanAddPropriedade.tipoPropriedade}" required="true">
                             <f:selectItem itemValue="#{null}" />
                             <f:selectItem itemValue="Apartamento" />
                             <f:selectItem itemValue="Casa" /> 
@@ -47,15 +47,20 @@
                     <p><h4>Bloco:  </h4> <h:inputText value="#{beanAddPropriedade.bloco}" maxlength="1" required="true" ></h:inputText></p> 
                     <p><h4>Piso:  </h4><h:inputText value="#{beanAddPropriedade.piso}" required="true" ></h:inputText> </p> 
 
-                    <h:commandButton value="Completar" action="#{beanAddPropriedade.submitProperty()}" />
+                    <h:commandButton value="Adicionar" action="#{beanAddPropriedade.submitProperty()}" />
                 </h:form>
             </b:panel>
 
         </div>
 
-        <p:dialog header="Mensagem" widgetVar="dlg1" minHeight="40">
-            <h:outputText value="#{beanAddPropriedade.message}" />
-        </p:dialog>
+        <!-- Property Modal -->
+        <b:modal id="modalMsg" title="GoHouse Propriedade" styleClass="modalPseudoClass">
+            <p>#{beanAddPropriedade.message}</p>
+            <f:facet name="footer">
+                <b:button value="Ok" look="success" dismiss="modal" rendered="#{beanAddPropriedade.propAdded}"/>
+                <b:button value="Ok" look="warning" dismiss="modal" rendered="#{!beanAddPropriedade.propAdded}" />
+            </f:facet>
+        </b:modal>
 
 
     </h:body>

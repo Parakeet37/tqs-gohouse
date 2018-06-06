@@ -9,17 +9,22 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class PlatformUser extends GeneralEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
+    @XmlElement
     @Column(nullable = false, unique=true)
     private String email;
     
+    @XmlElement
     @Column(nullable = false)
     private LocalDate age;
     
@@ -27,6 +32,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     @JoinColumn(nullable=false)
     private Set<Property> ownedProperties;
     
+    @XmlElement
     @Column(nullable = false)
     private boolean isDelegate;
     
@@ -34,6 +40,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     @JoinColumn(nullable=false)
     private Set<Room> rentedRooms;
     
+    @XmlElement
     @ManyToOne
     @JoinColumn()
     private University university;

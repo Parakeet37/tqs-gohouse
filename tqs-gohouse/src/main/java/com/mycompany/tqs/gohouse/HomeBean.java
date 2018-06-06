@@ -1,18 +1,14 @@
 package com.mycompany.tqs.gohouse;
 
-import dbclasses.PlatformUser;
 import dbclasses.Property;
-import dbclasses.PropertyType;
 import dbclasses.Room;
-import dbclasses.University;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import other.CurrentUser;
 import other.Utils;
 
@@ -21,7 +17,7 @@ import other.Utils;
  * @author joaos
  */
 @ManagedBean(name = "homeBean", eager = true)
-@Singleton
+@ViewScoped
 public class HomeBean implements Serializable {
 
     //Room List
@@ -63,10 +59,16 @@ public class HomeBean implements Serializable {
 
     }
 
+    /**
+     * Used by University to rent a room.
+     *
+     * @param roomId Room id
+     */
     public void rentFull(long roomId) {
+        //Check if it has any University assossiated.
         if (CurrentUser.univ != null) {
-            boolean s = dBHandler.rentRoomToUniversity(roomId, CurrentUser.ID);
-            if (s) {
+            boolean sucess = dBHandler.rentRoomToUniversity(roomId, CurrentUser.ID);
+            if (sucess) {
                 System.out.println("RENTEEEEEEEEEEEEEEEEEEEEEED");
             }
         }
@@ -80,13 +82,14 @@ public class HomeBean implements Serializable {
     private void loadRooms() {
         List<Property> properties = dBHandler.getAvailableProperties();
         for (Property p : properties) {
+
             Set<Room> rms = p.getRooms();
-            for(Room r : rms){
-                if(!r.isOccupied()){
+            for (Room r : rms) {
+                if (!r.isOccupied()) {
                     rooms.add(r);
                 }
             }
-            
+
         }
 
     }

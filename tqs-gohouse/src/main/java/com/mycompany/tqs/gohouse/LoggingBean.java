@@ -1,11 +1,11 @@
 package com.mycompany.tqs.gohouse;
 
 import dbclasses.PlatformUser;
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-
+import java.util.logging.Logger;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -32,8 +32,13 @@ public class LoggingBean implements Serializable {
     private String userName;
     //User Mail from GSignIn
     private String userMail;
+    //User password
+    private String password; 
 
-    //Constructor
+    /**
+     * Constructor.
+     * initialises Database Handler and verifies if user exists in case of automated login.
+     */
     public LoggingBean() {
         dbHandler = new DBHandler();
         exists();
@@ -44,40 +49,39 @@ public class LoggingBean implements Serializable {
      * SignIn
      */
     public void userSignIn() {
-        //System.out.println("Getting Login Values. (NOTE: Google will remember if you logged in a previous time!)");
 
-        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-
-        userName = params.get("name");
-        userMail = params.get("email");
-
-        System.out.println("User detected! -> " + userName + "\t" + userMail);
-        
-      
         if(!exists()){
-            dbHandler.registerUser(userMail, userName, LocalDate.of(1997,1,1), false);
+            dbHandler.registerUser(password, userMail, userName, LocalDate.of(1997,1,1), false);
             exists();
+        }
+        //Redirect to HomePage
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("faces/home.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger("Could not redirect.");
         }
 
     }
-    
-    
-    private boolean exists(){
-        List<PlatformUser> d = dbHandler.getNMostPopularUsers(90);
+
+    /**
+     * Verifies if a user exists, if so then it shall set all information to the
+     * CurrentUser class.
+     *
+     * @return True if user exists, otherwise false
+     */
+    private boolean exists() {
+        List<PlatformUser> d = dbHandler.getNMostPopularUsers(300);
         for (PlatformUser u : d) {
             if (u.getEmail().equals(userMail)) {
-                System.out.println("ISss "+ u.getId());
                 CurrentUser.ID = u.getId();
                 CurrentUser.email = userMail;
-                System.out.println("Email " + userMail + "    ID "+CurrentUser.ID + " ddd " + CurrentUser.email);
                 return true;
             }
         }
         return false;
     }
-    
-    
-        //userName getter
+
+    //userName getter
     public String getUserName() {
         return userName;
     }
@@ -85,6 +89,14 @@ public class LoggingBean implements Serializable {
     //userName setter
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+    
+    public String getPassword() {
+        return password; 
+    }
+    
+    public void setPassword(String password){
+        this.password = password; 
     }
 
     //userMail getter
@@ -120,10 +132,5 @@ public class LoggingBean implements Serializable {
     public void setUniversityName(String universityName) {
         this.universityName = universityName;
     }
-    
-    
-    
-    
-    
-    
+
 }
