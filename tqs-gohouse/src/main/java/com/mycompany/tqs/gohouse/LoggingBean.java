@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import other.CurrentUser;
 import other.Utils;
 
@@ -22,8 +21,7 @@ import other.Utils;
 public class LoggingBean implements Serializable {
 
     //Database handler
-    @Inject
-    private DBHandler dBHandler;
+    private final DBHandler dBHandler = new DBHandler();
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     //Used to render if the user has a university.
@@ -52,7 +50,7 @@ public class LoggingBean implements Serializable {
     public void userSignIn() {
 
         if (!exists()) {
-            getdBHandler().registerUser(password, userMail, userName, LocalDate.of(1997, 1, 1), false);
+            dBHandler.registerUser(password, userMail, userName, LocalDate.of(1997, 1, 1), false);
             exists();
         }
         //Redirect to HomePage
@@ -71,7 +69,7 @@ public class LoggingBean implements Serializable {
      * @return True if user exists, otherwise false
      */
     private boolean exists() {
-        List<PlatformUser> d = getdBHandler().getNMostPopularUsers(300);
+        List<PlatformUser> d = dBHandler.getNMostPopularUsers(300);
         for (PlatformUser u : d) {
             if (u.getEmail().equals(userMail) && u.verifyPassword(password)) {
                 CurrentUser.ID = u.getId();
@@ -87,13 +85,6 @@ public class LoggingBean implements Serializable {
         return userName;
     }
 
-    public DBHandler getdBHandler() {
-        return dBHandler;
-    }
-
-    public void setdBHandler(DBHandler dBHandler) {
-        this.dBHandler = dBHandler;
-    }
  
     //userName setter
     public void setUserName(String userName) {

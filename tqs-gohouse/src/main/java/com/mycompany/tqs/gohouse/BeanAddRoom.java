@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
@@ -44,9 +43,9 @@ public class BeanAddRoom {
     private String selectedProperty;
     //Message
     private String message = "";
-       //Database handler
-    @Inject
-    private DBHandler dBHandler;
+    //Database handler
+    private final DBHandler dBHandler = new DBHandler();
+
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     //Used to render some controls
@@ -87,7 +86,7 @@ public class BeanAddRoom {
         try {
             long propID = enderecoProperty.get(selectedProperty);
             boolean created = dBHandler.addRoom(descricao, rent, propID);
-            
+
             if (created) {
                 message = "Novo quarto criado!";
                 roomAdded = true;
@@ -107,7 +106,7 @@ public class BeanAddRoom {
 
     }
 
-   /**
+    /**
      * Show a message dialog by executing the javascript.
      */
     private void showDialog() {
@@ -206,5 +205,4 @@ public class BeanAddRoom {
         this.roomAdded = roomAdded;
     }
 
-    
 }

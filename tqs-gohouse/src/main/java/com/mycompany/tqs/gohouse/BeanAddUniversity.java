@@ -2,7 +2,6 @@ package com.mycompany.tqs.gohouse;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
@@ -20,9 +19,8 @@ public class BeanAddUniversity {
     private String message;
     private String password;
     private boolean addedUniv = true;
-        //Database handler
-    @Inject
-    private DBHandler dBHandler;
+    //Database handler
+    private final DBHandler dBHandler = new DBHandler();
 
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
@@ -34,7 +32,7 @@ public class BeanAddUniversity {
         name = "";
         endereco = "";
         message = "";
-        
+
     }
 
     /**
@@ -44,9 +42,9 @@ public class BeanAddUniversity {
         assert !"".equals(name) && !"".equals(endereco);
 
         if (CurrentUser.univ == null) {
-            boolean added = dBHandler.addUniversity(name, endereco,password);
+            boolean added = dBHandler.addUniversity(name, endereco, password);
             if (added) {
-                
+
                 addedUniv = true;
                 //Adiciona como delegado da universidade
                 dBHandler.getSingleUniversity(name).addDelegate(dBHandler.getSingleUser(CurrentUser.email));

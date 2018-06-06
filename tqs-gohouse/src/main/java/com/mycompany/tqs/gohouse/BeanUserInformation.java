@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Inject;
 import other.CurrentUser;
 import other.Utils;
 
@@ -22,9 +21,9 @@ public class BeanUserInformation {
 
     //This is Us
     private PlatformUser userPlatform = new PlatformUser();
-        //Database handler
-    @Inject
-    private DBHandler dBHandler;
+    //Database handler
+    private final DBHandler dBHandler = new DBHandler();
+
     //List of properties from the user
     private List<Room> roomsList = new ArrayList<>();
     //Nomes dos senhorios
@@ -70,50 +69,49 @@ public class BeanUserInformation {
     public PlatformUser getUserPlatform() {
         return userPlatform;
     }
-    
+
     public void setUserPlatform(PlatformUser userPlatform) {
         this.userPlatform = userPlatform;
     }
-    
+
     public boolean isIsLoggedIn() {
         return isLoggedIn;
     }
-    
+
     public void setIsLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;
     }
-    
+
     public List<Room> getRoomsList() {
         return roomsList;
     }
-    
+
     public void setRoomsList(List<Room> roomsList) {
         this.roomsList = roomsList;
     }
-    
+
     public String getSelectedSenhorio() {
         return selectedSenhorio;
     }
-    
+
     public void setSelectedSenhorio(String selectedSenhorio) {
         this.selectedSenhorio = selectedSenhorio;
     }
-    
+
     public List<String> getSenhorios() {
         return senhorios;
     }
-    
+
     public void setSenhorios(List<String> senhorios) {
         this.senhorios = senhorios;
     }
-    
+
     public int getRating() {
         return rating;
     }
-    
+
     public void setRating(int rating) {
         this.rating = rating;
     }
-    
-    
+
 }

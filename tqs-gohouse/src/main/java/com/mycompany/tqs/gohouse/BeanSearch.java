@@ -16,7 +16,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import other.Utils;
 
@@ -24,9 +23,9 @@ import other.Utils;
 @SessionScoped
 public class BeanSearch implements Serializable {
 
-      //Database handler
-    @Inject
-    private DBHandler dBHandler;
+    //Database handler
+    private final DBHandler dBHandler = new DBHandler();
+
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     //Value used to search properties
@@ -49,7 +48,8 @@ public class BeanSearch implements Serializable {
 
     /**
      * Searched from all properties the ones with given search parameter.
-     * @return  Same page refreshed.
+     *
+     * @return Same page refreshed.
      * @throws IOException Couldn't refresh page.
      */
     public String searchProperties() throws IOException {
@@ -67,7 +67,7 @@ public class BeanSearch implements Serializable {
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         return "search.xhtml";
     }
-    
+
     //Getters and setters
     public List<Property> getAllProperties() {
         return allProperties;
@@ -100,7 +100,5 @@ public class BeanSearch implements Serializable {
     public void setIsLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;
     }
-
-    
 
 }

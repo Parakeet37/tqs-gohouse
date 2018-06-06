@@ -3,7 +3,6 @@ package com.mycompany.tqs.gohouse;
 import dbclasses.PropertyType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
@@ -28,8 +27,8 @@ public class BeanAddPropriedade {
     private boolean propAdded = true;
 
     //Database handler
-    @Inject
-    private DBHandler dBHandler;
+    private final DBHandler dBHandler = new DBHandler();
+
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
 
@@ -91,7 +90,7 @@ public class BeanAddPropriedade {
         bloco = "";
         piso = "";
         tipoPropriedade = "";
-        
+
     }
 
     /**
@@ -101,7 +100,6 @@ public class BeanAddPropriedade {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("$('.modalPseudoClass').modal();");
     }
-
 
     //Getters and setters
     public String getId() {

@@ -30,8 +30,7 @@ public class HomeBean implements Serializable {
     //Used to render button with text
     private String universityName = Utils.universityName();
     //Database handler
-    @Inject
-    private DBHandler dBHandler;
+    private final DBHandler dBHandler = new DBHandler();
 
     /**
      * Starts by loading all rooms. The commented code is for test.
@@ -78,14 +77,6 @@ public class HomeBean implements Serializable {
     //Getters and setters
     public List<Room> getRooms() {
         return rooms;
-    }
-
-    public DBHandler getdBHandler() {
-        return dBHandler;
-    }
-
-    public void setdBHandler(DBHandler dBHandler) {
-        this.dBHandler = dBHandler;
     }
 
     public void setRooms(List<Room> rooms) {

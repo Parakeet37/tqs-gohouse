@@ -9,7 +9,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
@@ -38,9 +37,8 @@ public class BeanRoomPage {
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     private boolean canRedirect = false;
-     //Database handler
-    @Inject
-    private DBHandler dBHandler;
+    //Database handler
+    private final DBHandler dBHandler = new DBHandler();
 
     /**
      * Post constructor. Gets the parameters from the URL with the Id of the

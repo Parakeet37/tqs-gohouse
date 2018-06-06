@@ -10,7 +10,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import other.Utils;
 
 @ManagedBean(name = "userDetailsBean", eager = true)
@@ -22,8 +21,8 @@ public class Bean_UserDetails {
     //email from the params
     private String email;
     //Database handler
-    @Inject
-    private DBHandler dBHandler;
+       private final DBHandler dBHandler = new DBHandler();
+
     //List of properties from the user
     private List<Property> listaDePropriedades;
     //Used to render some Controls
