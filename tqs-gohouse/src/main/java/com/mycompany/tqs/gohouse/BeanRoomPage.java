@@ -4,7 +4,6 @@ import dbclasses.Room;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -37,6 +36,7 @@ public class BeanRoomPage {
 
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
+    private boolean canRedirect = false;
     //Database handler
     private final DBHandler dBHandler = new DBHandler();
 
@@ -116,13 +116,24 @@ public class BeanRoomPage {
                     message += room.getUniversity().getName();
                 }
                 showDialog();
+                canRedirect = true;
                 //Redirect to the HomePage
-                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/home.xhtml");
 
             } else {
                 message = "Ups...Por alguma razão não foi possivel arrendar o quarto.";
                 showDialog();
             }
+        }
+    }
+
+    /**
+     * To redirect to home page
+     *
+     * @throws IOException
+     */
+    public void redirect() throws IOException {
+        if (canRedirect) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
         }
     }
 

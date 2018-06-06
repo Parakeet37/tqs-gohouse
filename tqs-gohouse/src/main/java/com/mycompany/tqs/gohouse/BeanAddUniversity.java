@@ -41,13 +41,14 @@ public class BeanAddUniversity {
         assert !"".equals(name) && !"".equals(endereco);
 
         if (CurrentUser.univ == null) {
-            boolean added = dBHandler.addUniversity(password, name, endereco);
+            boolean added = dBHandler.addUniversity(name, endereco,password);
             if (added) {
-                message = "Universidade Registada com sucesso.";
+                
                 addedUniv = true;
                 //Adiciona como delegado da universidade
                 dBHandler.getSingleUniversity(name).addDelegate(dBHandler.getSingleUser(CurrentUser.email));
                 CurrentUser.univ = dBHandler.getSingleUniversity(name);
+                message = "Universidade Registada com sucesso.";
                 showDialog();
                 clearVars();
             } else {
