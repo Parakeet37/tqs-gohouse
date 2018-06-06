@@ -17,8 +17,6 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @XmlAccessorType(XmlAccessType.NONE)
@@ -288,7 +286,8 @@ public class Property implements Serializable, Comparable<Property> {
 
     @Override
     public String toString() {
-        return "Property{" + "id=" + id + ", address=" + address + ", block=" + block + ", floor=" + floor + '}';
+        return String.format("{\"id\":%d, \"address\":\"%s\", \"block\":\"b\", \"floor\":3, \"latitude\":13.0, \"longitude\":13.0}"
+                + "",id,address,block,floor,latitude,longitude); 
     }
 
     @Override
