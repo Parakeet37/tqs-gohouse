@@ -45,14 +45,14 @@ public class DBHandlerUniversityTest {
         query.executeUpdate();
         query = em.createQuery("DELETE FROM University");
         query.executeUpdate();
-        em.persist(new University("ua", "TestUser"));
-        em.persist(new University("ubi", "TestUser"));
-        em.persist(new University("um", "TestUser"));
-        em.persist(new University("ul", "TestUser"));
-        em.persist(new University("up", "TestUser"));
-        em.persist(new University("uc", "TestUser"));
-        em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
-        em.persist(new PlatformUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
+        em.persist(new University("ua", "xd", "TestUser"));
+        em.persist(new University("ubi", "xd", "TestUser"));
+        em.persist(new University("um", "xd", "TestUser"));
+        em.persist(new University("ul", "xd", "TestUser"));
+        em.persist(new University("up", "xd", "TestUser"));
+        em.persist(new University("uc", "xd", "TestUser"));
+        em.persist(new PlatformUser("xd","testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
+        em.persist(new PlatformUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
         em.getTransaction().commit();
     }
     

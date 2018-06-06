@@ -43,7 +43,7 @@ public class DBHandlerRoomsFailureTest {
         query.executeUpdate();
         query = em.createQuery("DELETE FROM University");
         query.executeUpdate();
-        em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
+        em.persist(new PlatformUser("xd", "testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
         em.getTransaction().commit();
     }
     

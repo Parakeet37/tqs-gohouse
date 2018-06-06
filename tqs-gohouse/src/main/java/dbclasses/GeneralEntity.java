@@ -22,6 +22,9 @@ public abstract class GeneralEntity implements Serializable {
     protected Long id;
     
     @Column(nullable = false)
+    protected String password;
+    
+    @Column(nullable = false)
     protected String name;
     
     @Column(nullable = false)
@@ -71,6 +74,17 @@ public abstract class GeneralEntity implements Serializable {
 
     public void setUserRating(double userRating) {
         this.userRating = userRating;
+    }
+    
+    public boolean changePassword(String oldpassword, String password){
+        if (verifyPassword(oldpassword)){
+            this.password = password;
+            return true;
+        } else return false;
+    }
+    
+    public boolean verifyPassword(String password){
+        return password.equals(this.password);
     }
     
     public GeneralEntity() {

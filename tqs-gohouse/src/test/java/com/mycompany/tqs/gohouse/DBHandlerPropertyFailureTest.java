@@ -43,7 +43,7 @@ public class DBHandlerPropertyFailureTest {
         query.executeUpdate();
         query = em.createQuery("DELETE FROM University");
         query.executeUpdate();
-        em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
+        em.persist(new PlatformUser("xd", "testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
         em.getTransaction().commit();
     }
     
@@ -118,7 +118,7 @@ public class DBHandlerPropertyFailureTest {
     public void testRentPropertyWithoutAllRoomsVacant(){
         System.out.println("testing renting a property that doesn't have all the rooms vacant");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
+        instance.registerUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser renter = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
@@ -142,7 +142,7 @@ public class DBHandlerPropertyFailureTest {
     public void testCheckoutNotFullProperty(){
         System.out.println("testing checking out a property in which not all the rooms are occupied");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
+        instance.registerUser("xd","testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser renter = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
@@ -174,10 +174,11 @@ public class DBHandlerPropertyFailureTest {
     public void testVerifyPropertyAlreadyVerified(){
         System.out.println("testing verification of a property that was already verified");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
-        instance.registerUser("testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
+        instance.registerUser("xd", "testemail1@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false);
         PlatformUser user = (PlatformUser) instance.getNMostPopularUsers(2).get(0);
         PlatformUser delegate = (PlatformUser) instance.getNMostPopularUsers(2).get(1);
-        instance.changeDelegation(delegate.getId(), true, "UA", "street");
+        instance.addUniversity("UA", "Adress", "xd");
+        instance.changeDelegation(delegate.getId(), true, "UA");
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         Property property = new Property();
         Iterator<Property> itr = user.getOwnedProperties().iterator();

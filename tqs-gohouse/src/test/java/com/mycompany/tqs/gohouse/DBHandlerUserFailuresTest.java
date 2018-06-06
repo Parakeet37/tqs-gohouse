@@ -49,12 +49,12 @@ public class DBHandlerUserFailuresTest {
         em.getTransaction().begin();
         int i = NUMBER_OF_USERS;
         while (i>1){
-            em.persist(new PlatformUser("testemail"+i+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
+            em.persist(new PlatformUser("xd", "testemail"+i+"@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
             i--;
             em.getTransaction().commit();
             em.getTransaction().begin();
         }
-        em.persist(new PlatformUser("testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
+        em.persist(new PlatformUser("xd", "testemail@gmail.com", "TestUser", LocalDate.of(1997, 10, 20), false));
         em.getTransaction().commit();
     }
     
@@ -85,7 +85,7 @@ public class DBHandlerUserFailuresTest {
         boolean isDelegate = false;
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
-        boolean result = instance.registerUser(email, name, age, isDelegate);
+        boolean result = instance.registerUser("xd", email, name, age, isDelegate);
         assertEquals(expResult, result);
     }
     
@@ -94,7 +94,8 @@ public class DBHandlerUserFailuresTest {
         System.out.println("testing the failure of making a non existent user delegate");
         DBHandler instance = new DBHandler(PERSISTENCE_UNIT);
         boolean expResult = false;
-        boolean result = instance.changeDelegation(0, true, "UA", "rua");
+        instance.addUniversity("UA", "Address", "xd");
+        boolean result = instance.changeDelegation(0, true, "UA");
         assertEquals(expResult, result);
     }
     

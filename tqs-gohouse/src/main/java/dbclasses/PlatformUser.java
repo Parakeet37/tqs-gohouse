@@ -2,7 +2,6 @@ package dbclasses;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.persistence.Column;
@@ -43,8 +42,9 @@ public class PlatformUser extends GeneralEntity implements Serializable {
         super();
     }
 
-    public PlatformUser(String email, String name, LocalDate age, boolean isDelegate) {
+    public PlatformUser(String password, String email, String name, LocalDate age, boolean isDelegate) {
         super();
+        this.password = password;
         this.name = name;
         this.email = email;
         this.age = age;
@@ -116,7 +116,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     public void setUniversity(University university) {
         this.university = university;
     }
-
+    
     @Override
     public String toString() {
         return "PlatformUser{" + "id=" + id + ", email=" + email + ", name=" + name + ", age=" + age + ", ownedProperties=" + ownedProperties + ", userRating=" + userRating + ", isDelegate=" + isDelegate + ", universityId=" + university + '}';
