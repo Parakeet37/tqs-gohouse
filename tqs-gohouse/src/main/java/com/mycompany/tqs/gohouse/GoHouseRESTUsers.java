@@ -9,7 +9,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -23,20 +22,20 @@ public class GoHouseRESTUsers {
    DBHandler dbH;
 
    /**
-    * Lista todos os utilizadores
-    * @return = String JSON listando os utilizadores
+    * Lists all users
+    * @return JSON detailing all users
     */
    @GET
    @Produces({"application/json"})
    public List<PlatformUser> listAllUsers() {
-       return dbH.getNMostPopularUsers(90);
+       return dbH.getNMostPopularUsers(0);
    }
    
    
    /**
-    * Lista 1 utilizador, pelo seu email
-    * @param email Email para procurar 1 utilizador
-    * @return 1 utilizador, em formato JSON
+    * Lists 1 user, searched by his email
+    * @param email A user's email
+    * @return JSON detailing a user
     */
    @GET
    @Path("{email}")
@@ -46,9 +45,9 @@ public class GoHouseRESTUsers {
    }
    
    /**
-    * Lista os utilizadores mais populares, limitado pelo 'number'.
-    * @param number O numero de utilizadores populares para revelar
-    * @return Os utilizadores mais populares
+    * Lists the most popular users, limited by a max number
+    * @param number The number of users to present
+    * @return JSON detailing some users
     */
    @GET
    @Path("popular:{number}")
@@ -60,20 +59,25 @@ public class GoHouseRESTUsers {
    
    /**
     * Registers a user, can be a Delegate
-     * @param password
     * @param email User's email
     * @param name User's name
     * @param isDelegate Sets if is delegate or not
     * @param password The user password 
+     * @return Failure or success JSON message
     */
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public void registerUser(@FormParam("password") String password, 
+   public String registerUser(@FormParam("password") String password, 
            @FormParam("email") String email,
            @FormParam("name") String name,
            @FormParam("isDelegate") boolean isDelegate) {
-        System.out.println("Creating " + name + "...");
-        dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
+       try{
+           dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
+           return "{\"success\":true, \"stateMsg\":\"No problem here.\"}";
+       }
+        catch(Exception e){
+            return "{\"success\":false, \"stateMsg\":\""+ e.getMessage() +"\"}";
+        }
    }
 
 }

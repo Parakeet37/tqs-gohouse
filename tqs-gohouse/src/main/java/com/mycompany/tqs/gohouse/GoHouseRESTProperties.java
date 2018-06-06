@@ -44,14 +44,20 @@ public class GoHouseRESTProperties {
     * Sets a rating.
     * @param id The user's ID
     * @param rate The rate said user will attribute
+     * @return Failure or success JSON message
     */
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    @Path("rate")
-   public void rateApartment(@FormParam("id") int id,
+   public String rateApartment(@FormParam("id") int id,
            @FormParam("rate") int rate) {
-       
-        dbH.giveRatingToProperty((long)id,rate);
+       try{
+           dbH.giveRatingToProperty((long)id,rate);
+           return "{\"success\":true, \"stateMsg\":\"No problem here.\"}";
+       }
+        catch(Exception e){
+            return "{\"success\":false, \"stateMsg\":\""+ e.getMessage() +"\"}";
+        }
    }
    
 }
