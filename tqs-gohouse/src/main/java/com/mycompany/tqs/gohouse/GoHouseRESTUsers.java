@@ -68,12 +68,17 @@ public class GoHouseRESTUsers {
     */
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public void registerUser(@FormParam("password") String password, 
+   public String registerUser(@FormParam("password") String password, 
            @FormParam("email") String email,
            @FormParam("name") String name,
            @FormParam("isDelegate") boolean isDelegate) {
-        System.out.println("Creating " + name + "...");
-        dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
+       try{
+           dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
+           return "{\"success\":true, \"stateMsg\":\"No problem here.\"}";
+       }
+        catch(Exception e){
+            return "{\"success\":true, \"stateMsg\":\""+ e.getMessage() +"\"}";
+        }
    }
 
 }
