@@ -75,6 +75,13 @@ public class GoHouseRESTUsers {
         dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
    }
 
+   /**
+    * Registers/Overrides a user, can be a Delegate
+     * @param password
+    * @param email User's email
+    * @param name User's name
+    * @param isDelegate Sets if is delegate or not
+    */
    @PUT
    public void putUser(@FormParam("password") String password, 
            @FormParam("email") String email,
