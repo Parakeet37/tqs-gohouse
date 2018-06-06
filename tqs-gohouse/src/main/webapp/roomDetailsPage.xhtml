@@ -49,15 +49,12 @@ and open the template in the editor.
             </div>
         </b:panel>
 
-        <p:dialog header="Mensagem" widgetVar="dlg1" minHeight="40">
-            <h:outputText value="#{beanroomPage.message}" />
-        </p:dialog>
-
+      
 
         <b:modal id="modalMsg" title="GoHouse Rooms" styleClass="modalPseudoClass">
             <p>#{beanroomPage.message}</p>
             <f:facet name="footer">
-                <b:button value="Ok" look="primary" dismiss="modal" />
+                <b:button value="Ok" look="success" dismiss="modal" onclick="#{beanroomPage.redirect()}" />
             </f:facet>
         </b:modal>
 
