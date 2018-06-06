@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,16 +43,16 @@ public class GoHouseRESTProperties {
    
       /**
     * Sets a rating.
-    * @param id The user's ID
+    * @param userID The user's ID
     * @param rate The rate said user will attribute
     */
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    @Path("rate")
-   public void rateApartment(@PathParam("id") long id,
-           @PathParam("rate") int rate) {
+   public void rateApartment(@FormParam("userID") int userID,
+           @FormParam("rate") int rate) {
        
-        dbH.giveRatingToProperty(id,rate);
+        dbH.giveRatingToProperty((long)userID,rate);
    }
    
 }
