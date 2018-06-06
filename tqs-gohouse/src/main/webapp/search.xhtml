@@ -68,58 +68,58 @@ and open the template in the editor.
                                 </h:panelGrid>
                             </p:outputPanel>
                         </h:panelGrid>
-                    </p:dataScroller>
-                </h:form>
-            </div>
-            <div class="col-sm-6">
-                <div id="map"></div>
+            </p:dataScroller>
+        </h:form>
+    </div>
+    <div class="col-sm-6">
+    <div id="map"></div>
 
-            </div>
-        </div>
+    </div>
+  </div>
+        
+        
+        
+<script>        
 
-
-
-        <script>
-
-
-            var map;
-
-
-        // Initialize and add the map
-            function initMap() {
-                // The map, centered somewhere in Africa for now
-                map = new google.maps.Map(
-                        document.getElementById('map'), {zoom: 4, center: {lat: 10, lng: 10}});
-
-                var searchCoords = JSON.parse('#{searchBean.searchResults}');
-
-                var markers = new Array(searchCoords.length);
-                for (i = 0; i & lt; searchCoords.length; i++){
-                    coord = {lat: searchCoords[i].latitude, lng: searchCoords[i].longitude};
-                    markers[i] = new google.maps.Marker({position: coord, map: map, title: searchCoords[i].address});
-                }
-                map.setCenter({lat: searchCoords[0].latitude, lng: searchCoords[0].longitude});
-            }
-
-            function centerAt(lat, long) {
-                var target = {lat: lat, lng: long};
-
-                map.setCenter(target);
-            }
-            function markMap(lat, long) {
-                var target = {lat: lat, lng: long};
-
-                var marker = new google.maps.Marker({position: uluru, map: map});
-            }
-        </script>
-        <!--Load the API from the specified URL
-        * The async attribute allows the browser to render the page while the API loads
-        * The key parameter will contain your own API key (which is not needed for this tutorial)
-        * The callback parameter executes the initMap() function
-        -->
-        <script async="true" defer="true" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCE8YN0Mk-_6oeAKeJWAWt0K8V3e1kdVRY&amp;callback=initMap">
-        </script>
+    
+var map;
 
 
+// Initialize and add the map
+function initMap() {
+  // The map, centered somewhere in Africa for now
+  map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 4, center: {lat: 10, lng: 10}});
+      
+  var searchCoords = JSON.parse('#{searchBean.searchResults}');
+  var markers = new Array(searchCoords.length);
+  for (i = 0; i &lt; searchCoords.length; i++){
+      coord = { lat: searchCoords[i].latitude, lng: searchCoords[i].longitude};
+      markers[i] = new google.maps.Marker({position: coord, map: map, title: searchCoords[i].address});
+    }        
+    map.setCenter({lat: searchCoords[0].latitude, lng: searchCoords[0].longitude});
+}
+
+function centerAt(lat,long){
+    var target = {lat: lat, lng: long};
+    
+    map.setCenter(target);
+}
+
+function markMap(lat,long){
+    var target = {lat: lat, lng: long};
+    
+    var marker = new google.maps.Marker({position: uluru, map: map});
+}
+    </script>
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+    <script async="true" defer="true" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCE8YN0Mk-_6oeAKeJWAWt0K8V3e1kdVRY&amp;callback=initMap">
+    </script>
+
+        
     </h:body>
 </html>
