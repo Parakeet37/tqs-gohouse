@@ -4,13 +4,12 @@ package com.mycompany.tqs.gohouse;
  *
  * @author demo
  */
-import com.sun.istack.internal.logging.Logger;
 import dbclasses.Property;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.SessionScoped;
@@ -57,7 +56,7 @@ public class BeanSearch implements Serializable {
 
         for (Property p : allProperties) {
             if (p.getAddress().contains(searchValue)) {
-                Logger.getLogger(BeanSearch.class).log(Level.INFO, p.getAddress());
+                Logger.getLogger(p.getAddress());
                 temp.add(p);
             }
         }

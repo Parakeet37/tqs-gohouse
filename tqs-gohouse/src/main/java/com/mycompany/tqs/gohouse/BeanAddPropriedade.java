@@ -1,8 +1,8 @@
 package com.mycompany.tqs.gohouse;
 
 import dbclasses.PropertyType;
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
@@ -12,7 +12,7 @@ import other.Utils;
  * @author joaos
  */
 @ManagedBean(name = "beanAddPropriedade", eager = true)
-@Singleton
+@ViewScoped
 public class BeanAddPropriedade {
 
     private String id = CurrentUser.ID + "";
@@ -23,23 +23,33 @@ public class BeanAddPropriedade {
     private String piso;
     private String tipoPropriedade;
     private String message;
+    //Boolean to render the button in modal
+    private boolean propAdded = true;
 
     //Database handler
     private final DBHandler dBHandler = new DBHandler();
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
 
+    /**
+     * Empty constructor that just clears the message field.
+     */
     public BeanAddPropriedade() {
         this.message = "";
 
     }
 
+    /**
+     * Submits a property to the database.
+     */
     public void submitProperty() {
+        //Some asserts
         assert id != null && latitude != null && longitude != null && endereco != null && bloco != null && piso != null && tipoPropriedade != null;
         assert !"".equals(id) && !"".equals(latitude) && !"".equals(longitude) && !"".equals(endereco) && !"".equals(bloco) && !"".equals(piso) && !"".equals(tipoPropriedade);
 
         try {
             char bloc = bloco.toCharArray()[0];
+
             boolean created;
             if ("Casa".equals(tipoPropriedade)) {
                 created = dBHandler.addNewProperty(CurrentUser.ID, Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.HOUSE, bloc, Integer.parseInt(piso));
@@ -48,10 +58,12 @@ public class BeanAddPropriedade {
             }
 
             if (created) {
-                message = "Propriedade criada com sucesso!";
+                message = "A propriedade for criada. Endereço: " + endereco;
+                propAdded = true;
 
             } else {
                 message = "Propriedade não criada, utilizador não existente!";
+                propAdded = false;
             }
 
             showDialog();
@@ -59,7 +71,8 @@ public class BeanAddPropriedade {
             clearVars();
 
         } catch (NumberFormatException e) {
-            message = "Erro na informação. Não foi possivel converter alguns valores.";
+            message = "Erro na informação. Alguns valores estão incorretos.";
+            propAdded = false;
             showDialog();
         }
 
@@ -76,15 +89,17 @@ public class BeanAddPropriedade {
         bloco = "";
         piso = "";
         tipoPropriedade = "";
+        
     }
 
     /**
-     * Show a message dialog.
+     * Show a message dialog by executing the javascript.
      */
     private void showDialog() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('dlg1').show();");
+        context.execute("$('.modalPseudoClass').modal();");
     }
+
 
     //Getters and setters
     public String getId() {
@@ -157,6 +172,14 @@ public class BeanAddPropriedade {
 
     public void setIsLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;
+    }
+
+    public boolean isPropAdded() {
+        return propAdded;
+    }
+
+    public void setPropAdded(boolean propAdded) {
+        this.propAdded = propAdded;
     }
 
 }

@@ -13,8 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
@@ -24,7 +24,7 @@ import other.Utils;
  * @author joaos
  */
 @ManagedBean(name = "beanAddRoom", eager = true)
-@Singleton
+@ViewScoped
 public class BeanAddRoom {
 
     //Mapa para os endereços com quartos
@@ -47,9 +47,11 @@ public class BeanAddRoom {
     private final DBHandler dbHandler = new DBHandler();
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
+    //Used to render some controls
+    private boolean roomAdded = true;
 
     /**
-     * Empty constructor. Only usefull to empty.
+     * Empty constructor. Only useful to empty selected prop.
      */
     public BeanAddRoom() {
         selectedProperty = "";
@@ -59,7 +61,7 @@ public class BeanAddRoom {
     /**
      * Populate the DropDown menu.
      */
-    public void populateDropDown() {
+    private void populateDropDown() {
 
         try {
             Set<Property> tmpProperty = dbHandler.getSingleUser(CurrentUser.email).getOwnedProperties();
@@ -68,7 +70,9 @@ public class BeanAddRoom {
                 enderecos.add(p.getAddress());
             }
         } catch (Exception e) {
-            descricao = "ERROR IN USER";
+            message = "Erro no Utilizador. Não existem propriedades.";
+            roomAdded = false;
+            showDialog();
         }
     }
 
@@ -81,28 +85,32 @@ public class BeanAddRoom {
         try {
             long propID = enderecoProperty.get(selectedProperty);
             boolean created = dbHandler.addRoom(descricao, rent, propID);
+            
             if (created) {
-                message = "Quarto criado com sucesso";
+                message = "Novo quarto criado!";
+                roomAdded = true;
                 showDialog();
                 clearVars();
             } else {
                 message = "Não foi possivel adicionar o quarto!";
+                roomAdded = false;
                 showDialog();
             }
 
         } catch (Exception e) {
-            message = "Não foi possivel obter a propriedade!";
+            message = "Não foi possivel obter a propriedade selecionada";
+            roomAdded = false;
             showDialog();
         }
 
     }
 
-    /**
-     * Show a message dialog.
+   /**
+     * Show a message dialog by executing the javascript.
      */
     private void showDialog() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('dlg1').show();");
+        context.execute("$('.modalPseudoClass').modal();");
     }
 
     /**
@@ -187,5 +195,14 @@ public class BeanAddRoom {
     public void setIsLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;
     }
- 
+
+    public boolean isRoomAdded() {
+        return roomAdded;
+    }
+
+    public void setRoomAdded(boolean roomAdded) {
+        this.roomAdded = roomAdded;
+    }
+
+    
 }

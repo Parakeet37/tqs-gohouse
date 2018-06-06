@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
@@ -52,17 +50,6 @@ public class LoggingBean implements Serializable {
      */
     public void userSignIn() {
 
-        /*
-        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-
-        userName = params.get("name");
-        userMail = params.get("email");
-        */
-
-
-        System.out.println("User detected! -> " + userName + "\t" + userMail);
-        
-      
         if(!exists()){
             dbHandler.registerUser(password, userMail, userName, LocalDate.of(1997,1,1), false);
             exists();
@@ -71,7 +58,7 @@ public class LoggingBean implements Serializable {
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect("faces/home.xhtml");
         } catch (IOException ex) {
-            Logger.getLogger(LoggingBean.class.getName()).log(Level.SEVERE, "Could not redirect.", ex);
+            Logger.getLogger("Could not redirect.");
         }
 
     }

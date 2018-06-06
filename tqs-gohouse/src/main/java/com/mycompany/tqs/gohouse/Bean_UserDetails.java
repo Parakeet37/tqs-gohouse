@@ -1,20 +1,19 @@
 package com.mycompany.tqs.gohouse;
 
-import com.sun.istack.internal.logging.Logger;
 import dbclasses.PlatformUser;
 import dbclasses.Property;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import other.Utils;
 
 @ManagedBean(name = "userDetailsBean", eager = true)
-@Singleton
+@ViewScoped
 public class Bean_UserDetails {
 
     //This is the user we are viewing
@@ -40,7 +39,7 @@ public class Bean_UserDetails {
             email = params.get("id");
             listaDePropriedades = new ArrayList<>();
         } catch (Exception e) {
-            Logger.getLogger(Bean_UserDetails.class).log(Level.SEVERE, "Could not get the parameter ID");
+            Logger.getLogger("Could not get the parameter ID");
         }
 
         populateView();

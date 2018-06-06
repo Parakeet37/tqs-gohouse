@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import other.CurrentUser;
 import other.Utils;
 
@@ -17,7 +17,7 @@ import other.Utils;
  * @author joaos
  */
 @ManagedBean(name = "homeBean", eager = true)
-@Singleton
+@ViewScoped
 public class HomeBean implements Serializable {
 
     //Room List
@@ -82,13 +82,11 @@ public class HomeBean implements Serializable {
     private void loadRooms() {
         List<Property> properties = dBHandler.getAvailableProperties();
         for (Property p : properties) {
-            //Check if it is verified if not it will not add any room.
-            if (p.isVerified()) {
-                Set<Room> rms = p.getRooms();
-                for (Room r : rms) {
-                    if (!r.isOccupied()) {
-                        rooms.add(r);
-                    }
+
+            Set<Room> rms = p.getRooms();
+            for (Room r : rms) {
+                if (!r.isOccupied()) {
+                    rooms.add(r);
                 }
             }
 

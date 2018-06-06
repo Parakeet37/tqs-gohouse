@@ -1,8 +1,7 @@
 package com.mycompany.tqs.gohouse;
 
-import javax.ejb.Singleton;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
@@ -12,27 +11,27 @@ import other.Utils;
  * @author Joao
  */
 @ManagedBean(name = "beanAddUniversity", eager = true)
-@Singleton
+@ViewScoped
 public class BeanAddUniversity {
 
-    public String name;
-    public String endereco;
-    public String message;
-    public String password; 
-
+    private String name;
+    private String endereco;
+    private String message;
+    private String password;
+    private boolean addedUniv = true;
     private final DBHandler dBHandler = new DBHandler();
 
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
-    
+
     /**
-     * Empty constructor.
+     * Empty constructor that cleans the variables.
      */
     public BeanAddUniversity() {
         name = "";
         endereco = "";
         message = "";
-        password = ""; 
+        
     }
 
     /**
@@ -44,7 +43,8 @@ public class BeanAddUniversity {
         if (CurrentUser.univ == null) {
             boolean added = dBHandler.addUniversity(password, name, endereco);
             if (added) {
-                message = "Universidade Registada";
+                message = "Universidade Registada com sucesso.";
+                addedUniv = true;
                 //Adiciona como delegado da universidade
                 dBHandler.getSingleUniversity(name).addDelegate(dBHandler.getSingleUser(CurrentUser.email));
                 CurrentUser.univ = dBHandler.getSingleUniversity(name);
@@ -52,29 +52,35 @@ public class BeanAddUniversity {
                 clearVars();
             } else {
                 message = "Universidade não Registada. Verifique se o nome/endereço já existe";
+                addedUniv = false;
                 showDialog();
 
             }
         } else {
-            message = "Um utilizador não pode ser delegado de 2 universidades";
+            message = "Não é possivel ser delegado de 2 ou mais Universidades.";
+            addedUniv = false;
             showDialog();
         }
     }
 
     /**
-     * Show a message dialog.
+     * Show a message dialog by executing the javascript.
      */
     private void showDialog() {
         RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('dlg1').show();");
+        context.execute("$('.modalPseudoClass').modal();");
     }
 
+    /**
+     * Clears all variables.
+     */
     private void clearVars() {
         this.endereco = "";
         this.message = "";
         this.name = "";
     }
 
+    // Getters and setters
     public String getName() {
         return name;
     }
@@ -107,12 +113,20 @@ public class BeanAddUniversity {
         this.isLoggedIn = isLoggedIn;
     }
 
-    public void setPassword(String password){
-        this.password = password; 
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getPassword(){
-        return password; 
+    public String getPassword() {
+        return password;
+    }
+
+    public boolean isAddedUniv() {
+        return addedUniv;
+    }
+
+    public void setAddedUniv(boolean addedUniv) {
+        this.addedUniv = addedUniv;
     }
 
 }

@@ -23,11 +23,11 @@ and open the template in the editor.
         <!-- [INIT] Navigation bar -->
         <b:navBar brand="GoHouse" brandHref="faces/home.xhtml" inverse="true" fixed="top">
             <b:navbarLinks>
-                <b:navLink value="Login" href="faces/login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!beanpropertyPage.isLoggedIn}"></b:navLink>
-                <b:navLink value="Adicionar Propriedade" href="faces/addProperty.xhtml" icon-awesome="fa-plus-square"></b:navLink>
-                <b:navLink value="Adicionar Quartos" href="faces/addRoom.xhtml"         icon-awesome="fa-plus-square"></b:navLink>
-                <b:navLink value="Registar Universidade" href="faces/registerUniversity.xhtml" icon-awesome="fa-edit"></b:navLink>
-                <b:navLink value="Pesquisar" href="faces/search.xhtml"                  icon-awesome="fa-search-plus" ></b:navLink>
+                <b:navLink value="Login" href="login.xhtml"                       icon-awesome="fa fa-address-book" rendered="#{!beanpropertyPage.isLoggedIn}"></b:navLink>
+                <b:navLink value="Adicionar Propriedade" href="addProperty.xhtml" icon-awesome="fa-plus-square"></b:navLink>
+                <b:navLink value="Adicionar Quartos" href="addRoom.xhtml"         icon-awesome="fa-plus-square"></b:navLink>
+                <b:navLink value="Registar Universidade" href="registerUniversity.xhtml" icon-awesome="fa-edit"></b:navLink>
+                <b:navLink value="Pesquisar" href="search.xhtml"                  icon-awesome="fa-search-plus" ></b:navLink>
             </b:navbarLinks>
         </b:navBar>
         <!--[End] NavigationBar -->
@@ -38,7 +38,7 @@ and open the template in the editor.
 
 
         <!-- User information -->
-        <b:panel title="Detalhes" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
+        <b:panel title="Detalhes" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-left: 10px" collapsible="false">
 
             <div class="panelStyle">
                 <div>                                
@@ -52,10 +52,55 @@ and open the template in the editor.
         </b:panel>
 
 
-        <!-- Mapa com coordenadas -->
+        <div class="col-lg-12 col-md-12 col-sm-12">
+             <!-- Repeatable UI. For each room in the variable Rooms we shall add it to the view. -->
+             <h3 style="padding-left: 10px">Lista de Quartos</h3>
+             
+            <ui:repeat value="#{beanpropertyPage.rooms}" var="rooms">
+                <!-- Panel with all the room's information -->
+                <b:panel class="col-xs-12 col-sm-12 col-md-4 col-lg-4"  collapsible="false">
+                    <f:metadata>  
+                        <f:viewParam name="email" value="#{rooms.property.owner.email}" />  
+                    </f:metadata> 
+                    <!-- Header of the Panel -->
+                    
+                    <f:facet name="heading">
+                        <h:outputText value="#{rooms.property.address}" />
+                        <b:badge style="margin-left:10px; background-color:#5cb85c" value="Verified" rendered="#{rooms.property.verified}"  />
+                        <b:badge style="margin-left:10px; background-color:#cc0000" value="Not Verified" rendered="#{!rooms.property.verified}"  />
+                    </f:facet>
+                    
+                    
+                    <!-- Body of the panel -->
+                    <div class="panelStyle">
+                        <div>                                
+                            <h4><b>Preço: </b> #{rooms.rent}€</h4>
+                            <h4><b>Local: </b> #{rooms.property.address}</h4>
+                            <h4><b>Senhorio: <a href="userDetailsPage.xhtml?id=#{rooms.property.owner.email}">#{rooms.property.owner.name}</a></b></h4>
+
+                            <b:button look="primary" class="btn btn-default" value="Ver Detalhes do Quarto" href="roomDetailsPage.xhtml?paramProp=#{rooms.property.id}z#{rooms.id}"></b:button>
+                            <p></p>
+                            <h:form>
+                                <h:commandButton class="btn btn-default btn-primary" value="Arrendar para #{beanpropertyPage.universityName}" rendered="#{beanpropertyPage.hasUniversity}" action="#{beanpropertyPage.rentFull(rooms.id)}"/>
+                            </h:form>
+                        </div>
+                    </div>
+
+                </b:panel>
+            </ui:repeat>
+            
+        </div>
 
 
 
+         <!-- Property Modal -->
+        <b:modal id="modalMsg" title="GoHouse Propriedade" styleClass="modalPseudoClass">
+            <p>#{beanpropertyPage.message}</p>
+            <f:facet name="footer">
+                <b:button value="Ok" look="success" dismiss="modal" rendered="#{beanpropertyPage.roomRented}"/>
+                <b:button value="Ok" look="warning" dismiss="modal" rendered="#{!beanpropertyPage.roomRented}" />
+            </f:facet>
+        </b:modal>
 
     </h:body>
 
