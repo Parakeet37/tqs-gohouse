@@ -16,6 +16,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import other.Utils;
 
@@ -23,8 +24,9 @@ import other.Utils;
 @SessionScoped
 public class BeanSearch implements Serializable {
 
-    //Database handler
-    private final DBHandler dbHandler = new DBHandler();
+      //Database handler
+    @Inject
+    private DBHandler dBHandler;
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     //Value used to search properties
@@ -39,8 +41,8 @@ public class BeanSearch implements Serializable {
      */
     @PostConstruct
     public void construct() {
-        List<Property> allProps = dbHandler.getUnverifiedProperties();
-        allProps.addAll(dbHandler.getVerifiedProperties());
+        List<Property> allProps = dBHandler.getUnverifiedProperties();
+        allProps.addAll(dBHandler.getVerifiedProperties());
         setAllProperties(allProps);
         setSearchResults(allProps);
     }

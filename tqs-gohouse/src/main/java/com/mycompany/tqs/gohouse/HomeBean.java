@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 import other.CurrentUser;
 import other.Utils;
 
@@ -29,32 +30,14 @@ public class HomeBean implements Serializable {
     //Used to render button with text
     private String universityName = Utils.universityName();
     //Database handler
-    private final DBHandler dBHandler = new DBHandler();
+    @Inject
+    private DBHandler dBHandler;
 
     /**
      * Starts by loading all rooms. The commented code is for test.
      */
     @PostConstruct
     public void init() {
-        //Test -------
-        /*dBHandler.registerUser("joaoserpa@ua.pt", "dsad", LocalDate.of(1997, 1, 1), true);
-
-        List<PlatformUser> d = dBHandler.getNMostPopularUsers(90);
-        for (PlatformUser u : d) {
-            if (u.getEmail().equals("joaoserpa@ua.pt")) {
-                System.out.println("ISss " + u.getId());
-                CurrentUser.ID = u.getId();
-                CurrentUser.email = "joaoserpa@ua.pt";
-                System.out.println("Email " + "joaoserpa@ua.pt" + "    ID " + CurrentUser.ID + " ddd " + CurrentUser.email);
-            }
-        }
-        
-        dBHandler.addNewProperty(CurrentUser.ID, 0.0f, 0.0f, "Teste address", PropertyType.APARTMENT, 'c', 1);
-        dBHandler.addRoom("Description", 10090, 2);
-        dBHandler.addRoom("Description", 1000, 2);
-        CurrentUser.univ = new University("dddd", "add");*/
-        //End of Test -------
-
         loadRooms();
 
     }
@@ -68,9 +51,7 @@ public class HomeBean implements Serializable {
         //Check if it has any University assossiated.
         if (CurrentUser.univ != null) {
             boolean sucess = dBHandler.rentRoomToUniversity(roomId, CurrentUser.ID);
-            if (sucess) {
-                System.out.println("RENTEEEEEEEEEEEEEEEEEEEEEED");
-            }
+            
         }
 
     }
@@ -97,6 +78,14 @@ public class HomeBean implements Serializable {
     //Getters and setters
     public List<Room> getRooms() {
         return rooms;
+    }
+
+    public DBHandler getdBHandler() {
+        return dBHandler;
+    }
+
+    public void setdBHandler(DBHandler dBHandler) {
+        this.dBHandler = dBHandler;
     }
 
     public void setRooms(List<Room> rooms) {

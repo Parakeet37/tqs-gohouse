@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 import other.CurrentUser;
 import other.Utils;
 
@@ -21,8 +22,9 @@ public class BeanUserInformation {
 
     //This is Us
     private PlatformUser userPlatform = new PlatformUser();
-    //Database handler
-    private final DBHandler dbHandler = new DBHandler();
+        //Database handler
+    @Inject
+    private DBHandler dBHandler;
     //List of properties from the user
     private List<Room> roomsList = new ArrayList<>();
     //Nomes dos senhorios
@@ -39,7 +41,7 @@ public class BeanUserInformation {
      */
     @PostConstruct
     public void init() {
-        userPlatform = dbHandler.getSingleUser(CurrentUser.email);
+        userPlatform = dBHandler.getSingleUser(CurrentUser.email);
         populateView();
     }
 
@@ -47,7 +49,7 @@ public class BeanUserInformation {
      * Populates the views
      */
     private void populateView() {
-        Set<Room> tmp = dbHandler.getSingleUser(CurrentUser.email).getRentedRooms();
+        Set<Room> tmp = dBHandler.getSingleUser(CurrentUser.email).getRentedRooms();
         for (Room r : tmp) {
             roomsList.add(r);
             if (!senhorios.contains(r.getProperty().getId() + "," + r.getProperty().getAddress())) {
@@ -61,7 +63,7 @@ public class BeanUserInformation {
      */
     public void submitRating() {
         assert !"".equals(selectedSenhorio);
-        dbHandler.giveRatingToProperty(Integer.parseInt(selectedSenhorio.split(",")[0]), rating);
+        dBHandler.giveRatingToProperty(Integer.parseInt(selectedSenhorio.split(",")[0]), rating);
     }
 
     //Getter and setters

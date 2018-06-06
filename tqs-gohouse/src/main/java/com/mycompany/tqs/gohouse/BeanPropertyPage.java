@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
@@ -33,7 +34,8 @@ public class BeanPropertyPage {
     // Id da propriedade
     private long id;
     //Database handler
-    private DBHandler dBHandler = new DBHandler();
+    @Inject
+    private DBHandler dBHandler;
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     //List of rooms

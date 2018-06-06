@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
@@ -43,8 +44,9 @@ public class BeanAddRoom {
     private String selectedProperty;
     //Message
     private String message = "";
-    //Database handler
-    private final DBHandler dbHandler = new DBHandler();
+       //Database handler
+    @Inject
+    private DBHandler dBHandler;
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     //Used to render some controls
@@ -64,7 +66,7 @@ public class BeanAddRoom {
     private void populateDropDown() {
 
         try {
-            Set<Property> tmpProperty = dbHandler.getSingleUser(CurrentUser.email).getOwnedProperties();
+            Set<Property> tmpProperty = dBHandler.getSingleUser(CurrentUser.email).getOwnedProperties();
             for (Property p : tmpProperty) {
                 enderecoProperty.put(p.getAddress(), p.getId());
                 enderecos.add(p.getAddress());
@@ -84,7 +86,7 @@ public class BeanAddRoom {
 
         try {
             long propID = enderecoProperty.get(selectedProperty);
-            boolean created = dbHandler.addRoom(descricao, rent, propID);
+            boolean created = dBHandler.addRoom(descricao, rent, propID);
             
             if (created) {
                 message = "Novo quarto criado!";

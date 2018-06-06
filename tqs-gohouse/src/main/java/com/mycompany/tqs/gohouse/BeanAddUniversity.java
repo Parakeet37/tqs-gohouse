@@ -2,6 +2,7 @@ package com.mycompany.tqs.gohouse;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import other.CurrentUser;
 import other.Utils;
@@ -19,7 +20,9 @@ public class BeanAddUniversity {
     private String message;
     private String password;
     private boolean addedUniv = true;
-    private final DBHandler dBHandler = new DBHandler();
+        //Database handler
+    @Inject
+    private DBHandler dBHandler;
 
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
