@@ -74,7 +74,6 @@ public class GoHouseRESTUsers {
            @FormParam("isDelegate") boolean isDelegate) {
         System.out.println("Creating " + name + "...");
         dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
-
    }
 
 }

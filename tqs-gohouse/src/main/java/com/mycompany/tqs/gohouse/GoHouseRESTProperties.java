@@ -9,7 +9,6 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -43,16 +42,16 @@ public class GoHouseRESTProperties {
    
       /**
     * Sets a rating.
-    * @param userID The user's ID
+    * @param id The user's ID
     * @param rate The rate said user will attribute
     */
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    @Path("rate")
-   public void rateApartment(@FormParam("userID") int userID,
+   public void rateApartment(@FormParam("id") int id,
            @FormParam("rate") int rate) {
        
-        dbH.giveRatingToProperty((long)userID,rate);
+        dbH.giveRatingToProperty((long)id,rate);
    }
    
 }
