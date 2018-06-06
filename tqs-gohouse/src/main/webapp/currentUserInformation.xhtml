@@ -54,14 +54,14 @@ and open the template in the editor.
 
         <!--Avaliação -->
         <div style="padding-left: 20px;padding-top: 20px">
-            <h3>Avaliar Senhorios</h3>
+            <h3>Avaliar Propriedades</h3>
         </div>
         <div class="col-md-12 col-lg-12 col-sm-12">
 
             <b:panel title="Avaliação" collapsible="false">
                 <h:form>
 
-                    <p><h4>Senhorio: </h4> <h:selectOneMenu value="#{beanUserInfo.selectedSenhorio}" required="true">
+                    <p><h4>Propriedade: </h4> <h:selectOneMenu value="#{beanUserInfo.selectedSenhorio}" required="true">
                             <f:selectItems var="ender" value="#{beanUserInfo.senhorios}" itemValue="#{ender}" /></h:selectOneMenu> </p>
 
                     <p><h4>Rating:  </h4><h:inputText value="#{beanUserInfo.rating}" required="true" ></h:inputText> </p> 
@@ -73,29 +73,18 @@ and open the template in the editor.
         </div>
 
 
-
-
-
-
-
-
-
-
-
-
         <!--User's Properties -->
         <div style="padding-left: 20px;padding-top: 20px">
             <h3>Quartos Arrendados</h3>
         </div>
 
         <div style="padding-right: 10px">            
-            <ui:repeat value="#{userDetailsBean.listaDePropriedades}" var="property">
-                <b:panel title="#{property.address}" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <ui:repeat value="#{beanUserInfo.roomsList}" var="rooms">
+                <b:panel title="#{rooms.property.address}" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="panelStyle">
                         <div>                                
-                            <h4><b>Local: </b> #{property.address}</h4>
-                            <h4><b>Disponível: </b> #{property.occupied}</h4>
-                            <h4><b> <a href="propertyDetailsPage.xhtml?propertyId=#{property.id}"> Mais informação </a></b></h4>
+                            <h4><b>Descrição: </b> #{rooms.description}</h4>
+                            <h4><b>Renda: </b> #{rooms.rent}</h4>
                         </div>
                     </div>
                 </b:panel>

@@ -24,7 +24,7 @@ public class BeanUserInformation {
     //Database handler
     private final DBHandler dbHandler = new DBHandler();
     //List of properties from the user
-    private List<Room> roomsList;
+    private List<Room> roomsList = new ArrayList<>();
     //Nomes dos senhorios
     private List<String> senhorios = new ArrayList<>();
     //Used to render some Controls
@@ -50,8 +50,8 @@ public class BeanUserInformation {
         Set<Room> tmp = dbHandler.getSingleUser(CurrentUser.email).getRentedRooms();
         for (Room r : tmp) {
             roomsList.add(r);
-            if (!senhorios.contains(r.getProperty().getId() + "," + r.getProperty().getOwner().getEmail() + " " + r.getProperty().getAddress())) {
-                senhorios.add(r.getProperty().getId() + "," + r.getProperty().getOwner().getEmail() + " " + r.getProperty().getAddress());
+            if (!senhorios.contains(r.getProperty().getId() + "," + r.getProperty().getAddress())) {
+                senhorios.add(r.getProperty().getId() + "," + r.getProperty().getAddress());
             }
         }
     }
