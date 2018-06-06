@@ -53,5 +53,14 @@ and open the template in the editor.
             <h:outputText value="#{beanroomPage.message}" />
         </p:dialog>
 
+
+        <b:modal id="modalMsg" title="GoHouse Rooms" styleClass="modalPseudoClass">
+            <p>#{beanroomPage.message}</p>
+            <f:facet name="footer">
+                <b:button value="Ok" look="primary" dismiss="modal" />
+            </f:facet>
+        </b:modal>
+
+
     </h:body>
 </html>

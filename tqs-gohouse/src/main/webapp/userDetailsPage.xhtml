@@ -33,14 +33,13 @@ and open the template in the editor.
         </b:navBar>
         <!--[End] NavigationBar -->
 
-        <!--Esta pagina tem de conter toda a informação do utilizador em que queremos ver a informação -->
-
-        <!--User name-->
-        <h3>#{userDetailsBean.email}</h3>
+        <!--User Email-->
+        <div style="padding-left: 20px;padding-top: 20px">
+            <h3>#{userDetailsBean.email}</h3>
+        </div>
 
         <!-- User information -->
         <b:panel title="#{userDetailsBean.userPlatform.name}" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" collapsible="false">
-
             <div class="panelStyle">
                 <div>                                
                     <h4><b>Nome:</b>  #{userDetailsBean.userPlatform.name} </h4>
@@ -51,24 +50,27 @@ and open the template in the editor.
             </div>
         </b:panel>
 
-        <h3>Lista Propriedades</h3>
 
-        <!-- Start the list of all properties  -->
-        <div>            
 
+
+        <!--User's Properties -->
+        <div style="padding-left: 20px;padding-top: 20px">
+            <h3>Propriedades do utilizador</h3>
+        </div>
+
+        <div style="padding-right: 10px">            
             <ui:repeat value="#{userDetailsBean.listaDePropriedades}" var="property">
                 <b:panel title="#{property.id}" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="panelStyle">
                         <div>                                
                             <h4><b>Local: </b> #{property.address}</h4>
-                            <h4><b>Ocupado: </b> #{property.occupied}</h4>
+                            <h4><b>Disponível: </b> #{property.occupied}</h4>
                             <h4><b> <a href="faces/propertyDetailsPage.xhtml?propertyId=#{property.id}"> Mais informação </a></b></h4>
                         </div>
                     </div>
                 </b:panel>
             </ui:repeat>   
         </div>
-
 
 
     </h:body>

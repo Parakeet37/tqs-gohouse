@@ -58,11 +58,10 @@ and open the template in the editor.
                             <h:outputText value="Endereço:" />
                             <h:outputText value="#{prop.address}" style="font-weight: bold"/>
                             
-                            <h:outputText value="Year:" />
+                            <h:outputText value="Tipo:" />
                             <h:outputText value="#{prop.type}" style="font-weight: bold"/>
                             <b:icon name="globe" size="2x" onclick="centerAt(#{prop.latitude},#{prop.longitude})"/>
                             <h5><b><a href="faces/propertyDetailsPage.xhtml?propertyId=#{prop.id}">Details</a></b></h5>
-
                             <p/>
                         </h:panelGrid>
                     </p:outputPanel>
