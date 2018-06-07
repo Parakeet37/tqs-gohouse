@@ -71,12 +71,13 @@ public class GoHouseRESTUsers {
            @FormParam("email") String email,
            @FormParam("name") String name,
            @FormParam("isDelegate") boolean isDelegate) {
-       try{
+       
+       if(dbH.getSingleUser(email) == null){
            dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
            return "{\"success\":true, \"stateMsg\":\"No problem here.\"}";
        }
-        catch(Exception e){
-            return "{\"success\":false, \"stateMsg\":\""+ e.getMessage() +"\"}";
+       else{
+            return "{\"success\":false, \"stateMsg\":\"Your're already signed up!\"}";
         }
    }
 
