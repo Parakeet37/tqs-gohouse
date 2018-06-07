@@ -22,20 +22,20 @@ public class GoHouseRESTUsers {
    DBHandler dbH;
 
    /**
-    * Lista todos os utilizadores
-    * @return = String JSON listando os utilizadores
+    * Lists all users
+    * @return JSON detailing all users
     */
    @GET
    @Produces({"application/json"})
    public List<PlatformUser> listAllUsers() {
-       return dbH.getNMostPopularUsers(90);
+       return dbH.getNMostPopularUsers(0);
    }
    
    
    /**
-    * Lista 1 utilizador, pelo seu email
-    * @param email Email para procurar 1 utilizador
-    * @return 1 utilizador, em formato JSON
+    * Lists 1 user, searched by his email
+    * @param email A user's email
+    * @return JSON detailing a user
     */
    @GET
    @Path("{email}")
@@ -45,9 +45,9 @@ public class GoHouseRESTUsers {
    }
    
    /**
-    * Lista os utilizadores mais populares, limitado pelo 'number'.
-    * @param number O numero de utilizadores populares para revelar
-    * @return Os utilizadores mais populares
+    * Lists the most popular users, limited by a max number
+    * @param number The number of users to present
+    * @return JSON detailing some users
     */
    @GET
    @Path("popular:{number}")
