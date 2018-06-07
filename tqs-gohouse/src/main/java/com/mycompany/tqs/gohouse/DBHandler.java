@@ -26,7 +26,8 @@ public class DBHandler implements Serializable{
         
     private static final double MINUSERS = 10.0;
     
-    private final String UNIT = "gohousedb";
+    private static final String UNIT = "gohousedb";
+    private static final String ROOM_SELECT = "select u from Room AS u where ";
 
     public DBHandler() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(UNIT);
@@ -336,7 +337,7 @@ public class DBHandler implements Serializable{
     public boolean rentProperty(long propertyID, long newRenterID){
         Property property = em.find(Property.class, propertyID);
         if (property == null) return false;
-        Query query = em.createQuery("select u from Room AS u where "
+        Query query = em.createQuery(ROOM_SELECT
                     + "u.property = :property and u.occupied = false");
         query.setParameter("property", property);
         if (query.getResultList().size() != property.getRooms().size()) return false;
@@ -365,7 +366,7 @@ public class DBHandler implements Serializable{
         Property property = em.find(Property.class, propertyID);
         if (property == null) return false;
         if (property.isOccupied()) return false;
-        Query query = em.createQuery("select u from Room AS u where "
+        Query query = em.createQuery(ROOM_SELECT
                     + "u.university = :university and u.property = :property");
         query.setParameter("university", property.getRooms().iterator().next().getUniversity());
         query.setParameter("property", property);
@@ -387,7 +388,7 @@ public class DBHandler implements Serializable{
         Property property = em.find(Property.class, propertyID);
         if (property == null) return false;
         if (!property.isOccupied()) return false;
-        Query query = em.createQuery("select u from Room AS u where "
+        Query query = em.createQuery(ROOM_SELECT
                     + "u.renter = :renter and u.property = :property");
         query.setParameter("renter", property.getRooms().iterator().next().getRenter());
         query.setParameter("property", property);
@@ -563,7 +564,7 @@ public class DBHandler implements Serializable{
         if (renter.addRentedRoom(room)){
             room.setRenter(renter);
             room.setOccupied(true);
-            Query query = em.createQuery("select u from Room AS u where "
+            Query query = em.createQuery(ROOM_SELECT
                     + "u.property = :property and u.occupied = true");
             query.setParameter("property", room.getProperty());
             if (query.getResultList().size() == room.getProperty().getRooms().size()) 
