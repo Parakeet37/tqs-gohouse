@@ -89,6 +89,7 @@ public class DBHandlerPropertyTest {
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'A', 1);
         instance.addNewProperty(user.getId(), new Float(40), new Float(40), "Street", PropertyType.HOUSE, 'B', 1);
         assertEquals(instance.getAvailableProperties().size(), 2);
+        fail();
     }
     
     @Test
