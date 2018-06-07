@@ -69,6 +69,7 @@ public class LoggingBean implements Serializable {
      * @return True if user exists, otherwise false
      */
     private boolean exists() {
+        try{
         List<PlatformUser> d = dBHandler.getNMostPopularUsers(300);
         for (PlatformUser u : d) {
             if (u.getEmail().equals(userMail) && u.verifyPassword(password)) {
@@ -77,6 +78,7 @@ public class LoggingBean implements Serializable {
                 return true;
             }
         }
+        }catch(Exception e){return false;}
         return false;
     }
 

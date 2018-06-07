@@ -12,7 +12,7 @@ import dbclasses.University;
  * @author Joao
  */
 public class CurrentUser {
-    private static long id = -2;
+    private static long id = -1;
     private static String email = "";
     private static boolean isUniversity = false;
     private static University univ = null;
