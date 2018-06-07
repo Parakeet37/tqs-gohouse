@@ -125,7 +125,7 @@ public class PlatformUser extends GeneralEntity implements Serializable {
     
     @Override
     public String toString() {
-        return "PlatformUser{" + "id=" + id + ", email=" + email + ", name=" + name + ", age=" + age + ", ownedProperties=" + ownedProperties + ", userRating=" + userRating + ", isDelegate=" + isDelegate + ", universityId=" + university + '}';
+        return "{" + "\"id\":" + id + ", \"email\":" + email + ", \"name\":" + name + ", \"age\":" + age + ", \"ownedProperties\":" + ownedProperties + ", \"userRating\":" + userRating + ", \"isDelegate\":" + isDelegate + ", \"universityId\":" + university + '}';
     }
 
     
