@@ -44,7 +44,8 @@ public class BeanAddRoom {
     //Message
     private String message = "";
     //Database handler
-    private final DBHandler dbHandler = new DBHandler();
+    private final DBHandler dBHandler = new DBHandler();
+
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     //Used to render some controls
@@ -64,7 +65,7 @@ public class BeanAddRoom {
     private void populateDropDown() {
 
         try {
-            Set<Property> tmpProperty = dbHandler.getSingleUser(CurrentUser.email).getOwnedProperties();
+            Set<Property> tmpProperty = dBHandler.getSingleUser(CurrentUser.email).getOwnedProperties();
             for (Property p : tmpProperty) {
                 enderecoProperty.put(p.getAddress(), p.getId());
                 enderecos.add(p.getAddress());
@@ -84,8 +85,8 @@ public class BeanAddRoom {
 
         try {
             long propID = enderecoProperty.get(selectedProperty);
-            boolean created = dbHandler.addRoom(descricao, rent, propID);
-            
+            boolean created = dBHandler.addRoom(descricao, rent, propID);
+
             if (created) {
                 message = "Novo quarto criado!";
                 roomAdded = true;
@@ -105,7 +106,7 @@ public class BeanAddRoom {
 
     }
 
-   /**
+    /**
      * Show a message dialog by executing the javascript.
      */
     private void showDialog() {
@@ -204,5 +205,4 @@ public class BeanAddRoom {
         this.roomAdded = roomAdded;
     }
 
-    
 }

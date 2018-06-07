@@ -21,7 +21,7 @@ import other.Utils;
 public class LoggingBean implements Serializable {
 
     //Database handler
-    private final DBHandler dbHandler;
+    private final DBHandler dBHandler = new DBHandler();
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     //Used to render if the user has a university.
@@ -33,14 +33,13 @@ public class LoggingBean implements Serializable {
     //User Mail from GSignIn
     private String userMail;
     //User password
-    private String password; 
+    private String password;
 
     /**
-     * Constructor.
-     * initialises Database Handler and verifies if user exists in case of automated login.
+     * Constructor. initialises Database Handler and verifies if user exists in
+     * case of automated login.
      */
     public LoggingBean() {
-        dbHandler = new DBHandler();
         exists();
     }
 
@@ -50,8 +49,8 @@ public class LoggingBean implements Serializable {
      */
     public void userSignIn() {
 
-        if(!exists()){
-            dbHandler.registerUser(password, userMail, userName, LocalDate.of(1997,1,1), false);
+        if (!exists()) {
+            dBHandler.registerUser(password, userMail, userName, LocalDate.of(1997, 1, 1), false);
             exists();
         }
         //Redirect to HomePage
@@ -70,9 +69,9 @@ public class LoggingBean implements Serializable {
      * @return True if user exists, otherwise false
      */
     private boolean exists() {
-        List<PlatformUser> d = dbHandler.getNMostPopularUsers(300);
+        List<PlatformUser> d = dBHandler.getNMostPopularUsers(300);
         for (PlatformUser u : d) {
-            if (u.getEmail().equals(userMail)) {
+            if (u.getEmail().equals(userMail) && u.verifyPassword(password)) {
                 CurrentUser.ID = u.getId();
                 CurrentUser.email = userMail;
                 return true;
@@ -86,17 +85,18 @@ public class LoggingBean implements Serializable {
         return userName;
     }
 
+ 
     //userName setter
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    
+
     public String getPassword() {
-        return password; 
+        return password;
     }
-    
-    public void setPassword(String password){
-        this.password = password; 
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     //userMail getter

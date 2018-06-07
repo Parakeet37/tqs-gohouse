@@ -22,16 +22,18 @@ and open the template in the editor.
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
 
         <!-- [INIT] Navigation bar -->
-        <b:navBar brand="GoHouse" brandHref="#" inverse="true" fixed="top">
-            <b:navbarLinks>
-                <b:navLink value="Login" href="faces/login.xhtml" icon-awesome="fa fa-address-book"                      rendered="#{!homeBean.isLoggedIn}"></b:navLink>
-                <b:navLink value="Adicionar Propriedade" href="addProperty.xhtml" icon-awesome="fa-plus-square"    rendered="#{homeBean.isLoggedIn}"></b:navLink>
-                <b:navLink value="Adicionar Quartos" href="addRoom.xhtml" icon-awesome="fa-plus-square"            rendered="#{homeBean.isLoggedIn}" ></b:navLink>
-                <b:navLink value="Registar Universidade" href="registerUniversity.xhtml" icon-awesome="fa-edit"    rendered="#{homeBean.isLoggedIn}"></b:navLink>
-                <b:navLink value="Pesquisar" href="search.xhtml" icon-awesome="fa-search-plus" ></b:navLink>
-                <b:navLink value="Minha Conta" href="currentUserInformation.xhtml"                  icon-awesome="fa-user" rendered="#{homeBean.isLoggedIn}"></b:navLink>
-            </b:navbarLinks>
-        </b:navBar>
+        <b:form><b:navBar brand="GoHouse" brandHref="#" inverse="true" fixed="top">
+                <b:navbarLinks>
+                    <b:navLink value="Login" href="faces/login.xhtml" icon-awesome="fa fa-address-book"                      rendered="#{!homeBean.isLoggedIn}"></b:navLink>
+                    <b:navLink value="Adicionar Propriedade" href="addProperty.xhtml" icon-awesome="fa-plus-square"    rendered="#{homeBean.isLoggedIn}"></b:navLink>
+                    <b:navLink value="Adicionar Quartos" href="addRoom.xhtml" icon-awesome="fa-plus-square"            rendered="#{homeBean.isLoggedIn}" ></b:navLink>
+                    <b:navLink value="Registar Universidade" href="registerUniversity.xhtml" icon-awesome="fa-edit"    rendered="#{homeBean.isLoggedIn}"></b:navLink>
+                    <b:navLink value="Pesquisar" href="search.xhtml" icon-awesome="fa-search-plus" ></b:navLink>
+                    <b:navLink value="Minha Conta" href="currentUserInformation.xhtml"                  icon-awesome="fa-user" rendered="#{homeBean.isLoggedIn}"></b:navLink>
+                    <b:navCommandLink value="Logout" action="#{logBean.redirect()}"     icon-awesome="fa-sign-out" rendered="#{homeBean.isLoggedIn}" ></b:navCommandLink>
+
+                </b:navbarLinks>
+            </b:navBar></b:form>        
         <!--[End] NavigationBar -->
 
 
@@ -52,14 +54,14 @@ and open the template in the editor.
                         <f:viewParam name="email" value="#{rooms.property.owner.email}" />  
                     </f:metadata> 
                     <!-- HEader of the Panel -->
-                    
+
                     <f:facet name="heading">
                         <h:outputText value="#{rooms.property.address}" />
                         <b:badge style="margin-left:10px; background-color:#5cb85c" value="Verified" rendered="#{rooms.property.verified}"  />
                         <b:badge style="margin-left:10px; background-color:#cc0000" value="Not Verified" rendered="#{!rooms.property.verified}"  />
                     </f:facet>
-                    
-                    
+
+
                     <!-- Body of the panel -->
                     <div class="panelStyle">
                         <div>                                

@@ -28,6 +28,7 @@ public class BeanAddPropriedade {
 
     //Database handler
     private final DBHandler dBHandler = new DBHandler();
+
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
 
@@ -89,7 +90,7 @@ public class BeanAddPropriedade {
         bloco = "";
         piso = "";
         tipoPropriedade = "";
-        
+
     }
 
     /**
@@ -99,7 +100,6 @@ public class BeanAddPropriedade {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("$('.modalPseudoClass').modal();");
     }
-
 
     //Getters and setters
     public String getId() {

@@ -22,7 +22,8 @@ public class BeanUserInformation {
     //This is Us
     private PlatformUser userPlatform = new PlatformUser();
     //Database handler
-    private final DBHandler dbHandler = new DBHandler();
+    private final DBHandler dBHandler = new DBHandler();
+
     //List of properties from the user
     private List<Room> roomsList = new ArrayList<>();
     //Nomes dos senhorios
@@ -39,7 +40,7 @@ public class BeanUserInformation {
      */
     @PostConstruct
     public void init() {
-        userPlatform = dbHandler.getSingleUser(CurrentUser.email);
+        userPlatform = dBHandler.getSingleUser(CurrentUser.email);
         populateView();
     }
 
@@ -47,7 +48,7 @@ public class BeanUserInformation {
      * Populates the views
      */
     private void populateView() {
-        Set<Room> tmp = dbHandler.getSingleUser(CurrentUser.email).getRentedRooms();
+        Set<Room> tmp = dBHandler.getSingleUser(CurrentUser.email).getRentedRooms();
         for (Room r : tmp) {
             roomsList.add(r);
             if (!senhorios.contains(r.getProperty().getId() + "," + r.getProperty().getAddress())) {
@@ -61,57 +62,56 @@ public class BeanUserInformation {
      */
     public void submitRating() {
         assert !"".equals(selectedSenhorio);
-        dbHandler.giveRatingToProperty(Integer.parseInt(selectedSenhorio.split(",")[0]), rating);
+        dBHandler.giveRatingToProperty(Integer.parseInt(selectedSenhorio.split(",")[0]), rating);
     }
 
     //Getter and setters
     public PlatformUser getUserPlatform() {
         return userPlatform;
     }
-    
+
     public void setUserPlatform(PlatformUser userPlatform) {
         this.userPlatform = userPlatform;
     }
-    
+
     public boolean isIsLoggedIn() {
         return isLoggedIn;
     }
-    
+
     public void setIsLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;
     }
-    
+
     public List<Room> getRoomsList() {
         return roomsList;
     }
-    
+
     public void setRoomsList(List<Room> roomsList) {
         this.roomsList = roomsList;
     }
-    
+
     public String getSelectedSenhorio() {
         return selectedSenhorio;
     }
-    
+
     public void setSelectedSenhorio(String selectedSenhorio) {
         this.selectedSenhorio = selectedSenhorio;
     }
-    
+
     public List<String> getSenhorios() {
         return senhorios;
     }
-    
+
     public void setSenhorios(List<String> senhorios) {
         this.senhorios = senhorios;
     }
-    
+
     public int getRating() {
         return rating;
     }
-    
+
     public void setRating(int rating) {
         this.rating = rating;
     }
-    
-    
+
 }

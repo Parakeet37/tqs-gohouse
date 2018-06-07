@@ -21,7 +21,8 @@ public class Bean_UserDetails {
     //email from the params
     private String email;
     //Database handler
-    private final DBHandler dbHandler = new DBHandler();
+       private final DBHandler dBHandler = new DBHandler();
+
     //List of properties from the user
     private List<Property> listaDePropriedades;
     //Used to render some Controls
@@ -52,9 +53,9 @@ public class Bean_UserDetails {
      */
     private void populateView() {
 
-        this.userPlatform = dbHandler.getSingleUser(email);
+        this.userPlatform = dBHandler.getSingleUser(email);
         if (userPlatform != null) {
-            List<Property> tempProp = dbHandler.getAvailableProperties();
+            List<Property> tempProp = dBHandler.getAvailableProperties();
             for (int i = 0; i < tempProp.size(); i++) {
                 Property pr = tempProp.get(i);
                 if (pr.getOwner().equals(userPlatform)) {

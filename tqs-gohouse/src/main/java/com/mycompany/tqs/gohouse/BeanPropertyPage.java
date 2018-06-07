@@ -33,7 +33,8 @@ public class BeanPropertyPage {
     // Id da propriedade
     private long id;
     //Database handler
-    private DBHandler dBHandler = new DBHandler();
+    private final DBHandler dBHandler = new DBHandler();
+
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     //List of rooms
@@ -124,13 +125,6 @@ public class BeanPropertyPage {
         this.id = id;
     }
 
-    public DBHandler getdBHandler() {
-        return dBHandler;
-    }
-
-    public void setdBHandler(DBHandler dBHandler) {
-        this.dBHandler = dBHandler;
-    }
 
     public boolean isIsLoggedIn() {
         return isLoggedIn;

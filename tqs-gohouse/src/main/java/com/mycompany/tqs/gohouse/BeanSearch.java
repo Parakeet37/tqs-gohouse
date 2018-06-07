@@ -24,7 +24,8 @@ import other.Utils;
 public class BeanSearch implements Serializable {
 
     //Database handler
-    private final DBHandler dbHandler = new DBHandler();
+    private final DBHandler dBHandler = new DBHandler();
+
     //Used to render some Controls
     private boolean isLoggedIn = Utils.isLoggedIn();
     //Value used to search properties
@@ -39,15 +40,16 @@ public class BeanSearch implements Serializable {
      */
     @PostConstruct
     public void construct() {
-        List<Property> allProps = dbHandler.getUnverifiedProperties();
-        allProps.addAll(dbHandler.getVerifiedProperties());
+        List<Property> allProps = dBHandler.getUnverifiedProperties();
+        allProps.addAll(dBHandler.getVerifiedProperties());
         setAllProperties(allProps);
         setSearchResults(allProps);
     }
 
     /**
      * Searched from all properties the ones with given search parameter.
-     * @return  Same page refreshed.
+     *
+     * @return Same page refreshed.
      * @throws IOException Couldn't refresh page.
      */
     public String searchProperties() throws IOException {
@@ -65,7 +67,7 @@ public class BeanSearch implements Serializable {
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         return "search.xhtml";
     }
-    
+
     //Getters and setters
     public List<Property> getAllProperties() {
         return allProperties;
@@ -98,7 +100,5 @@ public class BeanSearch implements Serializable {
     public void setIsLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;
     }
-
-    
 
 }

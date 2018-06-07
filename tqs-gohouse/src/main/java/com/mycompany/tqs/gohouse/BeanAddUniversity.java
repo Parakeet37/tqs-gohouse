@@ -19,6 +19,7 @@ public class BeanAddUniversity {
     private String message;
     private String password;
     private boolean addedUniv = true;
+    //Database handler
     private final DBHandler dBHandler = new DBHandler();
 
     //Used to render some Controls
@@ -31,7 +32,7 @@ public class BeanAddUniversity {
         name = "";
         endereco = "";
         message = "";
-        
+
     }
 
     /**
@@ -41,9 +42,9 @@ public class BeanAddUniversity {
         assert !"".equals(name) && !"".equals(endereco);
 
         if (CurrentUser.univ == null) {
-            boolean added = dBHandler.addUniversity(name, endereco,password);
+            boolean added = dBHandler.addUniversity(name, endereco, password);
             if (added) {
-                
+
                 addedUniv = true;
                 //Adiciona como delegado da universidade
                 dBHandler.getSingleUniversity(name).addDelegate(dBHandler.getSingleUser(CurrentUser.email));
