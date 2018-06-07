@@ -12,9 +12,42 @@ import dbclasses.University;
  * @author Joao
  */
 public class CurrentUser {
-    public static long ID = -2;
-    public static String email = "";
-    public static boolean isUniversity = false;
-    public static University univ = null;
+    private static long id = -2;
+    private static String email = "";
+    private static boolean isUniversity = false;
+    private static University univ = null;
+
+    public static long getId() {
+        return id;
+    }
+
+    public static void setId(long id) {
+        CurrentUser.id = id;
+    }
+
+    public static String getEmail() {
+        return email;
+    }
+
+    public static void setEmail(String email) {
+        CurrentUser.email = email;
+    }
+
+    public static boolean isIsUniversity() {
+        return isUniversity;
+    }
+
+    public static void setIsUniversity(boolean isUniversity) {
+        CurrentUser.isUniversity = isUniversity;
+    }
+
+    public static University getUniv() {
+        return univ;
+    }
+
+    public static void setUniv(University univ) {
+        CurrentUser.univ = univ;
+    }
+    
     
 }

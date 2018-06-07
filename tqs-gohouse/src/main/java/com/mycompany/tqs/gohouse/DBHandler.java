@@ -478,9 +478,8 @@ public class DBHandler implements Serializable{
         return query.getResultList();
     }
     
-    private float rad2deg(float rad) {
-        return (float) ((rad * 180) / (Math.PI));
-    }
+    /*Tibério: Removi o rad2deg porque estava unusued e o Sonar queixa-se. Apologies se isto
+    magoa os sentimentos de alguem.*/
     private float deg2rad( float deg) {
         return (float) ((deg * Math.PI) / (180));
     }

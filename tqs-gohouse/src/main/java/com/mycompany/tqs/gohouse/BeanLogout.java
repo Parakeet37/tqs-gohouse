@@ -22,10 +22,10 @@ public class BeanLogout {
 
     @PostConstruct
     public void init() {
-        CurrentUser.ID = -1;
-        CurrentUser.univ = null;
-        CurrentUser.email = "";
-        CurrentUser.isUniversity = false;
+        CurrentUser.setId(-1);
+        CurrentUser.setUniv(null);
+        CurrentUser.setEmail("");
+        CurrentUser.setIsUniversity(false);
 
     }
 

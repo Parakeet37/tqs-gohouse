@@ -72,8 +72,8 @@ public class LoggingBean implements Serializable {
         List<PlatformUser> d = dBHandler.getNMostPopularUsers(300);
         for (PlatformUser u : d) {
             if (u.getEmail().equals(userMail) && u.verifyPassword(password)) {
-                CurrentUser.ID = u.getId();
-                CurrentUser.email = userMail;
+                CurrentUser.setId(u.getId());
+                CurrentUser.setEmail(userMail);
                 return true;
             }
         }

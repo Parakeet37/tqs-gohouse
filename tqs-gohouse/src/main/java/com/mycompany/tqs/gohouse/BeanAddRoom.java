@@ -65,7 +65,7 @@ public class BeanAddRoom {
     private void populateDropDown() {
 
         try {
-            Set<Property> tmpProperty = dBHandler.getSingleUser(CurrentUser.email).getOwnedProperties();
+            Set<Property> tmpProperty = dBHandler.getSingleUser(CurrentUser.getEmail()).getOwnedProperties();
             for (Property p : tmpProperty) {
                 enderecoProperty.put(p.getAddress(), p.getId());
                 enderecos.add(p.getAddress());
