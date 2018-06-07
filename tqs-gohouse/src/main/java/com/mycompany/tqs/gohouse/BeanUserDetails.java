@@ -14,7 +14,7 @@ import other.Utils;
 
 @ManagedBean(name = "userDetailsBean", eager = true)
 @ViewScoped
-public class Bean_UserDetails {
+public class BeanUserDetails {
 
     //This is the user we are viewing
     private PlatformUser userPlatform = new PlatformUser();

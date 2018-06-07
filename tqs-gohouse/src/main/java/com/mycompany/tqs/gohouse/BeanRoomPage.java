@@ -94,9 +94,8 @@ public class BeanRoomPage {
     /**
      * Rents the room given some circumstances.
      *
-     * @throws IOException HomePage not found.
      */
-    public void rentRoom() throws IOException {
+    public void rentRoom(){
 
         //Verificar se o user está registado.
         if (CurrentUser.getId() == -1 || room == null) {
