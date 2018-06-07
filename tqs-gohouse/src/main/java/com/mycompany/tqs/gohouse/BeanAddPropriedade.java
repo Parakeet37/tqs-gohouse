@@ -15,7 +15,7 @@ import other.Utils;
 @ViewScoped
 public class BeanAddPropriedade {
 
-    private String id = CurrentUser.ID + "";
+    private String id = CurrentUser.getId() + "";
     private String latitude;
     private String longitude;
     private String endereco;
@@ -53,9 +53,9 @@ public class BeanAddPropriedade {
 
             boolean created;
             if ("Casa".equals(tipoPropriedade)) {
-                created = dBHandler.addNewProperty(CurrentUser.ID, Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.HOUSE, bloc, Integer.parseInt(piso));
+                created = dBHandler.addNewProperty(CurrentUser.getId(), Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.HOUSE, bloc, Integer.parseInt(piso));
             } else {
-                created = dBHandler.addNewProperty(CurrentUser.ID, Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.APARTMENT, bloc, Integer.parseInt(piso));
+                created = dBHandler.addNewProperty(CurrentUser.getId(), Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.APARTMENT, bloc, Integer.parseInt(piso));
             }
 
             if (created) {

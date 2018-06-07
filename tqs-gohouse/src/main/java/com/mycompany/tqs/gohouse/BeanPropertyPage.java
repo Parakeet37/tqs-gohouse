@@ -85,8 +85,8 @@ public class BeanPropertyPage {
      */
     public void rentFull(long roomId) {
         //Check if it has any University assossiated.
-        if (CurrentUser.univ != null) {
-            boolean sucess = dBHandler.rentRoomToUniversity(roomId, CurrentUser.ID);
+        if (CurrentUser.getUniv() != null) {
+            boolean sucess = dBHandler.rentRoomToUniversity(roomId, CurrentUser.getId());
             if (sucess) {
                 message = "Quarto foi arrendade á universidade " + universityName;
                 roomRented = true;

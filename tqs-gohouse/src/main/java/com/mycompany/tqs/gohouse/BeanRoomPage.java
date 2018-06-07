@@ -99,12 +99,12 @@ public class BeanRoomPage {
     public void rentRoom() throws IOException {
 
         //Verificar se o user está registado.
-        if (CurrentUser.ID == -1 || room == null) {
+        if (CurrentUser.getId() == -1 || room == null) {
             message = "Ups...Parece que não está registado.";
             showDialog();
 
         } else {
-            boolean regist = dBHandler.rentRoomToUser(roomID, CurrentUser.ID);
+            boolean regist = dBHandler.rentRoomToUser(roomID, CurrentUser.getId());
             if (regist) {
                 message = "Obrigado por utilizar a nossa plataforma como meio de arrendamento de quartos.\n"
                         + "Este é o seu novo quarto : " + room.getProperty().getAddress() + "\n"

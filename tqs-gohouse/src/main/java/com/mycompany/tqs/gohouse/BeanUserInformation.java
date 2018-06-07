@@ -40,7 +40,7 @@ public class BeanUserInformation {
      */
     @PostConstruct
     public void init() {
-        userPlatform = dBHandler.getSingleUser(CurrentUser.email);
+        userPlatform = dBHandler.getSingleUser(CurrentUser.getEmail());
         populateView();
     }
 
@@ -48,7 +48,7 @@ public class BeanUserInformation {
      * Populates the views
      */
     private void populateView() {
-        Set<Room> tmp = dBHandler.getSingleUser(CurrentUser.email).getRentedRooms();
+        Set<Room> tmp = dBHandler.getSingleUser(CurrentUser.getEmail()).getRentedRooms();
         for (Room r : tmp) {
             roomsList.add(r);
             if (!senhorios.contains(r.getProperty().getId() + "," + r.getProperty().getAddress())) {

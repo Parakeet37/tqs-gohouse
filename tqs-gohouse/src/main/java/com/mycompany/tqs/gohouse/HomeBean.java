@@ -44,14 +44,11 @@ public class HomeBean implements Serializable {
      * Used by University to rent a room.
      *
      * @param roomId Room id
+     * @return Confirmation if it worked or not
      */
-    public void rentFull(long roomId) {
+    public boolean rentFull(long roomId) {
         //Check if it has any University assossiated.
-        if (CurrentUser.univ != null) {
-            boolean sucess = dBHandler.rentRoomToUniversity(roomId, CurrentUser.ID);
-            
-        }
-
+        return dBHandler.rentRoomToUniversity(roomId, CurrentUser.getId());
     }
 
     /**
