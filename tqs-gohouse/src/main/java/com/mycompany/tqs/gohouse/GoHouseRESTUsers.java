@@ -9,7 +9,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -60,11 +59,11 @@ public class GoHouseRESTUsers {
    
    /**
     * Registers a user, can be a Delegate
-     * @param password
     * @param email User's email
     * @param name User's name
     * @param isDelegate Sets if is delegate or not
     * @param password The user password 
+     * @return Failure or success JSON message
     */
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -77,7 +76,7 @@ public class GoHouseRESTUsers {
            return "{\"success\":true, \"stateMsg\":\"No problem here.\"}";
        }
         catch(Exception e){
-            return "{\"success\":true, \"stateMsg\":\""+ e.getMessage() +"\"}";
+            return "{\"success\":false, \"stateMsg\":\""+ e.getMessage() +"\"}";
         }
    }
 

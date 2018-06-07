@@ -44,7 +44,7 @@ public class GoHouseRESTProperties {
     * Sets a rating.
     * @param id The user's ID
     * @param rate The rate said user will attribute
-     * @return 
+     * @return Failure or success JSON message
     */
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -56,7 +56,7 @@ public class GoHouseRESTProperties {
            return "{\"success\":true, \"stateMsg\":\"No problem here.\"}";
        }
         catch(Exception e){
-            return "{\"success\":true, \"stateMsg\":\""+ e.getMessage() +"\"}";
+            return "{\"success\":false, \"stateMsg\":\""+ e.getMessage() +"\"}";
         }
    }
    
