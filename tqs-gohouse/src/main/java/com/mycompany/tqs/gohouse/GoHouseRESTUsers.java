@@ -74,7 +74,8 @@ public class GoHouseRESTUsers {
        
        if(dbH.getSingleUser(email) == null){
            dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
-           return "{\"success\":true, \"stateMsg\":\"No problem here.\"}";
+           return "{\"success\":true, \"stateMsg\":\"No problem here.\","
+                   + " \"yourID\":"+ getUserByEmail(email).getId() +"}";
        }
        else{
             return "{\"success\":false, \"stateMsg\":\"Your're already signed up!\"}";
