@@ -48,7 +48,7 @@ public class GoHouseRESTProperties {
      * @return Failure or success JSON message
     */
    @POST
-   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+   @Consumes(MediaType.APPLICATION_JSON)
    @Path("rate")
    public String verifyApartment(@FormParam("delegate") int delegate,
            @FormParam("id") int id,

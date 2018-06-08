@@ -66,7 +66,7 @@ public class GoHouseRESTUsers {
      * @return Failure or success JSON message
     */
    @POST
-   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+   @Consumes(MediaType.APPLICATION_JSON)
    public String registerUser(@FormParam("password") String password, 
            @FormParam("email") String email,
            @FormParam("name") String name,
