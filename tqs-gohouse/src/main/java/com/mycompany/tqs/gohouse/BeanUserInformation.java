@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import other.CurrentUser;
 import other.Utils;
 
 /**
@@ -40,7 +39,7 @@ public class BeanUserInformation {
      */
     @PostConstruct
     public void init() {
-        userPlatform = dBHandler.getSingleUser(CurrentUser.getEmail());
+        userPlatform = dBHandler.getSingleUser(Utils.getUserEmail());
         populateView();
     }
 
@@ -48,7 +47,7 @@ public class BeanUserInformation {
      * Populates the views
      */
     private void populateView() {
-        Set<Room> tmp = dBHandler.getSingleUser(CurrentUser.getEmail()).getRentedRooms();
+        Set<Room> tmp = dBHandler.getSingleUser(Utils.getUserEmail()).getRentedRooms();
         for (Room r : tmp) {
             roomsList.add(r);
             if (!senhorios.contains(r.getProperty().getId() + "," + r.getProperty().getAddress())) {
