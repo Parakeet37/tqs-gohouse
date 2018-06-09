@@ -10,9 +10,12 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Path("users")
 @RequestScoped
@@ -59,27 +62,77 @@ public class GoHouseRESTUsers {
    
    /**
     * Registers a user, can be a Delegate
-    * @param email User's email
-    * @param name User's name
-    * @param isDelegate Sets if is delegate or not
-    * @param password The user password 
+     * @param userRes
      * @return Failure or success JSON message
     */
    @POST
-   @Consumes(MediaType.APPLICATION_JSON)
-   public String registerUser(@FormParam("password") String password, 
-           @FormParam("email") String email,
-           @FormParam("name") String name,
-           @FormParam("isDelegate") boolean isDelegate) {
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+   public UserRes registerUser(UserRes userRes) {
        
-       if(dbH.getSingleUser(email) == null){
-           dbH.registerUser(password, email, name, LocalDate.now(), isDelegate);
-           return "{\"success\":true, \"stateMsg\":\"No problem here.\","
-                   + " \"yourID\":"+ getUserByEmail(email).getId() +"}";
-       }
-       else{
-            return "{\"success\":false, \"stateMsg\":\"Your're already signed up!\"}";
-        }
+       System.out.println("----ADDING " + userRes.getEmail() + "---\n\n");
+       
+       if(dbH.getSingleUser(userRes.getEmail()) == null)
+           dbH.registerUser(userRes.getPassword(), userRes.getEmail(), userRes.getName(), LocalDate.now(), userRes.isIsDelegate());
+       return userRes;
    }
 
+    @XmlRootElement
+    @XmlAccessorType(XmlAccessType.FIELD)
+    private class UserRes {
+
+         private String email;
+         private String name;
+         private String password;
+         private boolean isDelegate;
+
+        public UserRes(String email, String name, String password, String isDelegate) {
+            this.email = email;
+            this.name = name;
+            this.password = password;
+            this.isDelegate = Boolean.parseBoolean(isDelegate);
+        }
+        
+        UserRes(){
+            this.email = "";
+            this.name = "";
+            this.password = "";
+            this.isDelegate = false;
+        }
+         
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public boolean isIsDelegate() {
+            return isDelegate;
+        }
+
+        public void setIsDelegate(boolean isDelegate) {
+            this.isDelegate = isDelegate;
+        }
+         
+
+         
+    }
 }
