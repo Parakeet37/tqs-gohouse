@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.tqs.gohouse;
 
 import java.io.IOException;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import other.CurrentUser;
 
 /**
  *
@@ -22,10 +18,9 @@ public class BeanLogout {
 
     @PostConstruct
     public void init() {
-        CurrentUser.setId(-1);
-        CurrentUser.setUniv(null);
-        CurrentUser.setEmail("");
-        CurrentUser.setIsUniversity(false);
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        sessionMap.clear();
 
     }
 

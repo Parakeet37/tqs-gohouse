@@ -10,7 +10,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
-import other.CurrentUser;
 import other.Utils;
 
 @ManagedBean(name = "beanroomPage", eager = true)
@@ -98,12 +97,12 @@ public class BeanRoomPage {
     public void rentRoom(){
 
         //Verificar se o user está registado.
-        if (CurrentUser.getId() == -1 || room == null) {
+        if (Utils.getUserId() == -1 || room == null) {
             message = "Ups...Parece que não está registado.";
             showDialog();
 
         } else {
-            boolean regist = dBHandler.rentRoomToUser(roomID, CurrentUser.getId());
+            boolean regist = dBHandler.rentRoomToUser(roomID, Utils.getUserId());
             if (regist) {
                 message = "Obrigado por utilizar a nossa plataforma como meio de arrendamento de quartos.\n"
                         + "Este é o seu novo quarto : " + room.getProperty().getAddress() + "\n"

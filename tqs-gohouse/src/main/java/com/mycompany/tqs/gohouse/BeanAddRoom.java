@@ -16,7 +16,6 @@ import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
-import other.CurrentUser;
 import other.Utils;
 
 /**
@@ -65,7 +64,7 @@ public class BeanAddRoom {
     private void populateDropDown() {
 
         try {
-            Set<Property> tmpProperty = dBHandler.getSingleUser(CurrentUser.getEmail()).getOwnedProperties();
+            Set<Property> tmpProperty = dBHandler.getSingleUser(Utils.getUserEmail()).getOwnedProperties();
             for (Property p : tmpProperty) {
                 enderecoProperty.put(p.getAddress(), p.getId());
                 enderecos.add(p.getAddress());
