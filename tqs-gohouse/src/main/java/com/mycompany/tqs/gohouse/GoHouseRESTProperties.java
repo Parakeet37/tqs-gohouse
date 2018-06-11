@@ -47,12 +47,12 @@ public class GoHouseRESTProperties {
    @POST
    @Consumes(MediaType.APPLICATION_JSON)
    @Path("rate")
-   public POSTPropertyRate verifyApartment(POSTPropertyRate postRate) {
-       try{
+   public Property verifyApartment(POSTPropertyRate postRate) {
+        if(dbH.getPropertyByID(postRate.getId()) != null){
            dbH.verifyProperty(postRate.getDelegate(),postRate.getId(),postRate.getRate());
-           return postRate;
-       }
-        catch(Exception e){
+           return dbH.getPropertyByID(postRate.getId());
+        }
+        else {
             return null;
         }
    }

@@ -9,16 +9,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
 @Entity
-@XmlRootElement
+
+@XmlAccessorType(XmlAccessType.NONE)
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class GeneralEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @XmlElement
     protected Long id;
     
     @Column(nullable = false)
