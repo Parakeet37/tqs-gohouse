@@ -50,15 +50,13 @@ public class GoHouseRESTProperties {
    @POST
    @Consumes(MediaType.APPLICATION_JSON)
    @Path("rate")
-   public String verifyApartment(@FormParam("delegate") int delegate,
-           @FormParam("id") int id,
-           @FormParam("rate") int rate) {
+   public POSTPropertyRate verifyApartment(POSTPropertyRate postRate) {
        try{
-           dbH.verifyProperty((long)delegate,(long)id,rate);
-           return "{\"success\":true, \"stateMsg\":\"No problem here.\"}";
+           dbH.verifyProperty(postRate.getDelegate(),postRate.getId(),postRate.getRate());
+           return postRate;
        }
         catch(Exception e){
-            return "{\"success\":false, \"stateMsg\":\""+ e.getMessage() +"\"}";
+            return null;
         }
    }
    

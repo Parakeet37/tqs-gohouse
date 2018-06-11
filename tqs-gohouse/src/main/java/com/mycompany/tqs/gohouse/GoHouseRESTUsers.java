@@ -68,71 +68,19 @@ public class GoHouseRESTUsers {
    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-   public UserRes registerUser(UserRes userRes) {
+   public POSTUser registerUser(POSTUser userRes) {
        
        System.out.println("----ADDING " + userRes.getEmail() + "---\n\n");
-       
-       if(dbH.getSingleUser(userRes.getEmail()) == null)
-           dbH.registerUser(userRes.getPassword(), userRes.getEmail(), userRes.getName(), LocalDate.now(), userRes.isIsDelegate());
-       return userRes;
+        if (getUserByEmail(userRes.getEmail()) == null){
+            System.out.println("NEW USER!");
+            dbH.registerUser(userRes.getPassword(), userRes.getEmail(), userRes.getName()
+            , LocalDate.now(), userRes.isIsDelegate());
+            return userRes;
+        }
+        else {
+            System.out.println("User is already registered!");
+            return null;
+        }
    }
 
-    @XmlRootElement
-    @XmlAccessorType(XmlAccessType.FIELD)
-    private class UserRes {
-
-         private String email;
-         private String name;
-         private String password;
-         private boolean isDelegate;
-
-        public UserRes(String email, String name, String password, String isDelegate) {
-            this.email = email;
-            this.name = name;
-            this.password = password;
-            this.isDelegate = Boolean.parseBoolean(isDelegate);
-        }
-        
-        UserRes(){
-            this.email = "";
-            this.name = "";
-            this.password = "";
-            this.isDelegate = false;
-        }
-         
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public boolean isIsDelegate() {
-            return isDelegate;
-        }
-
-        public void setIsDelegate(boolean isDelegate) {
-            this.isDelegate = isDelegate;
-        }
-         
-
-         
-    }
 }
