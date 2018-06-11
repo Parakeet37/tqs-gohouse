@@ -64,19 +64,15 @@ public class GoHouseRESTUsers {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-   public POSTUser registerUser(POSTUser userRes) {
+   public PlatformUser registerUser(POSTUser userRes) {
        
        System.out.println("----ADDING " + userRes.getEmail() + "---\n\n");
         if (getUserByEmail(userRes.getEmail()) == null){
             System.out.println("NEW USER!");
             dbH.registerUser(userRes.getPassword(), userRes.getEmail(), userRes.getName()
             , LocalDate.now(), userRes.isIsDelegate());
-            return userRes;
         }
-        else {
-            System.out.println("User is already registered!");
-            return null;
-        }
+        return getUserByEmail(userRes.getEmail());
    }
 
 }
