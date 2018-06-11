@@ -17,7 +17,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
-import other.CurrentUser;
 import other.Utils;
 
 /**
@@ -85,8 +84,8 @@ public class BeanPropertyPage {
      */
     public void rentFull(long roomId) {
         //Check if it has any University assossiated.
-        if (CurrentUser.getUniv() != null) {
-            boolean sucess = dBHandler.rentRoomToUniversity(roomId, CurrentUser.getId());
+        if (Utils.userUniversity() != null) {
+            boolean sucess = dBHandler.rentRoomToUniversity(roomId, Utils.getUserId());
             if (sucess) {
                 message = "Quarto foi arrendade á universidade " + universityName;
                 roomRented = true;

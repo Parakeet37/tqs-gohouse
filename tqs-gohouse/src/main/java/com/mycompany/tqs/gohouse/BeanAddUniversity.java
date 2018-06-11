@@ -1,9 +1,11 @@
 package com.mycompany.tqs.gohouse;
 
+import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
-import other.CurrentUser;
 import other.Utils;
 
 /**
@@ -41,14 +43,18 @@ public class BeanAddUniversity {
     public void submitUniversity() {
         assert !"".equals(name) && !"".equals(endereco);
 
-        if (CurrentUser.getUniv() == null) {
+        if (Utils.userUniversity() == null) {
             boolean added = dBHandler.addUniversity(name, endereco, password);
             if (added) {
 
                 addedUniv = true;
                 //Adiciona como delegado da universidade
-                dBHandler.getSingleUniversity(name).addDelegate(dBHandler.getSingleUser(CurrentUser.getEmail()));
-                CurrentUser.setUniv(dBHandler.getSingleUniversity(name));
+                dBHandler.getSingleUniversity(name).addDelegate(dBHandler.getSingleUser(Utils.getUserEmail()));
+               
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                Map<String, Object> sessionMap = externalContext.getSessionMap();
+                sessionMap.put("univ", dBHandler.getSingleUniversity(name));
+                
                 message = "Universidade Registada com sucesso.";
                 showDialog();
                 clearVars();

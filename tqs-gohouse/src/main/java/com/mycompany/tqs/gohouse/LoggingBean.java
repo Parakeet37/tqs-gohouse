@@ -1,15 +1,17 @@
 package com.mycompany.tqs.gohouse;
 
 import dbclasses.PlatformUser;
+import dbclasses.University;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import other.CurrentUser;
 import other.Utils;
 
 /**
@@ -27,13 +29,15 @@ public class LoggingBean implements Serializable {
     //Used to render if the user has a university.
     private boolean hasUniversity = Utils.hasUniversity();
     //Used to render button with text
-    private String universityName = Utils.universityName();
+    private University universityName;
     //User from Gsign in
     private String userName;
     //User Mail from GSignIn
     private String userMail;
     //User password
     private String password;
+    //User
+    private PlatformUser user;
 
     /**
      * Constructor. initialises Database Handler and verifies if user exists in
@@ -53,8 +57,14 @@ public class LoggingBean implements Serializable {
             dBHandler.registerUser(password, userMail, userName, LocalDate.of(1997, 1, 1), false);
             exists();
         }
+
         //Redirect to HomePage
         try {
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            Map<String, Object> sessionMap = externalContext.getSessionMap();
+            sessionMap.put("user", user);
+            sessionMap.put("univ", universityName);
+
             FacesContext.getCurrentInstance().getExternalContext().redirect("faces/home.xhtml");
         } catch (IOException ex) {
             Logger.getLogger("Could not redirect.");
@@ -69,16 +79,21 @@ public class LoggingBean implements Serializable {
      * @return True if user exists, otherwise false
      */
     private boolean exists() {
-        try{
-        List<PlatformUser> d = dBHandler.getNMostPopularUsers(300);
-        for (PlatformUser u : d) {
-            if (u.getEmail().equals(userMail) && dBHandler.loginUser(userMail,password) && u.getId() != null) {    CurrentUser.setId(u.getId());
-            CurrentUser.setId(u.getId());    
-            CurrentUser.setEmail(userMail);
-                return true;
+        try {
+            List<PlatformUser> d = dBHandler.getNMostPopularUsers(300);
+            for (PlatformUser u : d) {
+                if (u.getEmail().equals(userMail) && dBHandler.loginUser(userMail, password) && u.getId() != null) {
+                    this.user = u;
+                    if (u.getUniversity() != null) {
+                        this.universityName = u.getUniversity();
+                    }
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            Logger.getLogger("Could not find ANY USER.");
+            return false;
         }
-        }catch(Exception e){return false;}
         return false;
     }
 
@@ -87,7 +102,6 @@ public class LoggingBean implements Serializable {
         return userName;
     }
 
- 
     //userName setter
     public void setUserName(String userName) {
         this.userName = userName;
@@ -127,12 +141,23 @@ public class LoggingBean implements Serializable {
         this.hasUniversity = hasUniversity;
     }
 
-    public String getUniversityName() {
+    public University getUniversityName() {
         return universityName;
     }
 
-    public void setUniversityName(String universityName) {
+    public void setUniversityName(University universityName) {
         this.universityName = universityName;
     }
+
+    public PlatformUser getUser() {
+        return user;
+    }
+
+    public void setUser(PlatformUser user) {
+        this.user = user;
+    }
+
+
+    
 
 }

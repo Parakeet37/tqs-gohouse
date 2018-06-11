@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import other.CurrentUser;
 import other.Utils;
 
 /**
@@ -48,7 +47,7 @@ public class HomeBean implements Serializable {
      */
     public boolean rentFull(long roomId) {
         //Check if it has any University assossiated.
-        return dBHandler.rentRoomToUniversity(roomId, CurrentUser.getId());
+        return dBHandler.rentRoomToUniversity(roomId, Utils.getUserId());
     }
 
     /**

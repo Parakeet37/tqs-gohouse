@@ -4,7 +4,6 @@ import dbclasses.PropertyType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
-import other.CurrentUser;
 import other.Utils;
 
 /**
@@ -15,7 +14,7 @@ import other.Utils;
 @ViewScoped
 public class BeanAddPropriedade {
 
-    private String id = CurrentUser.getId() + "";
+    private String id = Utils.getUserId()+ "";
     private String latitude;
     private String longitude;
     private String endereco;
@@ -53,9 +52,9 @@ public class BeanAddPropriedade {
 
             boolean created;
             if ("Casa".equals(tipoPropriedade)) {
-                created = dBHandler.addNewProperty(CurrentUser.getId(), Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.HOUSE, bloc, Integer.parseInt(piso));
+                created = dBHandler.addNewProperty(Utils.getUserId(), Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.HOUSE, bloc, Integer.parseInt(piso));
             } else {
-                created = dBHandler.addNewProperty(CurrentUser.getId(), Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.APARTMENT, bloc, Integer.parseInt(piso));
+                created = dBHandler.addNewProperty(Utils.getUserId(), Float.parseFloat(longitude), Float.parseFloat(latitude), endereco, PropertyType.APARTMENT, bloc, Integer.parseInt(piso));
             }
 
             if (created) {

@@ -60,12 +60,12 @@ public class GoHouseRESTUsers {
    }
    
    
-   /**
+    /**
     * Registers a user, can be a Delegate
-     * @param userRes
-     * @return Failure or success JSON message
+    * @param userRes
+    * @return Failure or success JSON message
     */
-   @POST
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
    public POSTUser registerUser(POSTUser userRes) {
