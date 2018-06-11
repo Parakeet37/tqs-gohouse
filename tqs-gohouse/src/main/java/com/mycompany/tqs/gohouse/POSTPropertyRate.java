@@ -12,7 +12,7 @@ package com.mycompany.tqs.gohouse;
 public class POSTPropertyRate {
     private long delegate;
     private long id;
-    private int rate;
+    private double rate;
 
     public long getDelegate() {
         return delegate;
@@ -30,7 +30,7 @@ public class POSTPropertyRate {
         this.id = id;
     }
 
-    public int getRate() {
+    public double getRate() {
         return rate;
     }
 
