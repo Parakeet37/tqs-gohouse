@@ -6,7 +6,7 @@
 package com.mycompany.tqs.gohouse;
 
 /**
- *
+ * Object received via JSON POST.
  * @author demo
  */
 public class POSTUser {

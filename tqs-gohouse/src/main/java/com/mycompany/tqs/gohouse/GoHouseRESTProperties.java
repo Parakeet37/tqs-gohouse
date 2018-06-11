@@ -5,7 +5,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,9 +41,7 @@ public class GoHouseRESTProperties {
    
       /**
     * Sets a rating.
-     * @param delegate The delegate's ID
-    * @param id The user's ID
-    * @param rate The rate said user will attribute
+     * @param postRate A POSTPropertyRate object, acquired via JSON request
      * @return Failure or success JSON message
     */
    @POST
