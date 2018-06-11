@@ -45,9 +45,11 @@ public class GoHouseRESTProperties {
      * @return Failure or success JSON message
     */
    @POST
+   @Produces(MediaType.APPLICATION_JSON)
    @Consumes(MediaType.APPLICATION_JSON)
    @Path("rate")
    public Property verifyApartment(POSTPropertyRate postRate) {
+       
         if(dbH.getPropertyByID(postRate.getId()) != null){
            dbH.verifyProperty(postRate.getDelegate(),postRate.getId(),postRate.getRate());
            return dbH.getPropertyByID(postRate.getId());
