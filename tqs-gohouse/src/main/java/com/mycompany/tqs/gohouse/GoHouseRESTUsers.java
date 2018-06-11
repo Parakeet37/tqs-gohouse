@@ -73,7 +73,7 @@ public class GoHouseRESTUsers {
        System.out.println("----ADDING " + userRes.getEmail() + "---\n\n");
        
        if(dbH.getSingleUser(userRes.getEmail()) == null)
-           dbH.registerUser(userRes.getPassword(), userRes.getEmail(), userRes.getName(), LocalDate.now(), userRes.isIsDelegate());
+           dbH.registerUser(userRes.getUsrPass(), userRes.getEmail(), userRes.getName(), LocalDate.now(), userRes.isIsDelegate());
        return userRes;
    }
 
@@ -83,20 +83,20 @@ public class GoHouseRESTUsers {
 
          private String email;
          private String name;
-         private String password;
+         private String usrPass;
          private boolean isDelegate;
 
         public UserRes(String email, String name, String password, String isDelegate) {
             this.email = email;
             this.name = name;
-            this.password = password;
+            this.usrPass = password;
             this.isDelegate = Boolean.parseBoolean(isDelegate);
         }
         
         UserRes(){
             this.email = "";
             this.name = "";
-            this.password = "";
+            this.usrPass = "";
             this.isDelegate = false;
         }
          
@@ -116,12 +116,12 @@ public class GoHouseRESTUsers {
             this.name = name;
         }
 
-        public String getPassword() {
-            return password;
+        public String getUsrPass() {
+            return usrPass;
         }
 
-        public void setPassword(String password) {
-            this.password = password;
+        public void setUsrPass(String usrPass) {
+            this.usrPass = usrPass;
         }
 
         public boolean isIsDelegate() {
