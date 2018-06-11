@@ -5,7 +5,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,23 +41,19 @@ public class GoHouseRESTProperties {
    
       /**
     * Sets a rating.
-     * @param delegate The delegate's ID
-    * @param id The user's ID
-    * @param rate The rate said user will attribute
+     * @param postRate A POSTPropertyRate object, acquired via JSON request
      * @return Failure or success JSON message
     */
    @POST
    @Consumes(MediaType.APPLICATION_JSON)
    @Path("rate")
-   public String verifyApartment(@FormParam("delegate") int delegate,
-           @FormParam("id") int id,
-           @FormParam("rate") int rate) {
+   public POSTPropertyRate verifyApartment(POSTPropertyRate postRate) {
        try{
-           dbH.verifyProperty((long)delegate,(long)id,rate);
-           return "{\"success\":true, \"stateMsg\":\"No problem here.\"}";
+           dbH.verifyProperty(postRate.getDelegate(),postRate.getId(),postRate.getRate());
+           return postRate;
        }
         catch(Exception e){
-            return "{\"success\":false, \"stateMsg\":\""+ e.getMessage() +"\"}";
+            return null;
         }
    }
    

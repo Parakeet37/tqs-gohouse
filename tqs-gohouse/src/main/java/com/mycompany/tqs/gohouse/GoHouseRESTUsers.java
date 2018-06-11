@@ -6,16 +6,12 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.*;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @Path("users")
 @RequestScoped
@@ -60,79 +56,27 @@ public class GoHouseRESTUsers {
    }
    
    
-   /**
+    /**
     * Registers a user, can be a Delegate
-     * @param userRes
-     * @return Failure or success JSON message
+    * @param userRes
+    * @return Failure or success JSON message
     */
-   @POST
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-   public UserRes registerUser(UserRes userRes) {
+   public POSTUser registerUser(POSTUser userRes) {
        
        System.out.println("----ADDING " + userRes.getEmail() + "---\n\n");
-       
-       if(dbH.getSingleUser(userRes.getEmail()) == null)
-           dbH.registerUser(userRes.getUsrPass(), userRes.getEmail(), userRes.getName(), LocalDate.now(), userRes.isIsDelegate());
-       return userRes;
+        if (getUserByEmail(userRes.getEmail()) == null){
+            System.out.println("NEW USER!");
+            dbH.registerUser(userRes.getPassword(), userRes.getEmail(), userRes.getName()
+            , LocalDate.now(), userRes.isIsDelegate());
+            return userRes;
+        }
+        else {
+            System.out.println("User is already registered!");
+            return null;
+        }
    }
 
-    @XmlRootElement
-    @XmlAccessorType(XmlAccessType.FIELD)
-    private class UserRes {
-
-         private String email;
-         private String name;
-         private String usrPass;
-         private boolean isDelegate;
-
-        public UserRes(String email, String name, String password, String isDelegate) {
-            this.email = email;
-            this.name = name;
-            this.usrPass = password;
-            this.isDelegate = Boolean.parseBoolean(isDelegate);
-        }
-        
-        UserRes(){
-            this.email = "";
-            this.name = "";
-            this.usrPass = "";
-            this.isDelegate = false;
-        }
-         
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getUsrPass() {
-            return usrPass;
-        }
-
-        public void setUsrPass(String usrPass) {
-            this.usrPass = usrPass;
-        }
-
-        public boolean isIsDelegate() {
-            return isDelegate;
-        }
-
-        public void setIsDelegate(boolean isDelegate) {
-            this.isDelegate = isDelegate;
-        }
-         
-
-         
-    }
 }
