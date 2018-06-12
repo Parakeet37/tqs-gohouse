@@ -51,13 +51,10 @@ public class GoHouseRESTProperties {
    public Property verifyApartment(POSTPropertyRate postRate) {
        
         if(dbH.getPropertyByID(postRate.getId()) != null){
-            System.out.println("Valid!");
-            
            dbH.verifyProperty(postRate.getDelegate(),postRate.getId(),postRate.getRate());
            return dbH.getPropertyByID(postRate.getId());
         }
         else {
-            System.out.println("No content!");
             return null;
         }
    }
